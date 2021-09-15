@@ -34,7 +34,6 @@ export function initialize(userService: UserService) {
     BrowserAnimationsModule,
     SharedModule,
     FontAwesomeModule,
-    MatSidenavModule,
     SocialLoginModule,
     MatButtonModule,
   ],

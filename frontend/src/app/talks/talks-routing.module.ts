@@ -8,7 +8,7 @@ import { TalksLoadResolverService } from "./services/talks-load-resolver.service
 
 const routes: Routes = [
   {
-    path: "list",
+    path: "",
     component: TalkListComponent,
   },
   { path: "create", component: TalkFormComponent },

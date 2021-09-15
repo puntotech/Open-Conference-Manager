@@ -4,6 +4,7 @@ import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Router } from "@angular/router";
 import { SocialAuthService } from "angularx-social-login";
 import { UserService } from "src/app/user/services/user.service";
+import { routes } from "src/app/consts/routes";
 
 @Component({
   selector: "app-toolbar",
@@ -20,6 +21,6 @@ export class ToolbarComponent implements OnInit {
 
   logout() {
     this.authService.signOut();
-    this.router.navigate(["/user/login"]);
+    this.router.navigate([routes.LOGIN]);
   }
 }

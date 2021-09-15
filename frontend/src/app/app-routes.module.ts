@@ -1,20 +1,36 @@
 import { RouterModule, Routes } from "@angular/router";
 
+import { FaLayersCounterComponent } from "@fortawesome/angular-fontawesome";
+import { LayoutComponent } from "./shared/components/layout/layout.component";
 import { NgModule } from "@angular/core";
 
 const appRoutes: Routes = [
-  { path: "", redirectTo: "user/login", pathMatch: "full" },
   {
-    path: "user",
-    loadChildren: () => import("./user/user.module").then((m) => m.UserModule),
+    path: "auth",
+    loadChildren: () => import("./auth/auth.module").then((m) => m.AuthModule),
   },
   {
-    path: "talks",
-    loadChildren: () =>
-      import("./talks/talks.module").then((m) => m.TalksModule),
+    path: "dashboard",
+    component: LayoutComponent,
+    children: [
+      {
+        path: "",
+        redirectTo: 'talks',
+        pathMatch: 'full',
+      },
+      {
+        path: "profile",
+        loadChildren: () => import("./user/user.module").then((m) => m.UserModule),
+      },
+      {
+        path: "talks",
+        loadChildren: () =>
+          import("./talks/talks.module").then((m) => m.TalksModule),
+      },
+    ],
   },
 
-  { path: "**", redirectTo: "user/login" },
+  { path: "**", redirectTo: "auth" },
 ];
 
 @NgModule({

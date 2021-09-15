@@ -5,7 +5,7 @@
       <img class="profile-image" [src]="user.photoUrl" />
     </button>
     <mat-menu #menu="matMenu" class="dropdown-menu">
-      <button class="menu-item" mat-menu-item routerLink="/user/profile">
+      <button class="menu-item" mat-menu-item routerLink="profile">
         <fa-icon [icon]="faUser"></fa-icon>My Profile
       </button>
       <button class="menu-item" mat-menu-item (click)="logout()">

@@ -7,14 +7,13 @@ import { ProfileComponent } from "./components/profile/profile.component";
 import { UserFormComponent } from "./components/user-form/user-form.component";
 
 const routes: Routes = [
-  { path: "login", component: LoginComponent },
   {
-    path: "profile",
+    path: "",
     component: ProfileComponent,
     canActivate: [AuthGuardService],
   },
   {
-    path: "profile/edit",
+    path: "edit",
     component: UserFormComponent,
   },
 ];
