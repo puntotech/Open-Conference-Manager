@@ -1,0 +1,19 @@
+<h2>Add a co-speaker</h2>
+<p>
+  Find your new co-speaker by searching for their email address. To be able to
+  add them, they must have a Conference Manager account.
+</p>
+<p>
+  If they don't have one, feel welcome to invite them to join our community!
+</p>
+<h4 class="error">{{ message }}</h4>
+<form (ngSubmit)="searchForSpeaker()" [formGroup]="speakerForm">
+  <mat-form-field>
+    <mat-label>Speaker Email</mat-label>
+    <input matInput type="text" formControlName="speaker" required />
+    <mat-error *ngIf="speaker.hasError('required')">
+      Speaker email is required
+    </mat-error>
+  </mat-form-field>
+  <button mat-raised-button class="blue-btn" type="submit">Search</button>
+</form>

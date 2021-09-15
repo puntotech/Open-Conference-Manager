@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  cfp-database:
+    image: mariadb:10.4
+    container_name: cfp-database
+    restart: always
+    ports:
+      - '3304:3306'
+    environment:
+      TZ: Europe/Madrid
+      MYSQL_ROOT_PASSWORD: 'toor'
+      MYSQL_DATABASE: cfp
+    command:
+      - '--character-set-server=utf8mb4'
+      - '--collation-server=utf8mb4_unicode_ci'
+    volumes:
+      - ./data/mariadb:/var/lib/mysql

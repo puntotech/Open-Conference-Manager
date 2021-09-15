@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  cfp-api:
+    image: 'cfp/api'
+    build: '.'
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - cfp-net
+    links:
+      - database
+
+  database:
+    container_name: database
+    image: mariadb:10.4
+    restart: always
+    ports:
+      - '3304:3306'
+    networks:
+      - cfp-net
+    environment:
+      TZ: Europe/Madrid
+      MYSQL_ROOT_PASSWORD: 'admin'
+      MYSQL_DATABASE: cfp-2021
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+networks:
+  cfp-net:
+    driver: bridge

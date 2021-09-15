@@ -1,0 +1,20 @@
+<mat-toolbar>
+  <span class="spacer"></span>
+  <ng-container *ngIf="authService.authState | async as user; else loggedOut">
+    <button class="img-button" [matMenuTriggerFor]="menu">
+      <img class="profile-image" [src]="user.photoUrl" />
+    </button>
+    <mat-menu #menu="matMenu" class="dropdown-menu">
+      <button class="menu-item" mat-menu-item routerLink="/user/profile">
+        <fa-icon [icon]="faUser"></fa-icon>My Profile
+      </button>
+      <button class="menu-item" mat-menu-item (click)="logout()">
+        <fa-icon [icon]="faSignOut"></fa-icon>Logout
+      </button>
+    </mat-menu>
+  </ng-container>
+</mat-toolbar>
+
+<ng-template #loggedOut>
+  <a routerLink="/user/login" routerLinkActive="active"> Login </a>
+</ng-template>

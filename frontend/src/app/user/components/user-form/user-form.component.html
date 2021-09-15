@@ -1,0 +1,74 @@
+<h4 class="section-title">My Profile > Edit</h4>
+<div class="container">
+  <h2>Update Profile</h2>
+  <h4 class="error">{{ message }}</h4>
+  <form (ngSubmit)="updateUser()" [formGroup]="userForm">
+    <mat-form-field>
+      <mat-label>Full name</mat-label>
+      <input matInput type="text" formControlName="name" required />
+      <mat-error *ngIf="name.hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Twitter</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="twitter"
+        placeholder="https://twitter.com/yourprofile"
+      />
+      <mat-error *ngIf="twitter.hasError('pattern')"> Invalid URL </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Github</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="github"
+        placeholder="https://github.com/yourprofile"
+      />
+      <mat-error *ngIf="github.hasError('pattern')"> Invalid URL </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>LinkedIn</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="linkedin"
+        placeholder="https://linkedin.com/yourprofile"
+      />
+      <mat-error *ngIf="linkedin.hasError('pattern')"> Invalid URL </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Youtube</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="youtube"
+        placeholder="https://youtube.com/yourprofile"
+      />
+      <mat-error *ngIf="youtube.hasError('pattern')"> Invalid URL </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Company</mat-label>
+      <input matInput type="text" formControlName="company" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>City</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="city"
+        placeholder="Málaga, Spain"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Biography</mat-label>
+      <textarea matInput type="text" formControlName="bio"></textarea>
+    </mat-form-field>
+    <button mat-raised-button type="submit" class="blue-btn">
+      Update profile
+    </button>
+  </form>
+</div>

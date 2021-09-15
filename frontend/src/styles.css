@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  color: #696969;
+}
+
+a {
+  color: #696969;
+  text-decoration: none;
+}
+
+.blue-btn {
+  background-color: #6788ff;
+  color: #fff;
+}
+
+.section-title {
+  background-color: #fff;
+  color: #696969;
+  font-weight: bold;
+  padding: 0 20px 10px;
+}

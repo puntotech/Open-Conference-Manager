@@ -1,0 +1,24 @@
+button {
+  background-color: #6788ff;
+  color: #fff;
+}
+
+.section-container {
+  background-color: #fff;
+  margin: 25px;
+  padding: 30px;
+}
+
+.talk-list {
+  border-top: 1px solid rgb(211, 211, 211);
+  margin-top: 30px;
+}
+
+.top-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  margin: 0;
+}

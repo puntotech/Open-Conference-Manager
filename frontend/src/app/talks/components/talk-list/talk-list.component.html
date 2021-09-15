@@ -1,0 +1,17 @@
+<h4 class="section-title">My Talks</h4>
+
+<div class="section-container">
+  <div class="top-container">
+    <h2 class="title">My Talk List</h2>
+    <button routerLink="/talks/create" mat-raised-button>
+      Create a new talk
+    </button>
+  </div>
+
+  <div class="talk-list">
+    <app-talk-preview
+      [talk]="talk"
+      *ngFor="let talk of talk$ | async"
+    ></app-talk-preview>
+  </div>
+</div>

@@ -1,0 +1,58 @@
+mat-toolbar {
+  background-color: #ebebeb;
+}
+
+fa-icon {
+  margin-right: 10px;
+}
+
+mat-toolbar,
+mat-toolbar a {
+  background-color: #2f4050;
+}
+
+::ng-deep .dropdown-menu {
+  background-color: #2f4050;
+}
+
+::ng-deep .dropdown-menu * {
+  color: #fff;
+}
+
+.logo {
+  height: 40px;
+  padding-right: 20px;
+}
+
+.profile-image {
+  border: 4px solid #fff;
+  border-radius: 50%;
+  height: 40px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.img-button {
+  background-color: transparent;
+  border: none;
+}
+
+mat-toolbar a.active {
+  border-bottom: 2px solid #fff;
+  color: #6c6f71;
+}
+
+mat-toolbar a:visited {
+  color: #6c6f71;
+}
+
+img:hover,
+a:hover {
+  cursor: pointer;
+}
+
+::ng-deep .dropdown-menu button.menu-item:hover {
+  background-color: #233545;
+}

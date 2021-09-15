@@ -1,0 +1,8 @@
+{
+  "port": 3304,
+  "username": "root",
+  "password": "toor",
+  "database": "cfp",
+  "synchronize": true,
+  "logging": "all"
+}

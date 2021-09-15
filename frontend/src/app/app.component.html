@@ -1,0 +1,29 @@
+<mat-sidenav-container class="example-container">
+  <mat-sidenav mode="side" opened>
+    <h1 class="sidenav-title">C4P Manager</h1>
+    <h3 *ngIf="authService.authState | async as user">
+      {{ user.name }}
+    </h3>
+    <div class="link-container">
+      <a>Overview</a>
+      <a
+        *ngIf="authService.authState | async as user"
+        routerLink="/user/profile"
+        >My Profile</a
+      >
+      <a routerLink="/talks/list">My Talks</a>
+    </div>
+    <div class="flex-center">
+      <button routerLink="/talks/create" mat-raised-button>
+        Create a new talk
+      </button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-toolbar></app-toolbar>
+    <h1 class="name-title" *ngIf="authService.authState | async as user">
+      {{ user.name }}
+    </h1>
+    <router-outlet> </router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

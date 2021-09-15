@@ -1,0 +1,8 @@
+h1 {
+  font-weight: bolder;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+}

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2017",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@modules/*": ["src/domain/*"],
+      "@guards/*": ["src/shared/guards/*"],
+      "@constants": ["src/shared/config/database.tokens.constants.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp", "dist"],
+  "include": ["**/*.ts"]
+}

@@ -1,0 +1,54 @@
+<ng-container *ngIf="talk; else newTalk">
+  <h4 class="section-title">My Talks > {{ talk.title }} > {{ action }} Talk</h4>
+</ng-container>
+<div class="container">
+  <h2>{{ action }} Talk</h2>
+  <h4 class="error">{{ message }}</h4>
+  <form (ngSubmit)="createTalk()" [formGroup]="talkForm">
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" required />
+      <mat-error *ngIf="title.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Abstract</mat-label>
+      <textarea
+        matInput
+        type="text"
+        formControlName="abstract"
+        required
+      ></textarea>
+      <mat-error *ngIf="abstract.hasError('required')">
+        Abstract is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Language</mat-label>
+      <input matInput type="text" formControlName="language" required />
+      <mat-error *ngIf="language.hasError('required')">
+        Language is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Comments</mat-label>
+      <textarea
+        matInput
+        type="text"
+        formControlName="comments"
+        required
+      ></textarea>
+    </mat-form-field>
+    <mat-radio-group formControlName="level">
+      <mat-radio-button *ngFor="let level of levels" [value]="level">
+        {{ level }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <button mat-raised-button type="submit">
+      {{ action }}
+    </button>
+  </form>
+</div>
+
+<ng-template #newTalk> <h4 class="section-title">Create Talk</h4> </ng-template>
