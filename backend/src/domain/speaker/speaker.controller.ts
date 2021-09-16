@@ -20,8 +20,8 @@ import { AdminGuard } from '@guards/admin.guard';
 export class SpeakerController {
   constructor(private readonly speakerService: SpeakerService) {}
 
-  @Get('/:id')
-  getByID(@Param(new ParseIntPipe()) id: number): Promise<Speaker> {
+  @Get(':id')
+  getByID(@Param('id', ParseIntPipe) id: number): Promise<Speaker> {
     return this.speakerService.getByID(id);
   }
 
