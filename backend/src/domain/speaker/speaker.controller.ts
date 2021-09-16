@@ -21,8 +21,8 @@ import { User } from 'src/shared/decorators/user.decorator';
 export class SpeakerController {
   constructor(private readonly speakerService: SpeakerService) {}
 
-  @Get('/:id')
-  getByID(@Param(new ParseIntPipe()) id: number): Promise<Speaker> {
+  @Get(':id')
+  getByID(@Param('id', ParseIntPipe) id: number): Promise<Speaker> {
     return this.speakerService.findByID(id);
   }
 

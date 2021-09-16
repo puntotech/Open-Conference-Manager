@@ -15,18 +15,12 @@
     <div>
       <div class="title-container">
         <h2>{{ user.name }}</h2>
-        <button
-          mat-raised-button
-          class="blue-btn"
-          routerLink="/profile/edit"
-        >
+        <button mat-raised-button class="blue-btn" routerLink="/profile/edit">
           Edit Profile
         </button>
       </div>
       <p>
-        Estefanía García Gallardo is a software developer from Málaga, lover of
-        all things fullstack, contributing to the open source community and
-        fixing bugs at 2AM
+        {{ user.bio }}
       </p>
     </div>
     <div>

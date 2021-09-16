@@ -1,48 +1,29 @@
 import { Observable, of } from "rxjs";
+import { Speaker, Talk } from "../models/talk.model";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Talk } from "../models/talk";
+import { User } from "src/app/user/models/user";
+import { map, filter } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
 })
 export class TalksService {
-  private API_ENDPOINT = "http://localhost:9001/talks";
-  private talks: any[] = [
-    {
-      id: "1",
-      title: "RxJS Powered: Flappy Bird",
-      abstract:
-        "Building flappy bird with RxJs because it's awesome and we can do it",
-      level: "Intermediate",
-      language: "English",
-      comments: "Minimum knowledge of RxJS is required",
-      created: Date.now(),
-      speakers: ["Carlos Caballero", "Estefanía García"],
-    },
-    {
-      id: "2",
-      title: "NestJS: Angular ARchitecture",
-      abstract:
-        "Building flappy bird with RxJs because it's awesome and we can do it",
-      level: "Intermediate",
-      language: "English",
-      comments: "Minimum knowledge of RxJS is required",
-      created: Date.now(),
-      speakers: ["Carlos Caballero", "Estefanía García"],
-    },
-  ];
+  private API_ENDPOINT = "http://localhost:3000/talks";
+  private USER_ENDPOINT = "http://localhost:3000/speakers";
+
   constructor(private httpClient: HttpClient) {}
 
   getTalks(): Observable<Talk[]> {
-    //return this.httpClient.get<Talk[]>(`${this.API_ENDPOINT}/all`);
-    return of(this.talks);
+    return this.httpClient.get<User>(`${this.USER_ENDPOINT}/1`).pipe(
+      filter((speaker) => !!speaker.talks),
+      map(({ talks }) => talks)
+    );
   }
 
   getTalk(talkID: string) {
-    //return this.httpClient.get<Talk>(`${this.API_ENDPOINT}/${talkID}`);
-    return of(this.talks.find((talk) => talk.id === talkID));
+    return this.httpClient.get<Talk>(`${this.API_ENDPOINT}/${talkID}`);
   }
 
   addCoSpeaker(talkID: string, email: string) {
@@ -51,7 +32,7 @@ export class TalksService {
 
   submit(talk: Talk) {
     const submittedTalk = { ...talk, submitted: new Date() };
-    return this.update(talk.id, submittedTalk);
+    return this.update(submittedTalk);
   }
 
   create(talk: Talk) {
@@ -59,12 +40,10 @@ export class TalksService {
   }
 
   delete(talkId: string) {
-    //return this.httpClient.delete<Talk>(`${this.API_ENDPOINT}/${talkId}`);
-    console.log("Deleting talk with id", talkId);
-    return of("Deleted");
+    return this.httpClient.delete<Talk>(`${this.API_ENDPOINT}/${talkId}`);
   }
 
-  update(talkId: string, talk: Talk) {
-    return this.httpClient.put<Talk>(`${this.API_ENDPOINT}/${talkId}`, talk);
+  update(talk: Talk) {
+    return this.httpClient.put<Talk>(this.API_ENDPOINT, talk);
   }
 }

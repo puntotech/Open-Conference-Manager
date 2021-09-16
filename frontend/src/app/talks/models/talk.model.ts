@@ -6,11 +6,10 @@ export interface Talk {
   level: string;
   comments: string;
   submitted?: Date;
-  created: Date;
-  speakers: string[];
+  createdAt: Date;
+  speakers: Speaker[];
 }
 
 export interface Speaker {
-  name: string;
-  language: string;
+  id: string;
 }

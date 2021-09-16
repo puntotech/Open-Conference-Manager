@@ -6,10 +6,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { filter, switchMap, tap } from "rxjs/operators";
 
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CoSpeakerFormComponent } from "../co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
-import { Talk } from "../../models/talk";
+import { Talk } from "../../models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { UserService } from "src/app/user/services/user.service";
 import { WarningDialogComponent } from "../warning-dialog/warning-dialog.component";
@@ -29,22 +29,17 @@ export class TalkDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private talksService: TalksService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.route.data
-      .pipe(
-        tap((data) => {
-          this.talk = data.talk;
-        })
-      )
+    const talkId = this.route.snapshot.paramMap.get("id");
+    this.talksService
+      .getTalk(talkId)
+      .pipe(tap((talk) => (this.talk = talk)))
       .subscribe();
-  }
-
-  delete() {
-    this.dialog;
   }
 
   openWarningDialog() {
@@ -54,7 +49,8 @@ export class TalkDetailComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap(() => this.talksService.delete(this.talk.id))
+        switchMap(() => this.talksService.delete(this.talk.id)),
+        tap(() => this.navigateToTalkList())
       )
       .subscribe();
   }
@@ -67,8 +63,13 @@ export class TalkDetailComponent implements OnInit {
         filter(Boolean),
         switchMap((speakerEmail: string) =>
           this.talksService.addCoSpeaker(this.talk.id, speakerEmail)
-        )
+        ),
+        tap(() => this.navigateToTalkList())
       )
       .subscribe();
+  }
+
+  private navigateToTalkList() {
+    this.router.navigate(["/dashboard/talks"]);
   }
 }

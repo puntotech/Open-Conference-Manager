@@ -38,12 +38,12 @@ export function initialize(userService: UserService) {
     MatButtonModule,
   ],
   providers: [
-    {
+    /* {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
     },
-    /* {
+     {
       provide: APP_INITIALIZER,
       useFactory: initialize,
       deps: [UserService],

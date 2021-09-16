@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
         ...user,
         twitter: "https://twitter.com/nyablk",
         github: "https://github.com/NyaGarcia",
+        talks: [],
       };
       console.log(user.authToken);
     });

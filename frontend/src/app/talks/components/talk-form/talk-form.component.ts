@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { ActivatedRoute } from "@angular/router";
-import { Talk } from "../../models/talk";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Talk } from "../../models/talk.model";
 import { TalksService } from "../../services/talks.service";
-import { tap } from "rxjs/operators";
+import { tap, switchMap, filter } from "rxjs/operators";
+import { SocialAuthService } from "angularx-social-login";
 
 @Component({
   selector: "app-talk-form",
@@ -21,24 +22,28 @@ export class TalkFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private talksService: TalksService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private authService: SocialAuthService
   ) {}
 
   ngOnInit() {
     this.createForm();
     const talkId = this.route.snapshot.paramMap.get("id");
-    console.log(talkId);
 
-    this.talksService
-      .getTalk(talkId)
-      .pipe(
-        tap((talk) => {
-          this.talk = talk;
-          console.log("miau");
-          talk ? this.update() : this.create();
-        })
-      )
-      .subscribe();
+    if (talkId) {
+      this.talksService
+        .getTalk(talkId)
+        .pipe(
+          tap((talk) => {
+            this.talk = talk;
+            this.update();
+          })
+        )
+        .subscribe();
+    } else {
+      this.create();
+    }
   }
 
   private create() {
@@ -60,14 +65,47 @@ export class TalkFormComponent implements OnInit {
     });
   }
 
+  submit() {
+    this.action === "Create" ? this.createTalk() : this.updateTalk();
+  }
+
+  updateTalk() {
+    if (this.talkForm.invalid) {
+      console.log(this.talkForm.value);
+      this.message = "Please correct all errors and resubmit the form";
+    } else {
+      const talk: Talk = this.talkForm.value;
+      this.talksService
+        .update({ id: this.talk.id, ...talk })
+        .pipe(tap(() => this.navigateToTalkList()))
+        .subscribe();
+    }
+  }
+
   createTalk() {
     if (this.talkForm.invalid) {
       console.log(this.talkForm.value);
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const talk: Talk = this.talkForm.value;
-      this.talksService.create({ ...talk, created: new Date() });
+      this.authService.authState
+        .pipe(
+          filter((user) => !!user),
+          switchMap((user) =>
+            this.talksService.create({
+              ...talk,
+              createdAt: new Date(),
+              speakers: [{ id: "1" }],
+            })
+          ),
+          tap(() => this.navigateToTalkList())
+        )
+        .subscribe();
     }
+  }
+
+  private navigateToTalkList() {
+    this.router.navigate(["/dashboard/talks"]);
   }
 
   get abstract() {

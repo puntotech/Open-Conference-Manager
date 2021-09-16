@@ -7,16 +7,11 @@ import { TalkRepository } from './talk.repository';
 export class TalkService {
   constructor(private talkRepository: TalkRepository) {}
 
-  getBySpeaker(speakerId: string): Promise<Talk[]> {
-    return this.talkRepository
-      .createQueryBuilder('talk')
-      .innerJoin('talk.speakers', 'speaker')
-      .where('speaker.id = :id', { id: speakerId })
-      .getMany();
-  }
-
-  public getByID(id: number): Promise<Talk> {
-    const talk = this.talkRepository.findOne(id);
+  public async getByID(id: number): Promise<Talk> {
+    const talk = await this.talkRepository.findOne({
+      relations: ['speakers'],
+      where: { status: true, id },
+    });
     if (!talk) {
       throw new NotFoundException(`Couldn't find talk with id: ${id}`);
     }
@@ -24,11 +19,14 @@ export class TalkService {
   }
 
   public getAll(): Promise<Talk[]> {
-    return this.talkRepository.find();
+    return this.talkRepository.find({
+      relations: ['speakers'],
+      where: { status: true },
+    });
   }
 
   public create(talk: Partial<Talk>): Promise<Talk> {
-    return this.talkRepository.create(talk).save();
+    return this.talkRepository.save(talk);
   }
 
   public async update(talk: Partial<Talk>): Promise<Talk> {

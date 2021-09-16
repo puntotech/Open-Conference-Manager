@@ -1,33 +1,38 @@
-<h4 class="section-title">My Talks > {{ talk.title }}</h4>
-<div class="button-container">
-  <button mat-raised-button routerLink="/talks/update/{{ talk.id }}">
-    <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
-  </button>
-  <button mat-raised-button (click)="openWarningDialog()">
-    <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
-  </button>
-  <button mat-raised-button class="blue-btn">
-    <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
-  </button>
-</div>
-<div class="talk-container">
-  <div class="talk-content">
-    <h1>{{ talk.title }}</h1>
-    <h4>Level: {{ talk.level }}</h4>
-    <h3>Abstract</h3>
-    <p>{{ talk.abstract }}</p>
-    <h3>Comments</h3>
-    <p>Comments: {{ talk.comments }}</p>
-  </div>
-  <div class="talk-speakers">
-    <div>
-      <h3>Speakers</h3>
-      <div *ngFor="let speaker of talk.speakers">
-        {{ speaker }}
-      </div>
-    </div>
-    <button (click)="addSpeaker()" class="blue-btn" mat-raised-button>
-      Add a Co-Speaker
+<div *ngIf="talk">
+  <h4 class="section-title">My Talks > {{ talk.title }}</h4>
+  <div class="button-container">
+    <button
+      mat-raised-button
+      routerLink="/dashboard/talks/update/{{ talk.id }}"
+    >
+      <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
     </button>
+    <button mat-raised-button (click)="openWarningDialog()">
+      <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
+    </button>
+    <button mat-raised-button class="blue-btn">
+      <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
+    </button>
+  </div>
+  <div class="talk-container">
+    <div class="talk-content">
+      <h1>{{ talk.title }}</h1>
+      <h4>Level: {{ talk.level }}</h4>
+      <h3>Abstract</h3>
+      <p>{{ talk.abstract }}</p>
+      <h3>Comments</h3>
+      <p>Comments: {{ talk.comments }}</p>
+    </div>
+    <div class="talk-speakers">
+      <div>
+        <h3>Speakers</h3>
+        <div *ngFor="let speaker of talk.speakers">
+          {{ speaker.name }}
+        </div>
+      </div>
+      <button (click)="addSpeaker()" class="blue-btn" mat-raised-button>
+        Add a Co-Speaker
+      </button>
+    </div>
   </div>
 </div>

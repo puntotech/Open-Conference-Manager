@@ -32,7 +32,7 @@ export class UserFormComponent implements OnInit {
     this.authService.authState
       .pipe(
         tap((user) => {
-          this.user = user;
+          this.user = { ...user, talks: [] };
           this.userForm.patchValue(user);
         })
       )

@@ -2,6 +2,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
   Unique,
@@ -57,6 +58,9 @@ export class Speaker extends BaseEntity {
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Talk)
+  @ManyToMany(() => Talk, (talk) => talk.speakers)
+  @JoinTable({
+    name: 'speakers_talks',
+  })
   talks: Talk[];
 }

@@ -6,7 +6,7 @@ import { SpeakerModule } from 'src/domain/speaker/speaker.module';
 import { TalkModule } from '@modules/talk/talk.module';
 
 @Module({
-  imports: [SpeakerModule, TalkModule, AuthModule],
+  imports: [SpeakerModule, AuthModule, TalkModule],
   controllers: [],
   providers: [],
 })
