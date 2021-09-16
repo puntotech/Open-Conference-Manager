@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { Observable } from "rxjs";
-import { Talk } from "src/app/talks/models/talk";
+import { Talk } from "src/app/talks/models/talk.model";
 import { TalksService } from "../../services/talks.service";
 
 @Component({

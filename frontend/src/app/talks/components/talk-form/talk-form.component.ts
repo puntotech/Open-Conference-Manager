@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { ActivatedRoute } from "@angular/router";
-import { Talk } from "../../models/talk";
+import { Talk } from "../../models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { tap } from "rxjs/operators";
 
@@ -66,7 +66,7 @@ export class TalkFormComponent implements OnInit {
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const talk: Talk = this.talkForm.value;
-      this.talksService.create({ ...talk, created: new Date() });
+      this.talksService.create({ ...talk, createdAt: new Date() });
     }
   }
 
