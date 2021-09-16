@@ -19,7 +19,7 @@ export class TalkService {
     return this.talkRepository.find({ relations: ['speakers'] });
   }
 
-  public async create(talk: Partial<Talk>): Promise<Talk> {
+  public create(talk: Partial<Talk>): Promise<Talk> {
     return this.talkRepository.save(talk);
   }
 
