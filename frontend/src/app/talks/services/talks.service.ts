@@ -4,7 +4,7 @@ import { Speaker, Talk } from "../models/talk.model";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { User } from "src/app/user/models/user";
-import { map } from "rxjs/operators";
+import { map, filter } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -16,9 +16,10 @@ export class TalksService {
   constructor(private httpClient: HttpClient) {}
 
   getTalks(): Observable<Talk[]> {
-    return this.httpClient
-      .get<User>(`${this.USER_ENDPOINT}/1`)
-      .pipe(map(({ talks }) => talks));
+    return this.httpClient.get<User>(`${this.USER_ENDPOINT}/1`).pipe(
+      filter((speaker) => !!speaker.talks),
+      map(({ talks }) => talks)
+    );
   }
 
   getTalk(talkID: string) {
@@ -31,7 +32,7 @@ export class TalksService {
 
   submit(talk: Talk) {
     const submittedTalk = { ...talk, submitted: new Date() };
-    return this.update(talk.id, submittedTalk);
+    return this.update(submittedTalk);
   }
 
   create(talk: Talk) {
@@ -39,12 +40,10 @@ export class TalksService {
   }
 
   delete(talkId: string) {
-    //return this.httpClient.delete<Talk>(`${this.API_ENDPOINT}/${talkId}`);
-    console.log("Deleting talk with id", talkId);
-    return of("Deleted");
+    return this.httpClient.delete<Talk>(`${this.API_ENDPOINT}/${talkId}`);
   }
 
-  update(talkId: string, talk: Talk) {
-    return this.httpClient.put<Talk>(`${this.API_ENDPOINT}/${talkId}`, talk);
+  update(talk: Talk) {
+    return this.httpClient.put<Talk>(this.API_ENDPOINT, talk);
   }
 }
