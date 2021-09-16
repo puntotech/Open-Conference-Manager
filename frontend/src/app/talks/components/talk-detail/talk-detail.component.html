@@ -1,7 +1,10 @@
 <div *ngIf="talk">
   <h4 class="section-title">My Talks > {{ talk.title }}</h4>
   <div class="button-container">
-    <button mat-raised-button routerLink="/talks/update/{{ talk.id }}">
+    <button
+      mat-raised-button
+      routerLink="/dashboard/talks/update/{{ talk.id }}"
+    >
       <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
     </button>
     <button mat-raised-button (click)="openWarningDialog()">
