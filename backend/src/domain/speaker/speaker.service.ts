@@ -7,11 +7,11 @@ export class SpeakerService {
   constructor(private speakerRepository: SpeakerRepository) {}
 
   public getByID(id: number): Promise<Speaker> {
-    return this.speakerRepository.findOne(id);
+    return this.speakerRepository.findOne(id, { relations: ['talks'] });
   }
 
   public getAll(): Promise<Speaker[]> {
-    return this.speakerRepository.find();
+    return this.speakerRepository.find({ relations: ['talks'] });
   }
 
   public create(speaker: Partial<Speaker>): Promise<Speaker> {
