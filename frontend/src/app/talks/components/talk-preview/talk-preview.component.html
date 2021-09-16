@@ -1,7 +1,7 @@
 <a class="talk-container">
-  <div class="text-container" routerLink="/talks/talk/{{ talk.id }}">
+  <div class="text-container" routerLink="/dashboard/talks/{{ talk.id }}">
     <h3>{{ talk.title }}</h3>
-    <span>Created: {{ talk.created | date: "yyyy-MM-dd" }}</span>
+    <span>Created: {{ talk.createdAt | date: "yyyy-MM-dd" }}</span>
   </div>
   <div>
     <button mat-raised-button (click)="submitTalk()">Submit</button>
