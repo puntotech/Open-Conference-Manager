@@ -1,5 +1,5 @@
 import { Observable, of } from "rxjs";
-import { Speaker, Talk } from "../models/talk";
+import { Speaker, Talk } from "../models/talk.model";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
