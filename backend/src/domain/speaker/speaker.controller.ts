@@ -14,6 +14,7 @@ import { SpeakerService } from './speaker.service';
 import { Speaker } from './speaker.entity';
 import { AuthGuard } from '@guards/auth.guard';
 import { AdminGuard } from '@guards/admin.guard';
+import { User } from 'src/shared/decorators/user.decorator';
 
 @Controller('speakers')
 //@UseGuards(AuthGuard, AdminGuard)
@@ -22,12 +23,12 @@ export class SpeakerController {
 
   @Get('/:id')
   getByID(@Param(new ParseIntPipe()) id: number): Promise<Speaker> {
-    return this.speakerService.getByID(id);
+    return this.speakerService.findByID(id);
   }
 
   @Get()
   getSpeakers(): Promise<Speaker[]> {
-    return this.speakerService.getAll();
+    return this.speakerService.findAll();
   }
 
   @Post()
@@ -39,5 +40,10 @@ export class SpeakerController {
   @Put()
   updateSpeaker(@Body() speaker: Partial<Speaker>): Promise<Speaker> {
     return this.speakerService.update(speaker);
+  }
+
+  @Post('me')
+  me(@User() user: Speaker): Speaker {
+    return user;
   }
 }

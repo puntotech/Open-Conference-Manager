@@ -2,9 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
+  ManyToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
+
+import { Talk } from '@modules/talk/talk.entity';
 
 @Entity()
 @Unique(['email'])
@@ -53,4 +56,7 @@ export class Speaker extends BaseEntity {
     nullable: false,
   })
   updatedAt: Date;
+
+  @ManyToMany(() => Talk)
+  talks: Talk[];
 }

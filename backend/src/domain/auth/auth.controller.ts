@@ -11,8 +11,8 @@ export class AuthController {
   ) {}
 
   @Post('google-login')
-  async googleLogin(@Body('accessToken') accessToken: string) {
-    return this.authService.loginWithThirdParty('googleId', () =>
+  googleLogin(@Body('accessToken') accessToken: string) {
+    return this.authService.loginWithThirdParty(() =>
       this.googleAuthService.getUser(accessToken),
     );
   }

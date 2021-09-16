@@ -2,6 +2,7 @@ import { HttpEvent, HttpInterceptor } from "@angular/common/http";
 import { HttpHandler, HttpRequest } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
 
+import { AppSettings } from "src/app/app.settings";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/user/services/user.service";
@@ -9,7 +10,7 @@ import { UserStoreService } from "./user-store.service";
 import { catchError } from "rxjs/operators";
 
 @Injectable()
-export class VideogameAppInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private userStore: UserStoreService,
     private userService: UserService,
@@ -20,16 +21,13 @@ export class VideogameAppInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log("INTERCEPTING");
-    if (this.userStore.token) {
-      console.log("INTERCEPTING, HAS TOKEN");
+    const token = localStorage.getItem(AppSettings.APP_LOCALSTORAGE_TOKEN);
+    if (token) {
       const authReq = req.clone({
-        headers: req.headers.set(
-          "Authorization",
-          `Bearer ${this.userStore.token}`
-        ),
+        setHeaders: {
+          authorization:`Bearer ${token}`,
+       }
       });
-      console.log("Making an authorized request");
       req = authReq;
     }
     return next.handle(req).pipe(

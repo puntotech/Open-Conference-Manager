@@ -1,16 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { SpeakerRepository } from './speaker.repository';
 import { Speaker } from './speaker.entity';
+import { SpeakerRepository } from './speaker.repository';
 
 @Injectable()
 export class SpeakerService {
   constructor(private speakerRepository: SpeakerRepository) {}
 
-  public async getByID(id: number): Promise<Speaker> {
+  public findByID(id: number): Promise<Speaker> {
     return this.speakerRepository.findOne(id);
   }
+  public find(options): Promise<Speaker[]> {
+    return this.speakerRepository.find(options);
+  }
+  public findOne(options): Promise<Speaker> {
+    return this.speakerRepository.findOne(options);
+  }
 
-  public async getAll(): Promise<Speaker[]> {
+  public findAll(): Promise<Speaker[]> {
     return this.speakerRepository.find();
   }
 
@@ -19,7 +25,7 @@ export class SpeakerService {
   }
 
   public async update(speaker: Partial<Speaker>): Promise<Speaker> {
-    const oldSpeaker = await this.getByID(speaker.id);
+    const oldSpeaker = await this.findByID(speaker.id);
     return Object.assign(oldSpeaker, speaker).save();
   }
 }

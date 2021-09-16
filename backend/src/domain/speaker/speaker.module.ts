@@ -8,5 +8,6 @@ import { SpeakerService } from './speaker.service';
   imports: [DatabaseModule],
   controllers: [SpeakerController],
   providers: [SpeakerProvider, SpeakerService],
+  exports: [SpeakerService],
 })
 export class SpeakerModule {}

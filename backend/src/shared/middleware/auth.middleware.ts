@@ -11,6 +11,8 @@ import { NextFunction, Request, Response } from 'express';
 import { Connection } from 'typeorm';
 import { DB_CONNECTION_TOKEN } from '../config/database.tokens.constants';
 import { Speaker } from 'src/domain/speaker/speaker.entity';
+import { Talk } from '@modules/talk/talk.entity';
+import { environment } from 'src/environment';
 
 export interface AuthMiddlewareRequest extends Request {
   user: any;
@@ -41,7 +43,12 @@ export class AuthMiddleware implements NestMiddleware {
     const token = (req.headers.authorization as string).split(' ')[1];
     let decoded: any;
     try {
-      decoded = jwt.verify(token, process.env.JWT_KEY || 'Secret');
+      const x = environment.accessTokenSecret;
+      console.log(x);
+      decoded = jwt.verify(
+        token,
+        /* environment.accessTokenSecret || */ 'Secret',
+      );
     } catch (e) {
       throw new UnauthorizedException();
     }
@@ -49,10 +56,10 @@ export class AuthMiddleware implements NestMiddleware {
     try {
       user = await this.connection.getRepository(Speaker).findOne({
         where: {
-          uid: decoded.id,
+          id: decoded.id,
           email: decoded.email,
         },
-        relations: [],
+        /*  relations: ['talks'], */
       });
     } catch (e) {
       e;

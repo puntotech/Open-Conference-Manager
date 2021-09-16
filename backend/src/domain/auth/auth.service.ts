@@ -1,13 +1,17 @@
 import {
-  BadRequestException,
   HttpException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { JwtService, JwtSignOptions } from '@nestjs/jwt';
+
+import { Speaker } from '@modules/speaker/speaker.entity';
+import { SpeakerService } from '@modules/speaker/speaker.service';
+import { environment } from 'src/environment';
 
 export interface TokenResponse {
-  access_token: string;
-  refresh_token: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface SocialUser {
@@ -20,6 +24,11 @@ export type GetSocialUserHandler = () => Promise<Partial<SocialUser>>;
 
 @Injectable()
 export class AuthService {
+  constructor(
+    private speakerService: SpeakerService,
+    private jwtService: JwtService,
+  ) {}
+
   googleLogin(req) {
     if (!req.user) {
       return 'No user from google';
@@ -33,67 +42,51 @@ export class AuthService {
 
   async login(user): Promise<TokenResponse> {
     const payload = {
-      sub: user.id,
-      username: user.username,
+      id: user.id,
+      email: user.email,
     };
 
-    let refresh_token: string;
+    let refreshToken: string;
 
-    /* if (environments.accessTokenExpiration) {
-      refresh_token = await this.jwtService.signAsync(
+    if (environment.accessTokenExpiration) {
+      refreshToken = await this.jwtService.signAsync(
         payload,
         this.getRefreshTokenOptions(user),
       );
-    } */
+    }
+
+    const accessToken = await this.jwtService.signAsync(
+      payload,
+      /* this.getAccessTokenOptions(user), */
+      { secret: 'Secret' },
+    );
 
     return {
-      access_token: null /* await this.jwtService.signAsync(
-        payload,
-        this.getAccessTokenOptions(user),
-      ) */,
-      refresh_token,
+      accessToken,
+      refreshToken,
     };
   }
 
   async loginWithThirdParty(
-    fieldId,
     getSocialUser: GetSocialUserHandler,
-    customName?: string,
+    fieldId = 'email',
   ) {
     try {
-      const { name, email, id } = await getSocialUser();
+      const { name, email } = await getSocialUser();
       console.log(await getSocialUser());
-      /* 
-      const internalUser = await this.userService.getUserBy({ [fieldId]: id });
 
-      if (internalUser) {
-        if (
-          internalUser.email != email &&
-          !(await this.userService.getUserByEmail(email))
-        ) {
-          internalUser.email = email;
-
-          await internalUser.save();
-        }
-
-        return this.login(internalUser);
-      }
-
-      if (await this.userService.getUserByEmail(email)) {
-        throw new BadRequestException('Email already exists');
-      }
-
-      const username = await this.userService.generateUsername(
-        customName || name,
-      );
-
-      const user = await this.userService.create({
-        username,
-        email,
-        [fieldId]: id,
+      let internalUser = await this.speakerService.findOne({
+        [fieldId]: email,
       });
 
-      return this.login(user); */
+      if (!internalUser) {
+        internalUser = new Speaker();
+        internalUser.email = email;
+        internalUser.name = name;
+        await internalUser.save();
+      }
+
+      return this.login(internalUser);
     } catch (e) {
       if (e instanceof HttpException) {
         throw e;
@@ -103,20 +96,24 @@ export class AuthService {
     }
   }
 
-  getAccessTokenOptions(user) {
+  getAccessTokenOptions(user /* : User */) {
     return this.getTokenOptions('access', user);
+  }
+  getRefreshTokenOptions(user /* : User */): JwtSignOptions {
+    return this.getTokenOptions('refresh', user);
   }
 
   private getTokenOptions(type: 'refresh' | 'access', user) {
     const options = {
-      /*    secret: environments[type + 'TokenSecret'] + user.sessionToken, */
+      secret: environment[type + 'TokenSecret'] + user.sessionToken,
+      expiresIn: null,
     };
 
-    /* const expiration = environments[type + 'TokenExpiration'];
+    const expiration = environment[type + 'TokenExpiration'];
 
     if (expiration) {
       options.expiresIn = expiration;
-    } */
+    }
 
     return options;
   }

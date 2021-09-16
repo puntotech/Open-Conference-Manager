@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  APIENDPOINT_BACKEND: 'http://localhost:3000',
 };
 
 export const GOOGLE_KEY =

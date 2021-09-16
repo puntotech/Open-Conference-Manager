@@ -35,10 +35,16 @@ export class LoginComponent {
   }
 
   signInWithGoogle(): void {
+
     this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      () => this.router.navigate([routes.DASHBOARD])
+      (userSocial) => this.userService.login({
+        accessToken: userSocial.authToken,
+        endpoint: 'http://localhost:3000/auth/google-login',
+      }).subscribe()
     );
   }
+
+  
 
   refreshGoogleToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);

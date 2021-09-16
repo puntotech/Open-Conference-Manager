@@ -1,12 +1,14 @@
 import { BehaviorSubject, Observable, Subject, of } from "rxjs";
+import { concatMap, switchMap, tap } from "rxjs/operators";
 
+import { AppSettings } from "src/app/app.settings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Login } from "../models/login";
 import { Router } from "@angular/router";
 import { User } from "../models/user";
 import { UserStoreService } from "../../shared/services/user-store.service";
-import { tap } from "rxjs/operators";
+import { routes } from "src/app/consts/routes";
 
 @Injectable({
   providedIn: "root",
@@ -42,19 +44,24 @@ export class UserService {
       )
       .toPromise();
   } */
-
-  login(user: Login): Observable<any> {
-    return this.http.post(`${this.API_ENDPOINT}/login`, user).pipe(
-      tap((res: any) => {
+ 
+  login(options/*:  Login */): Observable<any> {
+    return this.http.post(options.endpoint, {accessToken: options.accessToken}).pipe(
+     /*  tap((res: any) => {
         this.userStore.token = res.token;
+      }), */
+      tap((res: any) => {
+        console.log(res);
+        localStorage.setItem(AppSettings.APP_LOCALSTORAGE_TOKEN, res.accessToken);
       }),
-      tap(() => this.username$.next(user.username)),
-      tap(() => {
-        this._redirectUrl
-          ? this.router.navigate([this._redirectUrl])
-          : this.router.navigate(["/videogames/list"]);
-      })
+      concatMap(() => this.me()),
+      tap(user => this.username$.next(user.username)),
+      tap(() => this.router.navigate([routes.DASHBOARD]))
     );
+  }
+
+  me(): Observable<any> {
+    return this.http.post('http://localhost:3000/speakers/me', { accessToken: this.userStore.token });
   }
 
   getUserByEmail(email: string) {
@@ -88,3 +95,4 @@ export class UserService {
     this._redirectUrl = url;
   }
 }
+

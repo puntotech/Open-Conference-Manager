@@ -9,6 +9,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
 import { AppComponent } from "./app.component";
 import { AppRoutesModule } from "./app-routes.module";
+import { AuthInterceptor } from "./shared/services/auth.interceptor";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from "@angular/platform-browser";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -17,7 +18,6 @@ import { MatSidenavModule } from "@angular/material/sidenav";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "./shared/shared.module";
 import { UserService } from "./user/services/user.service";
-import { VideogameAppInterceptor } from "./shared/services/videogame-app.interceptor";
 
 export function initialize(userService: UserService) {
   console.log("INITIALIZING");
@@ -40,7 +40,7 @@ export function initialize(userService: UserService) {
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: VideogameAppInterceptor,
+      useClass: AuthInterceptor,
       multi: true,
     },
     /* {
