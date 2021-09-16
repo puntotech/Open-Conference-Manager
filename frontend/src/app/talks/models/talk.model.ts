@@ -7,10 +7,9 @@ export interface Talk {
   comments: string;
   submitted?: Date;
   createdAt: Date;
-  speakers: string[];
+  speakers: Speaker[];
 }
 
 export interface Speaker {
-  name: string;
-  language: string;
+  id: string;
 }
