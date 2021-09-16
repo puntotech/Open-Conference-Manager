@@ -9,7 +9,7 @@ import { filter, switchMap, tap } from "rxjs/operators";
 import { ActivatedRoute } from "@angular/router";
 import { CoSpeakerFormComponent } from "../co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
-import { Talk } from "../../models/talk";
+import { Talk } from "../../models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { UserService } from "src/app/user/services/user.service";
 import { WarningDialogComponent } from "../warning-dialog/warning-dialog.component";
@@ -34,17 +34,11 @@ export class TalkDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.data
-      .pipe(
-        tap((data) => {
-          this.talk = data.talk;
-        })
-      )
-      .subscribe();
-  }
-
-  delete() {
-    this.dialog;
+    const talkId = this.route.snapshot.paramMap.get("id");
+    this.talksService
+      .getTalk(talkId)
+      .pipe(tap((talk) => (this.talk = talk)))
+      .subscribe(console.log);
   }
 
   openWarningDialog() {
