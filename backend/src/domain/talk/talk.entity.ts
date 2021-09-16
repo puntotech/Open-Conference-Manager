@@ -18,7 +18,7 @@ export class Talk extends BaseEntity {
     type: 'varchar',
     nullable: false,
   })
-  tittle: string;
+  title: string;
 
   @Column({
     type: 'varchar',
@@ -50,10 +50,7 @@ export class Talk extends BaseEntity {
   })
   submitted?: string;
 
-  @ManyToMany(() => Speaker)
-  @JoinTable({
-    name: 'speakers_talks',
-  })
+  @ManyToMany(() => Speaker, (speaker) => speaker.talks)
   speakers: Speaker[];
 
   @Column({
