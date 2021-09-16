@@ -1,13 +1,15 @@
-import { createConnection } from 'typeorm';
-import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import * as configDatabase from '../../../config-database.json';
+
 import {
   DB_CONFIGURATION_TOKEN,
   DB_CONNECTION_TOKEN,
 } from '../../shared/config/database.tokens.constants';
 import { Global, Module } from '@nestjs/common';
-import { Speaker } from '../speaker/speaker.entity';
 
-import * as configDatabase from '../../../config-database.json';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
+import { Speaker } from '../speaker/speaker.entity';
+import { Talk } from '@modules/talk/talk.entity';
+import { createConnection } from 'typeorm';
 
 const providersExported: any[] = [
   {
@@ -29,7 +31,7 @@ const providersExported: any[] = [
         host: '127.0.0.1',
         dropSchema: false,
         namingStrategy: new SnakeNamingStrategy(),
-        entities: [Speaker],
+        entities: [Speaker, Talk],
         extra: {
           multipleStatements: true,
           connectionLimit: 100,
