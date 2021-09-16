@@ -7,11 +7,20 @@ export class SpeakerService {
   constructor(private speakerRepository: SpeakerRepository) {}
 
   public getByID(id: number): Promise<Speaker> {
-    return this.speakerRepository.findOne(id, { relations: ['talks'] });
+    return this.speakerRepository
+      .createQueryBuilder('speaker')
+      .leftJoinAndSelect('speaker.talks', 'talk')
+      .where({ id })
+      .andWhere('talk.status=1')
+      .getOne();
   }
 
   public getAll(): Promise<Speaker[]> {
-    return this.speakerRepository.find({ relations: ['talks'] });
+    return this.speakerRepository
+      .createQueryBuilder('speaker')
+      .leftJoinAndSelect('speaker.talks', 'talk')
+      .where('talk.status=1')
+      .getMany();
   }
 
   public create(speaker: Partial<Speaker>): Promise<Speaker> {

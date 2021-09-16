@@ -3,13 +3,10 @@ import {
   Get,
   Post,
   Body,
-  UseGuards,
-  Req,
   Param,
-  UseInterceptors,
   Put,
-  ValidationPipe,
   ParseIntPipe,
+  Delete,
 } from '@nestjs/common';
 import { TalkService } from './talk.service';
 import { Talk } from './talk.entity';
@@ -40,5 +37,10 @@ export class TalkController {
   @Put()
   updateTalk(@Body() talk: Partial<Talk>): Promise<Talk> {
     return this.talkService.update(talk);
+  }
+
+  @Delete('/:id')
+  deleteTalk(@Param('id', ParseIntPipe) id: number): Promise<Talk> {
+    return this.talkService.update({ id, status: false });
   }
 }
