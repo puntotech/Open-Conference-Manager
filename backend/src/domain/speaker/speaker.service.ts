@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { SpeakerRepository } from './speaker.repository';
 import { Speaker } from './speaker.entity';
+import { SpeakerRepository } from './speaker.repository';
 
 @Injectable()
 export class SpeakerService {
   constructor(private speakerRepository: SpeakerRepository) {}
 
-  public async getByID(id: number): Promise<Speaker> {
+  public getByID(id: number): Promise<Speaker> {
     return this.speakerRepository.findOne(id);
   }
 
-  public async getAll(): Promise<Speaker[]> {
+  public getAll(): Promise<Speaker[]> {
     return this.speakerRepository.find();
   }
 
