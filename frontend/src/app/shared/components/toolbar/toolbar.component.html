@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span class="spacer"></span>
-  <ng-container *ngIf="authService.authState | async as user; else loggedOut">
+  <ng-container *ngIf="userService.user$ | async as user; else loggedOut">
     <button class="img-button" [matMenuTriggerFor]="menu">
       <img class="profile-image" [src]="user.photoUrl" />
     </button>

@@ -15,12 +15,12 @@ export class ToolbarComponent implements OnInit {
   faUser = faUser;
   faSignOut = faSignOutAlt;
 
-  constructor(public authService: SocialAuthService, private router: Router) {}
+  constructor(public userService: UserService, private router: Router) {}
 
   ngOnInit(): void {}
 
   logout() {
-    this.authService.signOut();
+    this.userService.logout();
     this.router.navigate([routes.LOGIN]);
   }
 }
