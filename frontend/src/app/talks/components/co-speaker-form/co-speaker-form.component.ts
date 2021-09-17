@@ -34,7 +34,6 @@ export class CoSpeakerFormComponent implements OnInit {
 
   searchForSpeaker() {
     if (this.speakerForm.invalid) {
-      console.log(this.speakerForm.value);
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const speakerEmail: string = this.speakerForm.value;
