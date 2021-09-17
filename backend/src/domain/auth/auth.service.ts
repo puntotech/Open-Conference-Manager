@@ -2,12 +2,14 @@ import {
   HttpException,
   Injectable,
   UnauthorizedException,
+  ExecutionContext,
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
-import { Speaker } from '@modules/speaker/speaker.entity';
 import { SpeakerService } from '@modules/speaker/speaker.service';
 import { environment } from 'src/environment';
+import { jwtConstants } from 'jwt-constants';
+import { verify } from 'jsonwebtoken';
 
 export interface TokenResponse {
   accessToken: string;
@@ -18,6 +20,8 @@ export interface SocialUser {
   id: number | string;
   name: string;
   email: string;
+  picture: string;
+  locale: string;
 }
 
 export type GetSocialUserHandler = () => Promise<Partial<SocialUser>>;
@@ -28,17 +32,6 @@ export class AuthService {
     private speakerService: SpeakerService,
     private jwtService: JwtService,
   ) {}
-
-  googleLogin(req) {
-    if (!req.user) {
-      return 'No user from google';
-    }
-
-    return {
-      message: 'User information from google',
-      user: req.user,
-    };
-  }
 
   async login(user): Promise<TokenResponse> {
     const payload = {
@@ -58,7 +51,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(
       payload,
       /* this.getAccessTokenOptions(user), */
-      { secret: 'Secret' },
+      { secret: jwtConstants.secret },
     );
 
     return {
@@ -67,24 +60,41 @@ export class AuthService {
     };
   }
 
+  async checkToken(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const [type, token] = request.headers.authorization
+      ? request.headers.authorization.split(' ')
+      : [undefined, undefined];
+
+    if (type !== 'Bearer' || !token) {
+      throw new UnauthorizedException();
+    }
+
+    const decoded = this.verifyJWTToken(token);
+    const speaker = await this.speakerService.findOne({
+      where: { id: decoded.id, email: decoded.email },
+    });
+
+    if (!speaker) {
+      throw new UnauthorizedException();
+    }
+    request.user = speaker;
+    return true;
+  }
+
   async loginWithThirdParty(
     getSocialUser: GetSocialUserHandler,
     fieldId = 'email',
   ) {
     try {
-      const { name, email } = await getSocialUser();
-      console.log(await getSocialUser());
+      const data = await getSocialUser();
 
-      let internalUser = await this.speakerService.findOne({
-        [fieldId]: email,
+      const internalUser = await this.speakerService.upsert({
+        name: data.name,
+        photoUrl: data.picture,
+        locale: data.locale,
+        email: data.email,
       });
-
-      if (!internalUser) {
-        internalUser = new Speaker();
-        internalUser.email = email;
-        internalUser.name = name;
-        await internalUser.save();
-      }
 
       return this.login(internalUser);
     } catch (e) {
@@ -96,10 +106,7 @@ export class AuthService {
     }
   }
 
-  getAccessTokenOptions(user /* : User */) {
-    return this.getTokenOptions('access', user);
-  }
-  getRefreshTokenOptions(user /* : User */): JwtSignOptions {
+  public getRefreshTokenOptions(user /* : User */): JwtSignOptions {
     return this.getTokenOptions('refresh', user);
   }
 
@@ -116,5 +123,13 @@ export class AuthService {
     }
 
     return options;
+  }
+
+  protected verifyJWTToken(token: string): { id: string; email: string } {
+    try {
+      return verify(token, jwtConstants.secret) as any;
+    } catch (e) {
+      throw new UnauthorizedException();
+    }
   }
 }
