@@ -1,25 +1,22 @@
-import { Observable, of } from "rxjs";
-import { Speaker, Talk } from "../models/talk.model";
+import { Observable } from "rxjs";
+import { Talk } from "../models/talk.model";
 
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { User } from "src/app/user/models/user";
-import { map, filter } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
 })
 export class TalksService {
   private API_ENDPOINT = "http://localhost:3000/talks";
-  private USER_ENDPOINT = "http://localhost:3000/speakers";
 
   constructor(private httpClient: HttpClient) {}
 
   getTalks(): Observable<Talk[]> {
-    return this.httpClient.get<User>(`${this.USER_ENDPOINT}/1`).pipe(
-      filter((speaker) => !!speaker.talks),
-      map(({ talks }) => talks)
-    );
+    return this.httpClient
+      .get<Talk[]>(`${this.API_ENDPOINT}/me`)
+      .pipe(map((talks) => talks));
   }
 
   getTalk(talkID: string) {
