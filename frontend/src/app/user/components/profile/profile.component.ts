@@ -8,6 +8,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 import { User } from "../../models/user";
+import { UserService } from "../../services/user.service";
 
 @Component({
   selector: "app-profile",
@@ -21,21 +22,13 @@ export class ProfileComponent implements OnInit {
   faLinkedin = faLinkedin;
   faYoutube = faYoutube;
 
-  constructor(private authService: SocialAuthService) {}
+  constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.authService.authState.subscribe((user) => {
-      this.user = {
-        ...user,
-        twitter: "https://twitter.com/nyablk",
-        github: "https://github.com/NyaGarcia",
-        talks: [],
-      };
-      console.log(user.authToken);
-    });
+    this.userService.user$.subscribe((user) => (this.user = user));
   }
 
   signOut() {
-    this.authService.signOut();
+    this.userService.logout();
   }
 }
