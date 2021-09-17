@@ -7,15 +7,23 @@ import {
   Put,
   ParseIntPipe,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TalkService } from './talk.service';
 import { Talk } from './talk.entity';
 import { AuthGuard } from '@guards/auth.guard';
+import { User } from 'src/shared/decorators/user.decorator';
+import { Speaker } from '@modules/speaker/speaker.entity';
 
 @Controller('talks')
-//@UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 export class TalkController {
   constructor(private readonly talkService: TalkService) {}
+
+  @Get('/me')
+  getBySpeakerId(@User() speaker: Speaker): Promise<Talk[]> {
+    return this.talkService.getBySpeakerId(speaker.id);
+  }
 
   @Get('/:id')
   getByID(@Param('id', ParseIntPipe) id: number): Promise<Talk> {
@@ -29,8 +37,11 @@ export class TalkController {
 
   //TODO: add validation dto
   @Post()
-  createTalk(@Body() talk: Partial<Talk>): Promise<Talk> {
-    return this.talkService.create(talk);
+  createTalk(
+    @Body() talk: Partial<Talk>,
+    @User() speaker: Speaker,
+  ): Promise<Talk> {
+    return this.talkService.create(talk, speaker);
   }
 
   //TODO: add validation dto
