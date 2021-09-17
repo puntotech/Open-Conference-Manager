@@ -20,16 +20,12 @@ export class UserFormComponent implements OnInit {
   private urlRegex =
     "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/";
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private authService: SocialAuthService
-  ) {}
+  constructor(private fb: FormBuilder, private userService: UserService) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    this.authService.authState
+    this.userService.user$
       .pipe(
         tap((user) => {
           this.user = { ...user, talks: [] };
@@ -55,7 +51,6 @@ export class UserFormComponent implements OnInit {
 
   updateUser() {
     if (this.userForm.invalid) {
-      console.log(this.userForm.value);
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const user: User = this.userForm.value;
