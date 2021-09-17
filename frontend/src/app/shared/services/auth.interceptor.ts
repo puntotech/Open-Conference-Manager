@@ -8,6 +8,7 @@ import { Router } from "@angular/router";
 import { UserService } from "src/app/user/services/user.service";
 import { UserStoreService } from "./user-store.service";
 import { catchError } from "rxjs/operators";
+import { routes } from "src/app/consts/routes";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,16 +26,16 @@ export class AuthInterceptor implements HttpInterceptor {
     if (token) {
       const authReq = req.clone({
         setHeaders: {
-          authorization:`Bearer ${token}`,
-       }
+          authorization: `Bearer ${token}`,
+        },
       });
       req = authReq;
     }
     return next.handle(req).pipe(
       catchError((err) => {
-        if (err.status === 401 && err.error === "jwt expired") {
+        if (err.status === 401) {
           this.userService.logout();
-          location.reload();
+          this.router.navigate([routes.LOGIN]);
         }
 
         return throwError(err);
