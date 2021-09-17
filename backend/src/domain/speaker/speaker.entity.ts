@@ -37,6 +37,18 @@ export class Speaker extends BaseEntity {
   name: string;
 
   @Column({
+    type: 'varchar',
+    default: '',
+  })
+  photoUrl: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  locale: string;
+
+  @Column({
     type: 'tinyint',
     width: 1,
     default: 1,
