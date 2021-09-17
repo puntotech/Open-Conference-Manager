@@ -26,7 +26,7 @@ export class LoginComponent {
   ) {}
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
+    this.userService.user$.subscribe((user) => {
       this.user = user;
     });
   }
