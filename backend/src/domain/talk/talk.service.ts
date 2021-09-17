@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { Talk } from './talk.entity';
 import { TalkRepository } from './talk.repository';
+import { Speaker } from '@modules/speaker/speaker.entity';
 
 @Injectable()
 export class TalkService {
@@ -18,6 +19,15 @@ export class TalkService {
     return talk;
   }
 
+  public async getBySpeakerId(id: number): Promise<Talk[]> {
+    return this.talkRepository
+      .createQueryBuilder('talk')
+      .leftJoinAndSelect('talk.speakers', 'speaker')
+      .where('speaker.id=:id', { id })
+      .andWhere('talk.status=1')
+      .getMany();
+  }
+
   public getAll(): Promise<Talk[]> {
     return this.talkRepository.find({
       relations: ['speakers'],
@@ -25,8 +35,8 @@ export class TalkService {
     });
   }
 
-  public create(talk: Partial<Talk>): Promise<Talk> {
-    return this.talkRepository.save(talk);
+  public create(talk: Partial<Talk>, speaker: Speaker): Promise<Talk> {
+    return this.talkRepository.save({ ...talk, speakers: [speaker] });
   }
 
   public async update(talk: Partial<Talk>): Promise<Talk> {
