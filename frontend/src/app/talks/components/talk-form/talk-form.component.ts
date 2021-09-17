@@ -6,6 +6,7 @@ import { Talk } from "../../models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { tap, switchMap, filter } from "rxjs/operators";
 import { SocialAuthService } from "angularx-social-login";
+import { UserService } from "src/app/user/services/user.service";
 
 @Component({
   selector: "app-talk-form",
@@ -24,7 +25,7 @@ export class TalkFormComponent implements OnInit {
     private talksService: TalksService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: SocialAuthService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -71,7 +72,6 @@ export class TalkFormComponent implements OnInit {
 
   updateTalk() {
     if (this.talkForm.invalid) {
-      console.log(this.talkForm.value);
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const talk: Talk = this.talkForm.value;
@@ -84,18 +84,18 @@ export class TalkFormComponent implements OnInit {
 
   createTalk() {
     if (this.talkForm.invalid) {
-      console.log(this.talkForm.value);
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const talk: Talk = this.talkForm.value;
-      this.authService.authState
+      this.userService.user$
         .pipe(
           filter((user) => !!user),
           switchMap((user) =>
             this.talksService.create({
               ...talk,
               createdAt: new Date(),
-              speakers: [{ id: "1" }],
+              //TODO: add speaker logic
+              //speakers: [{ id: "1" }],
             })
           ),
           tap(() => this.navigateToTalkList())
