@@ -25,33 +25,34 @@ export class LoginComponent {
     private fb: FormBuilder,
     private userService: UserService,
     private authService: SocialAuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.authService.authState.subscribe((user) => {
+    this.userService.user$.subscribe((user) => {
       this.user = user;
     });
   }
 
   signInWithGoogle(): void {
-
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(
-      (userSocial) => this.userService.login({
-        accessToken: userSocial.authToken,
-        endpoint: 'http://localhost:3000/auth/google-login',
-      }).subscribe()
-    );
+    this.authService
+      .signIn(GoogleLoginProvider.PROVIDER_ID)
+      .then((userSocial) =>
+        this.userService
+          .login({
+            accessToken: userSocial.authToken,
+            endpoint: "http://localhost:3000/auth/google-login",
+          })
+          .subscribe()
+      );
   }
-
-  
 
   refreshGoogleToken(): void {
     this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
   signOut(): void {
-    this.authService.signOut();
+    this.userService.logout();
   }
 
   /*  createForm() {
