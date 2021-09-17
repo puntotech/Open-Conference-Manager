@@ -7,7 +7,7 @@ const auth = authConfig.google;
 @Injectable()
 export class GoogleAuthService {
   async getUser(accessToken: string) {
-    const client = new google.auth.OAuth2(auth.appId as string, auth.appSecret);
+    const client = new google.auth.OAuth2(auth.appId, auth.appSecret);
 
     client.setCredentials({ access_token: accessToken });
 
