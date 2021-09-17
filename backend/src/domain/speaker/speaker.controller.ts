@@ -4,22 +4,24 @@ import {
   Post,
   Body,
   UseGuards,
-  Req,
   Param,
-  UseInterceptors,
   ParseIntPipe,
   Put,
 } from '@nestjs/common';
 import { SpeakerService } from './speaker.service';
 import { Speaker } from './speaker.entity';
 import { AuthGuard } from '@guards/auth.guard';
-import { AdminGuard } from '@guards/admin.guard';
 import { User } from 'src/shared/decorators/user.decorator';
 
 @Controller('speakers')
-//@UseGuards(AuthGuard, AdminGuard)
+@UseGuards(AuthGuard)
 export class SpeakerController {
   constructor(private readonly speakerService: SpeakerService) {}
+
+  @Get('me')
+  me(@User() user: Speaker): Speaker {
+    return user;
+  }
 
   @Get(':id')
   getByID(@Param('id', ParseIntPipe) id: number): Promise<Speaker> {
@@ -40,10 +42,5 @@ export class SpeakerController {
   @Put()
   updateSpeaker(@Body() speaker: Partial<Speaker>): Promise<Speaker> {
     return this.speakerService.update(speaker);
-  }
-
-  @Post('me')
-  me(@User() user: Speaker): Speaker {
-    return user;
   }
 }
