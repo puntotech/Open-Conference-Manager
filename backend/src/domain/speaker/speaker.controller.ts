@@ -28,7 +28,7 @@ export class SpeakerController {
         }),
         {},
       );
-    user.talks = user.talks.filter((talk) => !talk.status);
+    user.talks = user.talks.filter((talk) => talk.status);
     user.talks = convertArrayToObject(user.talks, 'id');
 
     return user;
