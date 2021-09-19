@@ -31,6 +31,18 @@
         Language is required
       </mat-error>
     </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Track</mat-label>
+      <mat-select formControlName="track" required>
+        <mat-option>--</mat-option>
+        <mat-option *ngFor="let track of tracks" [value]="track">
+          {{ track }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="track.hasError('required')"
+        >Please choose a track</mat-error
+      >
+    </mat-form-field>
     <mat-form-field>
       <mat-label>Comments</mat-label>
       <textarea matInput type="text" formControlName="comments"></textarea>
