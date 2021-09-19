@@ -33,7 +33,7 @@ fa-icon {
 
 .button-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin: 20px;
   margin-bottom: 0;
 }
