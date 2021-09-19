@@ -10,7 +10,7 @@
     <button mat-raised-button (click)="openWarningDialog()">
       <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
     </button>
-    <button mat-raised-button class="blue-btn">
+    <button *ngIf="!talk.submitted" mat-raised-button class="blue-btn">
       <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
     </button>
   </div>
