@@ -5,7 +5,6 @@
       {{ user.name }}
     </h3>
     <div class="link-container">
-      <a>Overview</a>
       <a *ngIf="userService.user$ | async as user" routerLink="profile"
         >My Profile</a
       >
