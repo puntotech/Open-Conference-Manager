@@ -17,6 +17,6 @@ export class TalkPreviewComponent implements OnInit {
   ngOnInit(): void {}
 
   submitTalk() {
-    this.talksService.submit(this.talk);
+    this.talksService.submit(this.talk).subscribe();
   }
 }
