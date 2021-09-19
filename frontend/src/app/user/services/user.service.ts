@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 import { SocialAuthService } from "angularx-social-login";
 import { User } from "../../shared/models/user";
 import { UserStoreService } from "../../shared/services/user-store.service";
-import { routes } from "src/app/consts/routes";
+import { routes } from "src/app/shared/consts/routes";
 
 @Injectable({
   providedIn: "root",

@@ -8,7 +8,7 @@ import {
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/user/services/user.service";
-import { routes } from "src/app/consts/routes";
+import { routes } from "src/app/shared/consts/routes";
 
 @Component({
   selector: "app-login",

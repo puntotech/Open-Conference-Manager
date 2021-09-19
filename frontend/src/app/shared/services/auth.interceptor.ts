@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
 import { UserService } from "src/app/user/services/user.service";
 import { UserStoreService } from "./user-store.service";
 import { catchError } from "rxjs/operators";
-import { routes } from "src/app/consts/routes";
+import { routes } from "src/app/shared/consts/routes";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {

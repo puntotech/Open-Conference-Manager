@@ -4,7 +4,7 @@ import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Router } from "@angular/router";
 import { SocialAuthService } from "angularx-social-login";
 import { UserService } from "src/app/user/services/user.service";
-import { routes } from "src/app/consts/routes";
+import { routes } from "src/app/shared/consts/routes";
 
 @Component({
   selector: "app-toolbar",

@@ -9,7 +9,7 @@ import { map, tap } from "rxjs/operators";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { UserService } from "src/app/user/services/user.service";
-import { routes } from "src/app/consts/routes";
+import { routes } from "../consts/routes";
 
 @Injectable({
   providedIn: "root",
