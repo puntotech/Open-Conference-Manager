@@ -16,7 +16,11 @@
   </div>
   <div class="talk-container">
     <div class="talk-content">
-      <h1>{{ talk.title }}</h1>
+      <div class="title-container">
+        <h1>{{ talk.title }}</h1>
+        <span class="track">{{ talk.track }}</span>
+      </div>
+
       <h4>Level: {{ talk.level }}</h4>
       <h3>Abstract</h3>
       <p>{{ talk.abstract }}</p>
