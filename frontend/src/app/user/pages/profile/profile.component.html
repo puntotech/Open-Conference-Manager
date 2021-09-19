@@ -15,43 +15,62 @@
     <div>
       <div class="title-container">
         <h2>{{ user.name }}</h2>
-        <button mat-raised-button class="blue-btn" routerLink="/profile/edit">
+        <button
+          mat-raised-button
+          class="blue-btn"
+          routerLink="/dashboard/profile/edit"
+        >
           Edit Profile
         </button>
       </div>
+      <h3>Biography</h3>
       <p>
         {{ user.bio }}
       </p>
+      <h3>Company</h3>
+      <p>{{ user.company }}</p>
     </div>
     <div>
-      <a class="social-icon" *ngIf="user.twitter" [href]="user.twitter">
-        <fa-icon
-          size="lg"
-          [styles]="{ color: 'white' }"
-          [icon]="faTwitter"
-        ></fa-icon>
-      </a>
-      <a class="social-icon" *ngIf="user.github" [href]="user.github">
-        <fa-icon
-          size="lg"
-          [styles]="{ color: 'white' }"
-          [icon]="faGithub"
-        ></fa-icon>
-      </a>
-      <a class="social-icon" *ngIf="user.linkedin" [href]="user.linkedin">
-        <fa-icon
-          size="lg"
-          [styles]="{ color: 'white' }"
-          [icon]="faLinkedin"
-        ></fa-icon>
-      </a>
-      <a class="social-icon" *ngIf="user.youtube" [href]="user.youtube">
-        <fa-icon
-          size="lg"
-          [styles]="{ color: 'white' }"
-          [icon]="faYoutube"
-        ></fa-icon>
-      </a>
+      <div class="social-icon--container">
+        <a class="social-icon" *ngIf="user.twitter" [href]="user.twitter">
+          <fa-icon
+            size="lg"
+            [styles]="{ color: 'white' }"
+            [icon]="faTwitter"
+          ></fa-icon>
+        </a>
+        <span>{{ user.twitter }}</span>
+      </div>
+      <div class="social-icon--container">
+        <a class="social-icon" *ngIf="user.github" [href]="user.github">
+          <fa-icon
+            size="lg"
+            [styles]="{ color: 'white' }"
+            [icon]="faGithub"
+          ></fa-icon>
+        </a>
+        <span>{{ user.github }}</span>
+      </div>
+      <div class="social-icon--container">
+        <a class="social-icon" *ngIf="user.linkedin" [href]="user.linkedin">
+          <fa-icon
+            size="lg"
+            [styles]="{ color: 'white' }"
+            [icon]="faLinkedin"
+          ></fa-icon>
+        </a>
+        <span>{{ user.linkedin }}</span>
+      </div>
+      <div class="social-icon--container">
+        <a class="social-icon" *ngIf="user.youtube" [href]="user.youtube">
+          <fa-icon
+            size="lg"
+            [styles]="{ color: 'white' }"
+            [icon]="faYoutube"
+          ></fa-icon>
+        </a>
+        <span>{{ user.youtube }}</span>
+      </div>
     </div>
   </div>
 </div>
