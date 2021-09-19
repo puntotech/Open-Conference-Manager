@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
 import { MatDialog } from "@angular/material/dialog";
-import { Talk } from "../../models/talk.model";
+import { Talk } from "src/app/shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
 
 @Component({

@@ -1,13 +1,12 @@
 import { BehaviorSubject, Observable, Subject, of } from "rxjs";
-import { catchError, concatMap, map, switchMap, tap } from "rxjs/operators";
+import { catchError, concatMap, map, tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Login } from "../models/login";
 import { Router } from "@angular/router";
 import { SocialAuthService } from "angularx-social-login";
-import { User } from "../models/user";
+import { User } from "../../shared/models/user";
 import { UserStoreService } from "../../shared/services/user-store.service";
 import { routes } from "src/app/consts/routes";
 
@@ -71,10 +70,6 @@ export class UserService {
     this.userStore.removeToken();
     this.user$.next(null);
     //    this.authService.signOut();
-  }
-
-  register(user: Login): Observable<any> {
-    return this.http.post(`${this.API_ENDPOINT}/register`, user);
   }
 
   isLoggedIn() {

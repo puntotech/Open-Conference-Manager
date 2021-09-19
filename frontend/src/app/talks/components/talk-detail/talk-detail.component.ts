@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 import {
   faPaperPlane,
@@ -6,10 +7,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { filter, switchMap, tap } from "rxjs/operators";
 
-import { ActivatedRoute, Router } from "@angular/router";
 import { CoSpeakerFormComponent } from "../co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
-import { Talk } from "../../models/talk.model";
+import { Talk } from "../../../shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { UserService } from "src/app/user/services/user.service";
 import { WarningDialogComponent } from "../warning-dialog/warning-dialog.component";

@@ -1,11 +1,10 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import { Component, Input, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { filter, switchMap, tap } from "rxjs/operators";
 
-import { ActivatedRoute, Router } from "@angular/router";
-import { Talk } from "../../models/talk.model";
+import { Talk } from "src/app/shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
-import { tap, switchMap, filter } from "rxjs/operators";
-import { SocialAuthService } from "angularx-social-login";
 import { UserService } from "src/app/user/services/user.service";
 
 @Component({

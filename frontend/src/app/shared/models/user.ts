@@ -1,5 +1,5 @@
 import { SocialUser } from "angularx-social-login";
-import { Talk } from "src/app/talks/models/talk.model";
+import { Talk } from "src/app/shared/models/talk.model";
 
 export interface User extends SocialUser {
   talks: Talk[];

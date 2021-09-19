@@ -1,11 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { switchMap, tap } from "rxjs/operators";
 
-import { ActivatedRoute } from "@angular/router";
-import { SocialAuthService } from "angularx-social-login";
-import { User } from "../../models/user";
+import { User } from "../../../shared/models/user";
 import { UserService } from "../../services/user.service";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-user-form",
