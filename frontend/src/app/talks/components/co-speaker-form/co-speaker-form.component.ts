@@ -3,6 +3,18 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { MatDialogRef } from "@angular/material/dialog";
 import { TalksService } from "../../services/talks.service";
+import { Observable } from "rxjs";
+import { Speaker } from "src/app/shared/models/talk.model";
+import { User } from "src/app/shared/models/user";
+import { UserService } from "src/app/user/services/user.service";
+import {
+  distinctUntilChanged,
+  debounceTime,
+  filter,
+  switchMap,
+  tap,
+  map,
+} from "rxjs/operators";
 
 @Component({
   selector: "app-co-speaker-form",
@@ -12,19 +24,26 @@ import { TalksService } from "../../services/talks.service";
 export class CoSpeakerFormComponent implements OnInit {
   speakerForm: FormGroup;
   message: string;
+  speaker$: Observable<User[]>;
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CoSpeakerFormComponent>
+    private dialogRef: MatDialogRef<CoSpeakerFormComponent>,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+    this.speaker$ = this.speaker!.valueChanges.pipe(
+      distinctUntilChanged(),
+      debounceTime(300),
+      switchMap((email: string) => this.filter(email))
+    );
   }
 
   createForm() {
     this.speakerForm = this.fb.group({
-      speaker: ["", [Validators.required, Validators.email]],
+      speaker: ["", [Validators.required]],
     });
   }
 
@@ -36,8 +55,22 @@ export class CoSpeakerFormComponent implements OnInit {
     if (this.speakerForm.invalid) {
       this.message = "Please correct all errors and resubmit the form";
     } else {
-      const speakerEmail: string = this.speakerForm.value;
-      this.dialogRef.close(speakerEmail);
+      const speaker = this.speakerForm.value.speaker;
+      this.dialogRef.close(speaker);
     }
+  }
+
+  displayFn(speaker: User): string {
+    return speaker && speaker.email ? speaker.email : "";
+  }
+
+  private filter(email: string) {
+    return this.userService
+      .getSpeakers()
+      .pipe(
+        map((speakers: User[]) =>
+          speakers.filter((speaker) => speaker.email.includes(email))
+        )
+      );
   }
 }
