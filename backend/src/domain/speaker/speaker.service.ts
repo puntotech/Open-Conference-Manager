@@ -1,12 +1,16 @@
-import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
-import { SpeakerRepository } from './speaker.repository';
+import { InjectRepository } from '@nestjs/typeorm';
 
+/* private speakerRepository: SpeakerRepository */
 @Injectable()
 export class SpeakerService {
-  constructor(private speakerRepository: SpeakerRepository) {}
+  constructor(
+    @InjectRepository(Speaker)
+    private speakerRepository: Repository<Speaker>,
+  ) {}
 
   public findByID(id: number): Promise<Speaker> {
     return this.speakerRepository

@@ -1,44 +1,45 @@
-import * as configDatabase from '../../../config-database.json';
-
-import {
-  DB_CONFIGURATION_TOKEN,
-  DB_CONNECTION_TOKEN,
-} from '../../shared/config/database.tokens.constants';
 import { Global, Module } from '@nestjs/common';
 
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Speaker } from '../speaker/speaker.entity';
 import { Talk } from '@modules/talk/talk.entity';
 import { createConnection } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
-const providersExported: any[] = [
+/* const providersExported = [
   {
     provide: DB_CONNECTION_TOKEN,
-    useFactory: createConnection,
-    inject: [DB_CONFIGURATION_TOKEN],
+    useFactory: async (configService: ConfigService) => ({
+      type: configService.get('DB_TYPE'),
+      host: configService.get('DB_HOST'),
+      port: configService.get<number>('DB_PORT'),
+      username: configService.get('DB_USER'),
+      password: configService.get('DB_PASS'),
+      database: configService.get('DB_DATABASE'),
+    }),
+    inject: [ConfigService, DB_CONFIGURATION_TOKEN],
   },
-];
+]; */
 
+const databaseConnection = [
+  TypeOrmModule.forRootAsync({
+    useFactory: async (configService: ConfigService) => ({
+      type: 'mysql',
+      namingStrategy: new SnakeNamingStrategy(),
+      host: configService.get<string>('DB_HOST'),
+      port: configService.get<number>('DB_PORT'),
+      username: configService.get<string>('DB_USER'),
+      password: configService.get<string>('DB_PASSWORD'),
+      database: configService.get<string>('DB_DATABASE'),
+      entities: [Speaker, Talk],
+    }),
+    inject: [ConfigService],
+  }),
+];
 @Global()
 @Module({
-  providers: [
-    ...providersExported,
-    {
-      provide: DB_CONFIGURATION_TOKEN,
-      useValue: {
-        ...configDatabase,
-        type: 'mariadb',
-        host: '127.0.0.1',
-        dropSchema: false,
-        namingStrategy: new SnakeNamingStrategy(),
-        entities: [Speaker, Talk],
-        extra: {
-          multipleStatements: true,
-          connectionLimit: 100,
-        },
-      },
-    },
-  ],
-  exports: providersExported,
+  imports: [...databaseConnection],
+  exports: [...databaseConnection],
 })
 export class DatabaseModule {}

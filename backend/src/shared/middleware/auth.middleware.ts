@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
-import { Connection } from 'typeorm';
-import { DB_CONNECTION_TOKEN } from '../config/database.tokens.constants';
+import { Connection, Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 export interface AuthMiddlewareRequest extends Request {
   user: any;
@@ -19,7 +19,8 @@ export interface AuthMiddlewareRequest extends Request {
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-    @Inject(DB_CONNECTION_TOKEN) private readonly connection: Connection,
+    @InjectRepository(Speaker)
+    private speakerRepository: Repository<Speaker>,
   ) {}
 
   async use(req: AuthMiddlewareRequest, res: Response, next: NextFunction) {
@@ -47,7 +48,7 @@ export class AuthMiddleware implements NestMiddleware {
     }
     let speaker;
     try {
-      speaker = await this.connection.getRepository(Speaker).findOne({
+      speaker = await this.speakerRepository.findOne({
         where: {
           id: decoded.id,
           email: decoded.email,

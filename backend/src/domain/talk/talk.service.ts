@@ -1,13 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { Talk } from './talk.entity';
-import { TalkRepository } from './talk.repository';
-
+import { InjectRepository } from '@nestjs/typeorm';
+/* private talkRepository: TalkRepository */
 @Injectable()
 export class TalkService {
-  constructor(private talkRepository: TalkRepository) {}
+  constructor(
+    @InjectRepository(Talk)
+    private talkRepository: Repository<Talk>,
+  ) {}
 
   public async getByID(id: number): Promise<Talk> {
     const talk = await this.talkRepository.findOne({
