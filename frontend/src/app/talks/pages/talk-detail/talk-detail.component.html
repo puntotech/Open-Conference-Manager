@@ -26,6 +26,10 @@
       <p>{{ talk.abstract }}</p>
       <h3>Comments</h3>
       <p>Comments: {{ talk.comments }}</p>
+      <h3>Submitted</h3>
+      <ng-container *ngIf="talk.submitted; else notSubmitted">
+        <p>{{ talk.submitted }}</p>
+      </ng-container>
     </div>
     <div class="talk-speakers">
       <div>
@@ -40,3 +44,6 @@
     </div>
   </div>
 </div>
+<ng-template #notSubmitted>
+  <p>Not Submitted</p>
+</ng-template>
