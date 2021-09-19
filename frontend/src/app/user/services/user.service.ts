@@ -5,7 +5,6 @@ import { AppSettings } from "src/app/app.settings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { SocialAuthService } from "angularx-social-login";
 import { User } from "../../shared/models/user";
 import { UserStoreService } from "../../shared/services/user-store.service";
 import { routes } from "src/app/shared/consts/routes";
@@ -15,14 +14,12 @@ import { routes } from "src/app/shared/consts/routes";
 })
 export class UserService {
   public user$: Subject<User> = new BehaviorSubject(null);
-  private API_ENDPOINT = "http://localhost:9001/user";
   private _redirectUrl: string;
 
   constructor(
     private http: HttpClient,
     private userStore: UserStoreService,
     private router: Router,
-    private authService: SocialAuthService
   ) {}
 
   loadUserData() {
@@ -54,16 +51,9 @@ export class UserService {
     return this.http.get(`${AppSettings.API_ENDPOINT_SPEAKERS}/me`);
   }
 
-  getUserByEmail(email: string) {
-    //return this.http.get<User>(`${this.API_ENDPOINT}/${email}`);
-  }
-
-  getUserById(id: string) {
-    //return this.http.get<User>(`${this.API_ENDPOINT}/${id}`);
-  }
 
   update(userID: string, user: User) {
-    return this.http.put<User>(`${this.API_ENDPOINT}/${userID}`, user);
+    return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}/${userID}`, user);
   }
 
   logout() {
