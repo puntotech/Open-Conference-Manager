@@ -1,7 +1,8 @@
+import { FindManyOptions, FindOneOptions } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
 import { SpeakerRepository } from './speaker.repository';
-import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class SpeakerService {
@@ -36,9 +37,8 @@ export class SpeakerService {
     return this.speakerRepository.create(speaker).save();
   }
 
-  public async update(speaker: Partial<Speaker>): Promise<Speaker> {
-    const oldSpeaker = await this.findByID(speaker.id);
-    return Object.assign(oldSpeaker, speaker).save();
+  public update(speaker: Partial<Speaker>): Promise<Speaker> {
+    return this.speakerRepository.save(speaker);
   }
 
   public async upsert(speaker: Partial<Speaker>) {

@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { User } from "../../../shared/models/user";
-import { UserService } from "../../services/user.service";
 import { tap } from "rxjs/operators";
 
 @Component({
@@ -14,15 +13,13 @@ import { tap } from "rxjs/operators";
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   message: string;
-  speaker: User;
   speaker$ = this.speakerStore.speaker$;
 
-  private urlRegex =
-    "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/";
+  private urlRegex = "^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}[a-zA-Z0-9_-]{0,50}"
+   /*  "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/[.]{0,50}/" */;
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly userService: UserService,
     private readonly speakerStore: SpeakerStore,
   ) { }
 
@@ -31,8 +28,8 @@ export class UserFormComponent implements OnInit {
 
     this.speaker$
       .pipe(
-        tap((user) => {
-          this.userForm.patchValue(user);
+        tap((speaker) => {
+          this.userForm.patchValue(speaker);
         })
       )
       .subscribe();
@@ -40,6 +37,7 @@ export class UserFormComponent implements OnInit {
 
   createForm() {
     this.userForm = this.fb.group({
+      id: -1,
       name: ["", [Validators.required]],
       bio: [""],
       city: [""],
@@ -56,8 +54,9 @@ export class UserFormComponent implements OnInit {
     if (this.userForm.invalid) {
       this.message = "Please correct all errors and resubmit the form";
     } else {
-      const user: User = this.userForm.value;
-      this.userService.update(this.speaker.id, user);
+      const speaker: User = this.userForm.value;
+      this.speakerStore.updateSpeakerEffect(speaker);/* 
+      this.userService.update(this.speaker.id, user); */
     }
   }
 

@@ -38,8 +38,8 @@ export class UserService {
   }
 
 
-  update(userID: string, user: User) {
-    return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}/${userID}`, user);
+  updateMe(user: User) {
+    return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}/me`, user);
   }
 
   logout() {

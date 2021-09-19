@@ -1,11 +1,12 @@
 import { ComponentStore, tapResponse } from '@ngrx/component-store';
+import { Speaker, Talk } from '../models/talk.model';
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Talk } from '../models/talk.model';
 import { TalksService } from 'src/app/talks/services/talks.service';
 import { User } from '../models/user';
+import { UserService } from 'src/app/user/services/user.service';
 import { switchMap } from 'rxjs/operators';
 
 export interface SpeakerState {
@@ -20,7 +21,7 @@ const defaultState: SpeakerState = {
     providedIn: 'root'
 })
 export class SpeakerStore extends ComponentStore<SpeakerState> {
-  constructor(private talkService: TalksService) {
+  constructor(private talkService: TalksService, private userService: UserService) {
     super(defaultState);
   }
 
@@ -34,6 +35,30 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
   selectTalk(talkId: number) {
     return this.select((state) => state.speaker?.talks[talkId]);
   }
+  
+  readonly updateSpeaker = this.updater((state, speaker: User) => ({
+    speaker: {
+      ...state.speaker,
+      ...speaker,
+      talks: { ...state.speaker.talks }
+    }
+  }));
+  
+  
+  readonly updateSpeakerEffect = this.effect((speaker$: Observable<User>) => {
+    return speaker$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+      switchMap((speaker) => this.userService.updateMe(speaker)
+            .pipe(
+        //👇 Act on the result within inner pipe.
+        tapResponse(
+          (speaker) => this.updateSpeaker(speaker),
+          (error: HttpErrorResponse) => console.log(error),
+        ),
+      )),
+    );
+  });
+    
     
     readonly addTalk = this.updater((state, talk: Talk) => ({
     speaker: {

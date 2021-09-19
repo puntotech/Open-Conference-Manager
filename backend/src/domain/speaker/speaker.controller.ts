@@ -34,6 +34,16 @@ export class SpeakerController {
     return user;
   }
 
+  @Put('me')
+  updateMe(@Body() user: Speaker, @User() me: Speaker): Promise<Speaker> {
+    const updateMe = {
+      ...me,
+      ...user,
+      id: me.id,
+    };
+    return this.speakerService.update(updateMe);
+  }
+
   @Get(':id')
   getByID(@Param('id', ParseIntPipe) id: number): Promise<Speaker> {
     return this.speakerService.findByID(id);

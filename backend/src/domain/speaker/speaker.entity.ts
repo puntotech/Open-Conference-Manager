@@ -46,6 +46,12 @@ export class Speaker extends BaseEntity {
     type: 'varchar',
     default: '',
   })
+  twitter: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
   locale: string;
 
   @Column({
