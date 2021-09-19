@@ -3,7 +3,16 @@
     <h3>{{ talk.title }}</h3>
     <span>Created: {{ talk.createdAt | date: "yyyy-MM-dd" }}</span>
   </div>
-  <div>
-    <button mat-raised-button (click)="submitTalk()">Submit</button>
-  </div>
+  <ng-container *ngIf="!talk.submitted; else submitted">
+    <div>
+      <button mat-raised-button (click)="submitTalk()">Submit</button>
+    </div>
+  </ng-container>
 </a>
+
+<ng-template #submitted>
+  <div class="submitted-container">
+    <h3>Submitted</h3>
+    <span>{{ talk.submitted | date: "yyyy-MM-dd HH:mm" }}</span>
+  </div>
+</ng-template>
