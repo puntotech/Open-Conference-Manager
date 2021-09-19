@@ -8,12 +8,19 @@
 </p>
 <h4 class="error">{{ message }}</h4>
 <form (ngSubmit)="searchForSpeaker()" [formGroup]="speakerForm">
-  <mat-form-field>
-    <mat-label>Speaker Email</mat-label>
-    <input matInput type="text" formControlName="speaker" required />
-    <mat-error *ngIf="speaker.hasError('required')">
-      Speaker email is required
-    </mat-error>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Co-Speaker</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="speaker"
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let speaker of speaker$ | async" [value]="speaker">
+        {{ speaker.email }}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
-  <button mat-raised-button class="blue-btn" type="submit">Search</button>
+  <button mat-raised-button class="blue-btn" type="submit">Submit</button>
 </form>
