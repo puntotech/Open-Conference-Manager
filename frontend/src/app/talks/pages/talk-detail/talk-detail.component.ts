@@ -70,6 +70,7 @@ export class TalkDetailComponent implements OnInit {
       ...talk,
       submitted: new Date(),
     });
+    this.navigateToTalkList();
   }
 
   private navigateToTalkList() {
