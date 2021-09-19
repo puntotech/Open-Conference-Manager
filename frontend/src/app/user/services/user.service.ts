@@ -19,7 +19,7 @@ export class UserService {
   constructor(
     private http: HttpClient,
     private userStore: UserStoreService,
-    private router: Router,
+    private router: Router
   ) {}
 
   loadUserData() {
@@ -51,9 +51,8 @@ export class UserService {
     return this.http.get(`${AppSettings.API_ENDPOINT_SPEAKERS}/me`);
   }
 
-
-  update(userID: string, user: User) {
-    return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}/${userID}`, user);
+  update(user: User) {
+    return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}`, user);
   }
 
   logout() {
@@ -62,11 +61,7 @@ export class UserService {
     //    this.authService.signOut();
   }
 
-  isLoggedIn() {
-    return this.userStore.isLoggedIn();
-  }
-
-  set redirectUrl(url: string) {
-    this._redirectUrl = url;
+  getSpeakers() {
+    return this.http.get<User[]>(AppSettings.API_ENDPOINT_SPEAKERS);
   }
 }
