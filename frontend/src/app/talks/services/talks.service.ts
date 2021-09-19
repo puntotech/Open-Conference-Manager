@@ -1,3 +1,4 @@
+import { AppSettings } from "src/app/app.settings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
@@ -8,17 +9,16 @@ import { map } from "rxjs/operators";
   providedIn: "root",
 })
 export class TalksService {
-  private API_ENDPOINT = "http://localhost:3000/talks";
 
   constructor(private httpClient: HttpClient) {}
 
   
   getTalk(talkID: string) {
-    return this.httpClient.get<Talk>(`${this.API_ENDPOINT}/${talkID}`);
+    return this.httpClient.get<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`);
   }
 
   addCoSpeaker(talkID: string, email: string) {
-    return this.httpClient.put(`${this.API_ENDPOINT}/${talkID}`, email);
+    return this.httpClient.put(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`, email);
   }
 
   submit(talk: Talk) {
@@ -27,14 +27,14 @@ export class TalksService {
   }
 
   create(talk: Talk) {
-    return this.httpClient.post<Talk>(this.API_ENDPOINT, talk);
+    return this.httpClient.post<Talk>(AppSettings.API_ENDPOINT_TALKS, talk);
   }
 
   delete(talkId: string) {
-    return this.httpClient.delete<Talk>(`${this.API_ENDPOINT}/${talkId}`);
+    return this.httpClient.delete<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkId}`);
   }
 
   update(talk: Talk) {
-    return this.httpClient.put<Talk>(this.API_ENDPOINT, talk);
+    return this.httpClient.put<Talk>(AppSettings.API_ENDPOINT_TALKS, talk);
   }
 }
