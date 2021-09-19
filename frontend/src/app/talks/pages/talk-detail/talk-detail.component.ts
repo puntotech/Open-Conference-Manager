@@ -7,12 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { filter, switchMap, tap } from "rxjs/operators";
 
-import { CoSpeakerFormComponent } from "../co-speaker-form/co-speaker-form.component";
+import { CoSpeakerFormComponent } from "../../components/co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
 import { Talk } from "../../../shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
-import { UserService } from "src/app/user/services/user.service";
-import { WarningDialogComponent } from "../warning-dialog/warning-dialog.component";
+import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
 
 @Component({
   selector: "app-talk-detail",
