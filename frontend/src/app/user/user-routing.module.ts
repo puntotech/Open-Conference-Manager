@@ -2,8 +2,8 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { AuthGuardService } from "../shared/guards/auth-guard.service";
 import { NgModule } from "@angular/core";
-import { ProfileComponent } from "./components/profile/profile.component";
-import { UserFormComponent } from "./components/user-form/user-form.component";
+import { ProfileComponent } from "./pages/profile/profile.component";
+import { UserFormComponent } from "./pages/user-form/user-form.component";
 
 const routes: Routes = [
   {
