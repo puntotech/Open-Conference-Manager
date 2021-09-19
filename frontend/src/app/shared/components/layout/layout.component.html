@@ -5,10 +5,13 @@
       {{ user.name }}
     </h3>
     <div class="link-container">
-      <a *ngIf="userService.user$ | async as user" routerLink="profile"
+      <a
+        *ngIf="userService.user$ | async as user"
+        routerLink="profile"
+        routerLinkActive="active"
         >My Profile</a
       >
-      <a routerLink="talks">My Talks</a>
+      <a routerLink="talks" routerLinkActive="active">My Talks</a>
     </div>
     <div class="flex-center">
       <button
