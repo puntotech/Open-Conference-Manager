@@ -21,7 +21,7 @@ import { TalkListComponent } from "./pages/talk-list/talk-list.component";
 import { TalkPreviewComponent } from "./components/talk-preview/talk-preview.component";
 import { TalksRoutingModule } from "./talks-routing.module";
 import { WarningDialogComponent } from "./components/warning-dialog/warning-dialog.component";
-
+import { MatSelectModule } from "@angular/material/select";
 @NgModule({
   declarations: [
     TalkListComponent,
@@ -49,6 +49,7 @@ import { WarningDialogComponent } from "./components/warning-dialog/warning-dial
     MatPaginatorModule,
     ChartsModule,
     SharedModule,
+    MatSelectModule,
   ],
 })
 export class TalksModule {}
