@@ -1,16 +1,22 @@
-<div *ngIf="talk">
+<div *ngIf="talk$ | async as talk">
   <h4 class="section-title">My Talks > {{ talk.title }}</h4>
   <div class="button-container">
     <button
+      [disabled] = "talk.submitted"
       mat-raised-button
       routerLink="/dashboard/talks/update/{{ talk.id }}"
     >
       <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
     </button>
-    <button mat-raised-button (click)="openWarningDialog()">
+    <button 
+    [disabled] = "talk.submitted"
+    mat-raised-button (click)="openWarningDialog()">
       <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
     </button>
-    <button mat-raised-button class="blue-btn">
+    <button 
+    [disabled] = "talk.submitted"
+    mat-raised-button class="blue-btn"
+    (click)="submitTalk(talk)">
       <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
     </button>
   </div>

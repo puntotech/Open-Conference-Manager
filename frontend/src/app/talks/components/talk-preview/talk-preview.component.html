@@ -4,6 +4,9 @@
     <span>Created: {{ talk.createdAt | date: "yyyy-MM-dd" }}</span>
   </div>
   <div>
-    <button mat-raised-button (click)="submitTalk()">Submit</button>
+    <button *ngIf="!talk.submitted" mat-raised-button (click)="submitTalk()">Submit</button>
+    <mat-chip *ngIf="talk.submitted" color="accent" selected>Submitted</mat-chip>
+    
+
   </div>
 </a>

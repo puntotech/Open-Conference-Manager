@@ -42,8 +42,19 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
             ...state.speaker.talks,
             [talk.id]: talk,
         }
-    }}));
-    
+      }
+    }));
+  
+  readonly removeTalk = this.updater((state, talk: Talk) => {
+    const talks = { ...state.speaker.talks };
+    delete talks[talk.id];
+    return {
+      speaker: {
+        ...state.speaker,
+        talks,
+      }
+    };
+  });
     
   readonly createTalk = this.effect((talk$: Observable<Talk>) => {
     return talk$.pipe(
@@ -83,7 +94,22 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
             .pipe(
         //👇 Act on the result within inner pipe.
         tapResponse(
-          (talk) => this.addTalk(talk),
+          (talk) => this.removeTalk(talk),
+          (error: HttpErrorResponse) => console.log(error),
+        ),
+      )),
+    );
+  });
+
+
+  readonly addCoSpeaker = this.effect((coSpeaker$: Observable<{ talkId: number, speakerEmail: string}>) => {
+    return coSpeaker$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+        switchMap(coSpeaker => this.talkService.addCoSpeaker(coSpeaker.talkId, coSpeaker.speakerEmail)
+            .pipe(
+        //👇 Act on the result within inner pipe.
+        tapResponse(
+          (talk) => console.log('todo'),
           (error: HttpErrorResponse) => console.log(error),
         ),
       )),

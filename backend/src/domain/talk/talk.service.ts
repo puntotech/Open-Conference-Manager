@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { DeleteResult } from 'typeorm';
+import { Speaker } from '@modules/speaker/speaker.entity';
 import { Talk } from './talk.entity';
 import { TalkRepository } from './talk.repository';
-import { Speaker } from '@modules/speaker/speaker.entity';
 
 @Injectable()
 export class TalkService {
@@ -39,8 +40,7 @@ export class TalkService {
     return this.talkRepository.save({ ...talk, speakers: [speaker] });
   }
 
-  public async update(talk: Partial<Talk>): Promise<Talk> {
-    const oldTalk = await this.getByID(talk.id);
-    return Object.assign(oldTalk, talk).save();
+  public update(talk: Partial<Talk>): Promise<Talk> {
+    return this.talkRepository.save(talk);
   }
 }
