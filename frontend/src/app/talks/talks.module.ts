@@ -22,6 +22,7 @@ import { TalkPreviewComponent } from "./components/talk-preview/talk-preview.com
 import { TalksRoutingModule } from "./talks-routing.module";
 import { WarningDialogComponent } from "./components/warning-dialog/warning-dialog.component";
 import { MatSelectModule } from "@angular/material/select";
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
 @NgModule({
   declarations: [
     TalkListComponent,
@@ -50,6 +51,7 @@ import { MatSelectModule } from "@angular/material/select";
     ChartsModule,
     SharedModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
 })
 export class TalksModule {}
