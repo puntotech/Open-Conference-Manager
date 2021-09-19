@@ -12,10 +12,10 @@
     </button>
   </div>
 
-  <div class="talk-list">
+  <div class="talk-list" *ngIf="user$ | async as user">
     <app-talk-preview
       [talk]="talk"
-      *ngFor="let talk of (user$ | async).talks"
+      *ngFor="let talk of user.talks"
     ></app-talk-preview>
   </div>
 </div>
