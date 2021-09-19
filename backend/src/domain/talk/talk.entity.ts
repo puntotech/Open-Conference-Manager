@@ -51,10 +51,10 @@ export class Talk extends BaseEntity {
   comments: string;
 
   @Column({
-    type: 'varchar',
+    type: 'timestamp',
     nullable: true,
   })
-  submitted?: string;
+  submitted?: Date;
 
   @ManyToMany(() => Speaker, (speaker) => speaker.talks)
   speakers: Speaker[];
