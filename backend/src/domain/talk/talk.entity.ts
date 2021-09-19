@@ -36,6 +36,12 @@ export class Talk extends BaseEntity {
     type: 'varchar',
     nullable: false,
   })
+  track: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: false,
+  })
   level: string;
 
   @Column({
