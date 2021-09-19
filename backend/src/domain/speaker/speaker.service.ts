@@ -25,11 +25,7 @@ export class SpeakerService {
   }
 
   public findAll(): Promise<Speaker[]> {
-    return this.speakerRepository
-      .createQueryBuilder('speaker')
-      .leftJoinAndSelect('speaker.talks', 'talk')
-      .where('talk.status=1')
-      .getMany();
+    return this.speakerRepository.find();
   }
 
   public create(speaker: Partial<Speaker>): Promise<Speaker> {
