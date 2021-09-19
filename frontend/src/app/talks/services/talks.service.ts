@@ -9,16 +9,12 @@ import { map } from "rxjs/operators";
   providedIn: "root",
 })
 export class TalksService {
-
   constructor(private httpClient: HttpClient) {}
 
-  
   getTalk(talkID: string) {
-    return this.httpClient.get<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`);
-  }
-
-  addCoSpeaker(talkID: string, email: string) {
-    return this.httpClient.put(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`, email);
+    return this.httpClient.get<Talk>(
+      `${AppSettings.API_ENDPOINT_TALKS}/${talkID}`
+    );
   }
 
   submit(talk: Talk) {
@@ -31,7 +27,9 @@ export class TalksService {
   }
 
   delete(talkId: string) {
-    return this.httpClient.delete<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkId}`);
+    return this.httpClient.delete<Talk>(
+      `${AppSettings.API_ENDPOINT_TALKS}/${talkId}`
+    );
   }
 
   update(talk: Talk) {
