@@ -36,7 +36,7 @@
           {{ speaker.name }}
         </div>
       </div>
-      <button (click)="addSpeaker()" class="blue-btn" mat-raised-button>
+      <button [disabled] = "talk.submitted" (click)="addSpeaker()" class="blue-btn" mat-raised-button>
         Add a Co-Speaker
       </button>
     </div>
