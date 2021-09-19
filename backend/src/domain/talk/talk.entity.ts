@@ -54,9 +54,8 @@ export class Talk extends BaseEntity {
   speakers: Speaker[];
 
   @Column({
-    type: 'tinyint',
-    width: 1,
-    default: 1,
+    type: 'boolean',
+    default: true,
   })
   status: boolean;
 

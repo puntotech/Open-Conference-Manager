@@ -49,9 +49,8 @@ export class Speaker extends BaseEntity {
   locale: string;
 
   @Column({
-    type: 'tinyint',
-    width: 1,
-    default: 1,
+    type: 'boolean',
+    default: true,
   })
   status: boolean;
 
