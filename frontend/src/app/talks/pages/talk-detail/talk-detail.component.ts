@@ -34,7 +34,7 @@ export class TalkDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const talkId = this.route.snapshot.paramMap.get("id");
+    const talkId = +this.route.snapshot.paramMap.get("id");
     this.talksService
       .getTalk(talkId)
       .pipe(tap((talk) => (this.talk = talk)))

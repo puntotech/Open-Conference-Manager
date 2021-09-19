@@ -7,7 +7,7 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
-import { User } from "../../../shared/models/user";
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { UserService } from "../../services/user.service";
 
 @Component({
@@ -15,18 +15,15 @@ import { UserService } from "../../services/user.service";
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
-export class ProfileComponent implements OnInit {
-  user: User;
+export class ProfileComponent {
+  speaker$ = this.speakerStore.speaker$;
   faTwitter = faTwitter;
   faGithub = faGithub;
   faLinkedin = faLinkedin;
   faYoutube = faYoutube;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private readonly speakerStore: SpeakerStore) {}
 
-  ngOnInit(): void {
-    this.userService.user$.subscribe((user) => (this.user = user));
-  }
 
   signOut() {
     this.userService.logout();

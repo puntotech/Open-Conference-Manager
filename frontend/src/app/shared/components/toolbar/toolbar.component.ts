@@ -3,6 +3,7 @@ import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { Router } from "@angular/router";
 import { SocialAuthService } from "angularx-social-login";
+import { SpeakerStore } from "../../state/speaker.store";
 import { UserService } from "src/app/user/services/user.service";
 import { routes } from "src/app/shared/consts/routes";
 
@@ -14,8 +15,12 @@ import { routes } from "src/app/shared/consts/routes";
 export class ToolbarComponent implements OnInit {
   faUser = faUser;
   faSignOut = faSignOutAlt;
+  speaker$ = this.speakerStore.speaker$;
 
-  constructor(public userService: UserService, private router: Router) {}
+  constructor(
+    public userService: UserService,
+    private router: Router,
+  private readonly speakerStore: SpeakerStore) { }
 
   ngOnInit(): void {}
 

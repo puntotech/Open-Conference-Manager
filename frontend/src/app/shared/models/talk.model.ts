@@ -1,5 +1,5 @@
 export interface Talk {
-  id: string;
+  id: number;
   title: string;
   abstract: string;
   language: string;
@@ -11,5 +11,5 @@ export interface Talk {
 }
 
 export interface Speaker {
-  id: string;
+  id: number;
 }

@@ -14,7 +14,7 @@ export class TalksLoadResolverService implements Resolve<Talk> {
   resolve(
     route: ActivatedRouteSnapshot
   ): Talk | Observable<Talk> | Promise<Talk> {
-    const talkId = route.paramMap.get("id");
+    const talkId = +route.paramMap.get("id");
     return this.talksService.getTalk(talkId);
   }
 }

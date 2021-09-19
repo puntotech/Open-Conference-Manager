@@ -25,6 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@ngrx/component-store": "^12.4.0",
     "angular-highcharts": "^11.3.1",
     "angularx-social-login": "^4.0.1",
     "chart.js": "^2.9.4",

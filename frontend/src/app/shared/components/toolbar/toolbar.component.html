@@ -1,8 +1,8 @@
 <mat-toolbar>
   <span class="spacer"></span>
-  <ng-container *ngIf="userService.user$ | async as user; else loggedOut">
+  <ng-container *ngIf="speaker$ | async as speaker; else loggedOut">
     <button class="img-button" [matMenuTriggerFor]="menu">
-      <img class="profile-image" [src]="user.photoUrl" />
+      <img class="profile-image" [src]="speaker.photoUrl" />
     </button>
     <mat-menu #menu="matMenu" class="dropdown-menu">
       <button class="menu-item" mat-menu-item routerLink="profile">

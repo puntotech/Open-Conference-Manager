@@ -5,10 +5,13 @@ import {
   SocialUser,
 } from "angularx-social-login";
 
+import { AppSettings } from "src/app/app.settings";
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { UserService } from "src/app/user/services/user.service";
 import { routes } from "src/app/shared/consts/routes";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-login",
@@ -22,17 +25,14 @@ export class LoginComponent {
   GoogleLoginProvider = GoogleLoginProvider;
 
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private authService: SocialAuthService,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.userService.user$.subscribe((user) => {
-      this.user = user;
-    });
+     private readonly userService: UserService,
+    private readonly authService: SocialAuthService,
+    private readonly speakerStore: SpeakerStore,
+    private readonly router: Router,
+  ) {
+    this.ifIsLoggedRedirectToDashboard();
   }
+
 
   signInWithGoogle(): void {
     this.authService
@@ -43,7 +43,14 @@ export class LoginComponent {
             accessToken: userSocial.authToken,
             endpoint: "http://localhost:3000/auth/google-login",
           })
-          .subscribe()
+/*           .pipe(
+            tap(speaker => this.speakerStore.loadSpeaker(speaker),
+              tap(() => this.router.navigate([routes.DASHBOARD]))),
+           )*/.subscribe(
+             speaker => {
+               this.speakerStore.loadSpeaker(speaker);
+               this.router.navigate([routes.DASHBOARD]);
+             })
       );
   }
 
@@ -54,37 +61,10 @@ export class LoginComponent {
   signOut(): void {
     this.userService.logout();
   }
-
-  /*  createForm() {
-    this.loginForm = this.fb.group({
-      username: ["", [Validators.required]],
-      password: ["", [Validators.required]],
-    });
-  }
-
-  login() {
-    if (this.loginForm.invalid) {
-      this.message = "Please correct all errors";
-    } else {
-      const login = this.loginForm.value;
-      this.userService.login(login).subscribe(
-        (res) => {
-          console.log("Successfully logged in");
-          this.message = res.msg;
-        },
-        (err) => {
-          console.error("Error logging in", err);
-          this.message = err.error;
-        }
-      );
+  ifIsLoggedRedirectToDashboard() {
+    if (localStorage.getItem(AppSettings.APP_LOCALSTORAGE_TOKEN)) {
+      this.router.navigate([routes.DASHBOARD]);
     }
   }
 
-  get username() {
-    return this.loginForm.get("username");
-  }
-
-  get password() {
-    return this.loginForm.get("password");
-  } */
 }

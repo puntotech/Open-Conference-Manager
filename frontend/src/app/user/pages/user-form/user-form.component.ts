@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { User } from "../../../shared/models/user";
 import { UserService } from "../../services/user.service";
 import { tap } from "rxjs/operators";
@@ -13,20 +14,24 @@ import { tap } from "rxjs/operators";
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   message: string;
-  user: User;
+  speaker: User;
+  speaker$ = this.speakerStore.speaker$;
 
   private urlRegex =
     "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/";
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly userService: UserService,
+    private readonly speakerStore: SpeakerStore,
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
 
-    this.userService.user$
+    this.speaker$
       .pipe(
         tap((user) => {
-          this.user = { ...user, talks: [] };
           this.userForm.patchValue(user);
         })
       )
@@ -52,7 +57,7 @@ export class UserFormComponent implements OnInit {
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const user: User = this.userForm.value;
-      this.userService.update(this.user.id, user);
+      this.userService.update(this.speaker.id, user);
     }
   }
 

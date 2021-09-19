@@ -1,51 +1,51 @@
 <h4 class="section-title">My Profile</h4>
-<div class="profile">
+<div class="profile" *ngIf="speaker$ | async as speaker">
   <div class="container">
     <img
-      *ngIf="user.photoUrl"
+      *ngIf="speaker.photoUrl"
       class="card-img-top img-responsive photo"
-      src="{{ user.photoUrl }}"
+      src="{{ speaker.photoUrl }}"
     />
     <div class="text-container">
-      <h1 class="title">{{ user.name }}</h1>
-      <h5 class="email">{{ user.email }}</h5>
+      <h1 class="title">{{ speaker.name }}</h1>
+      <h5 class="email">{{ speaker.email }}</h5>
     </div>
   </div>
   <div class="description-container">
     <div>
       <div class="title-container">
-        <h2>{{ user.name }}</h2>
-        <button mat-raised-button class="blue-btn" routerLink="/profile/edit">
+        <h2>{{ speaker.name }}</h2>
+        <button mat-raised-button class="blue-btn" routerLink="/dashboard/profile/edit">
           Edit Profile
         </button>
       </div>
       <p>
-        {{ user.bio }}
+        {{ speaker.bio }}
       </p>
     </div>
     <div>
-      <a class="social-icon" *ngIf="user.twitter" [href]="user.twitter">
+      <a class="social-icon" *ngIf="speaker.twitter" [href]="speaker.twitter">
         <fa-icon
           size="lg"
           [styles]="{ color: 'white' }"
           [icon]="faTwitter"
         ></fa-icon>
       </a>
-      <a class="social-icon" *ngIf="user.github" [href]="user.github">
+      <a class="social-icon" *ngIf="speaker.github" [href]="speaker.github">
         <fa-icon
           size="lg"
           [styles]="{ color: 'white' }"
           [icon]="faGithub"
         ></fa-icon>
       </a>
-      <a class="social-icon" *ngIf="user.linkedin" [href]="user.linkedin">
+      <a class="social-icon" *ngIf="speaker.linkedin" [href]="speaker.linkedin">
         <fa-icon
           size="lg"
           [styles]="{ color: 'white' }"
           [icon]="faLinkedin"
         ></fa-icon>
       </a>
-      <a class="social-icon" *ngIf="user.youtube" [href]="user.youtube">
+      <a class="social-icon" *ngIf="speaker.youtube" [href]="speaker.youtube">
         <fa-icon
           size="lg"
           [styles]="{ color: 'white' }"

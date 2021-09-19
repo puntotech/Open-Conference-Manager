@@ -14,8 +14,8 @@
 
   <div class="talk-list">
     <app-talk-preview
-      [talk]="talk"
-      *ngFor="let talk of (user$ | async).talks"
+      [talk]="talk.value"
+      *ngFor="let talk of (speaker$ | async).talks | keyvalue"
     ></app-talk-preview>
   </div>
 </div>
