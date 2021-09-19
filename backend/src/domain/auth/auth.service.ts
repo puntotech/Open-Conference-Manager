@@ -1,8 +1,8 @@
 import {
+  ExecutionContext,
   HttpException,
   Injectable,
   UnauthorizedException,
-  ExecutionContext,
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
@@ -59,7 +59,7 @@ export class AuthService {
       refreshToken,
     };
   }
-
+  /* 
   async checkToken(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const [type, token] = request.headers.authorization
@@ -80,7 +80,7 @@ export class AuthService {
     }
     request.user = speaker;
     return true;
-  }
+  } */
 
   async loginWithThirdParty(
     getSocialUser: GetSocialUserHandler,
@@ -125,11 +125,11 @@ export class AuthService {
     return options;
   }
 
-  protected verifyJWTToken(token: string): { id: string; email: string } {
+  /*   protected verifyJWTToken(token: string): { id: string; email: string } {
     try {
       return verify(token, jwtConstants.secret) as any;
     } catch (e) {
       throw new UnauthorizedException();
     }
-  }
+  } */
 }

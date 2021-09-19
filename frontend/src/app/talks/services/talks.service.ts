@@ -1,8 +1,7 @@
-import { Observable } from "rxjs";
-import { Talk } from "../models/talk.model";
-
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { Talk } from "../models/talk.model";
 import { map } from "rxjs/operators";
 
 @Injectable({
@@ -13,6 +12,7 @@ export class TalksService {
 
   constructor(private httpClient: HttpClient) {}
 
+  //TODO: REMOVE
   getTalks(): Observable<Talk[]> {
     return this.httpClient
       .get<Talk[]>(`${this.API_ENDPOINT}/me`)

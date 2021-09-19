@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 import { Talk } from "src/app/talks/models/talk.model";
 import { TalksService } from "../../services/talks.service";
+import { UserService } from "src/app/user/services/user.service";
 
 @Component({
   selector: "app-talk-list",
@@ -10,10 +11,12 @@ import { TalksService } from "../../services/talks.service";
   styleUrls: ["./talk-list.component.css"],
 })
 export class TalkListComponent implements OnInit {
-  public talk$: Observable<Talk[]>;
-  constructor(private talksService: TalksService) {}
+  /* public talk$: Observable<Talk[]>; */
+  public user$ = this.userService.user$;
+  constructor(private talksService: TalksService, private userService: UserService) {}
 
+  
   ngOnInit() {
-    this.talk$ = this.talksService.getTalks();
+  /*   this.talk$ = this.talksService.getTalks(); */
   }
 }

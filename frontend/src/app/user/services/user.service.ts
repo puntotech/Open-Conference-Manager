@@ -1,15 +1,15 @@
 import { BehaviorSubject, Observable, Subject, of } from "rxjs";
-import { concatMap, switchMap, tap, map, catchError } from "rxjs/operators";
+import { catchError, concatMap, map, switchMap, tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Login } from "../models/login";
 import { Router } from "@angular/router";
+import { SocialAuthService } from "angularx-social-login";
 import { User } from "../models/user";
 import { UserStoreService } from "../../shared/services/user-store.service";
 import { routes } from "src/app/consts/routes";
-import { SocialAuthService } from "angularx-social-login";
 
 @Injectable({
   providedIn: "root",
@@ -52,7 +52,7 @@ export class UserService {
   }
 
   me(): Observable<any> {
-    return this.http.get("http://localhost:3000/speakers/me");
+    return this.http.get(`${AppSettings.API_ENDPOINT_SPEAKERS}/me`);
   }
 
   getUserByEmail(email: string) {
