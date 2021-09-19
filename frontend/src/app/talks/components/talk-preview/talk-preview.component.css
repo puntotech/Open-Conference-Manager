@@ -22,6 +22,10 @@ button {
   margin-right: 30px;
 }
 
+.submitted-container {
+  text-align: right;
+}
+
 .talk-container:hover {
   background-color: #ecf0ff;
   cursor: pointer;
