@@ -12,13 +12,7 @@ export class TalksService {
 
   constructor(private httpClient: HttpClient) {}
 
-  //TODO: REMOVE
-  getTalks(): Observable<Talk[]> {
-    return this.httpClient
-      .get<Talk[]>(`${this.API_ENDPOINT}/me`)
-      .pipe(map((talks) => talks));
-  }
-
+  
   getTalk(talkID: string) {
     return this.httpClient.get<Talk>(`${this.API_ENDPOINT}/${talkID}`);
   }
