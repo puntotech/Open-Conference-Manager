@@ -1,14 +1,7 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestMiddleware,
-  NestModule,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 
 import { AuthMiddleware } from './shared/middleware/auth.middleware';
 import { AuthModule } from '@modules/auth/auth.module';
-import { NextFunction } from 'express';
-import configuration from './shared/config/configuration';
 import { SpeakerController } from '@modules/speaker/speaker.controller';
 import { SpeakerModule } from 'src/domain/speaker/speaker.module';
 import { TalkController } from '@modules/talk/talk.controller';

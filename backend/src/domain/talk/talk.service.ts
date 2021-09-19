@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { Talk } from './talk.entity';
 import { InjectRepository } from '@nestjs/typeorm';

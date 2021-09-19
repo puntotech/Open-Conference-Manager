@@ -1,14 +1,13 @@
 import * as jwt from 'jsonwebtoken';
 
 import {
-  Inject,
   Injectable,
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
-import { Connection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
