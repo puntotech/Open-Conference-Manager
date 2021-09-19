@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { User } from "../../../shared/models/user";
 import { UserService } from "../../services/user.service";
 import { tap } from "rxjs/operators";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-user-form",
@@ -15,10 +16,13 @@ export class UserFormComponent implements OnInit {
   message: string;
   user: User;
 
-  private urlRegex =
-    "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/";
+  private urlRegex: RegExp = /^(http[s]?:\/\/){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -26,7 +30,7 @@ export class UserFormComponent implements OnInit {
     this.userService.user$
       .pipe(
         tap((user) => {
-          this.user = { ...user, talks: [] };
+          this.user = user;
           this.userForm.patchValue(user);
         })
       )
@@ -52,7 +56,10 @@ export class UserFormComponent implements OnInit {
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const user: User = this.userForm.value;
-      this.userService.update(this.user.id, user);
+      this.userService
+        .update({ ...this.user, ...user })
+        .pipe(tap(() => this.router.navigate(["/dashboard/profile"])))
+        .subscribe();
     }
   }
 
