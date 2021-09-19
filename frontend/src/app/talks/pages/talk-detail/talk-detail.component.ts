@@ -12,6 +12,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Talk } from "../../../shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
 import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
+import { User } from "src/app/shared/models/user";
 
 @Component({
   selector: "app-talk-detail",
@@ -60,8 +61,11 @@ export class TalkDetailComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((speakerEmail: string) =>
-          this.talksService.addCoSpeaker(this.talk.id, speakerEmail)
+        switchMap((speaker: User) =>
+          this.talksService.update({
+            ...this.talk,
+            speakers: [...this.talk.speakers, speaker],
+          })
         ),
         tap(() => this.navigateToTalkList())
       )
