@@ -67,6 +67,7 @@ h4 {
 
 .text-container--right {
   margin-left: 70px;
+  z-index: 1;
 }
 
 .login-container {
