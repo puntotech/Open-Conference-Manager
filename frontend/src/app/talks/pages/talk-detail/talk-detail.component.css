@@ -25,6 +25,12 @@ fa-icon {
   padding-top: 0;
 }
 
+.title-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
 .button-container {
   display: flex;
   justify-content: end;
