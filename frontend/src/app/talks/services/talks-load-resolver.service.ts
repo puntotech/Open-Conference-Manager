@@ -2,7 +2,7 @@ import { ActivatedRouteSnapshot, Resolve } from "@angular/router";
 
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Talk } from "../models/talk.model";
+import { Talk } from "src/app/shared/models/talk.model";
 import { TalksService } from "./talks.service";
 
 @Injectable({
