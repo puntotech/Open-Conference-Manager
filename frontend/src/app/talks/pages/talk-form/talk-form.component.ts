@@ -61,7 +61,7 @@ export class TalkFormComponent implements OnInit {
       title: ["", [Validators.required]],
       abstract: ["", [Validators.required]],
       level: ["", [Validators.required]],
-      comments: ["", [Validators.required]],
+      comments: [""],
       language: ["", [Validators.required]],
       track: ["", [Validators.required]],
     });
