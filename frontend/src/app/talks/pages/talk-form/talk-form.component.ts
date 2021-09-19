@@ -18,6 +18,7 @@ export class TalkFormComponent implements OnInit {
   talkForm: FormGroup;
   action: string;
   levels: string[] = ["Advanced", "Intermediate", "Beginner"];
+  tracks: string[] = ["Web", "Mobile", "Cloud", "CyberSecurity"];
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class TalkFormComponent implements OnInit {
       level: ["", [Validators.required]],
       comments: ["", [Validators.required]],
       language: ["", [Validators.required]],
+      track: ["", [Validators.required]],
     });
   }
 
@@ -105,6 +107,10 @@ export class TalkFormComponent implements OnInit {
 
   private navigateToTalkList() {
     this.router.navigate(["/dashboard/talks"]);
+  }
+
+  get track() {
+    return this.talkForm.get("track");
   }
 
   get abstract() {
