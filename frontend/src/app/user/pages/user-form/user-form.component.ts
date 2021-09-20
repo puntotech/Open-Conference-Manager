@@ -21,7 +21,8 @@ export class UserFormComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly speakerStore: SpeakerStore,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -56,6 +57,7 @@ export class UserFormComponent implements OnInit {
     } else {
       const speaker: User = this.userForm.value;
       this.speakerStore.updateSpeakerEffect(speaker);
+      this.router.navigate(["dashboard/profile"]);
     }
   }
 
