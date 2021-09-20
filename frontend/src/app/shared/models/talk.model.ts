@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface Talk {
   id: number;
   title: string;
@@ -8,9 +10,5 @@ export interface Talk {
   comments: string;
   submitted?: Date;
   createdAt: Date;
-  speakers: Speaker[];
-}
-
-export interface Speaker {
-  id: number;
+  speakers: User[];
 }

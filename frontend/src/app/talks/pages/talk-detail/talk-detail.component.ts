@@ -15,6 +15,7 @@ import { Talk } from "../../../shared/models/talk.model";
 import { User } from "src/app/shared/models/user";
 import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
 import { routes } from "src/app/shared/consts/routes";
+import { TalksService } from "../../services/talks.service";
 
 @Component({
   selector: "app-talk-detail",
@@ -33,12 +34,13 @@ export class TalkDetailComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly speakerStore: SpeakerStore
+    private readonly speakerStore: SpeakerStore,
+    private readonly talkService: TalksService
   ) {}
 
   ngOnInit() {
     this.talkId = +this.route.snapshot.paramMap.get("id");
-    this.talk$ = this.speakerStore.selectTalk(this.talkId);
+    this.talk$ = this.talkService.getTalk(this.talkId);
   }
 
   openWarningDialog() {
@@ -54,14 +56,18 @@ export class TalkDetailComponent implements OnInit {
       .subscribe();
   }
 
-  addSpeaker() {
+  addSpeaker(talk: Talk) {
     const dialogRef = this.dialog.open(CoSpeakerFormComponent);
     dialogRef
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((speaker: User) => this.addCoSpeaker(speaker)),
-        tap((talk: Talk) => this.speakerStore.addCoSpeaker(talk)),
+        tap((speaker: User) =>
+          this.speakerStore.addCoSpeaker({
+            ...talk,
+            speakers: [...talk.speakers, speaker],
+          })
+        ),
         tap(() => this.navigateToTalkList())
       )
       .subscribe();
@@ -76,11 +82,5 @@ export class TalkDetailComponent implements OnInit {
 
   private navigateToTalkList() {
     this.router.navigate([routes.TALKS]);
-  }
-
-  private addCoSpeaker(speaker: User) {
-    return this.talk$.pipe(
-      map((talk) => ({ ...talk, speakers: [...talk.speakers, speaker] }))
-    );
   }
 }
