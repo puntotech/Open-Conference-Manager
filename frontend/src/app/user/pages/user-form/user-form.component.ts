@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
+import { Router } from "@angular/router";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { User } from "../../../shared/models/user";
 import { tap } from "rxjs/operators";
@@ -15,13 +16,13 @@ export class UserFormComponent implements OnInit {
   message: string;
   speaker$ = this.speakerStore.speaker$;
 
-  private urlRegex = "^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+\.[a-zA-Z]{2,5}[a-zA-Z0-9_-]{0,50}"
-   /*  "/^(http[s]?://){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/[.]{0,50}/" */;
+  private urlRegex: RegExp = /^(http[s]?:\/\/){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/;
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly speakerStore: SpeakerStore,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -55,8 +56,8 @@ export class UserFormComponent implements OnInit {
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const speaker: User = this.userForm.value;
-      this.speakerStore.updateSpeakerEffect(speaker);/* 
-      this.userService.update(this.speaker.id, user); */
+      this.speakerStore.updateSpeakerEffect(speaker);
+      this.router.navigate(["dashboard/profile"]);
     }
   }
 

@@ -3,6 +3,7 @@ import { HttpHandler, HttpRequest } from "@angular/common/http";
 import { Observable, of, throwError } from "rxjs";
 
 import { AppSettings } from "src/app/app.settings";
+import { AuthService } from "src/app/auth/services/auth.service";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { UserService } from "src/app/user/services/user.service";
@@ -12,11 +13,7 @@ import { routes } from "src/app/shared/consts/routes";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(
-    private userStore: UserStoreService,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -34,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError((err) => {
         if (err.status === 401) {
-          this.userService.logout();
+          this.authService.logout();
           this.router.navigate([routes.LOGIN]);
         }
 

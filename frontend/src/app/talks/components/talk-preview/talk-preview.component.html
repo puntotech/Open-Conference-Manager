@@ -3,10 +3,17 @@
     <h3>{{ talk.title }}</h3>
     <span>Created: {{ talk.createdAt | date: "yyyy-MM-dd" }}</span>
   </div>
-  <div>
-    <button *ngIf="!talk.submitted" mat-raised-button (click)="submitTalk()">Submit</button>
-    <mat-chip *ngIf="talk.submitted" color="accent" selected>Submitted</mat-chip>
-    
-
-  </div>
+  <ng-container *ngIf="!talk.submitted; else submitted">
+    <div>
+      <button mat-raised-button (click)="submitTalk()">Submit</button>
+    </div>
+  </ng-container>
 </a>
+
+<ng-template #submitted>
+  <div class="submitted-container">
+    <mat-chip-list>
+      <mat-chip color="accent" selected>Submitted</mat-chip>
+    </mat-chip-list>
+  </div>
+</ng-template>

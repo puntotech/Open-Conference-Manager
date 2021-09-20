@@ -127,10 +127,10 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
   });
 
 
-  readonly addCoSpeaker = this.effect((coSpeaker$: Observable<{ talkId: number, speakerEmail: string}>) => {
-    return coSpeaker$.pipe(
+  readonly addCoSpeaker = this.effect((talk$: Observable<Talk>) => {
+    return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
-        switchMap(coSpeaker => this.talkService.addCoSpeaker(coSpeaker.talkId, coSpeaker.speakerEmail)
+        switchMap((talk: Talk) => this.talkService.update(talk)
             .pipe(
         //👇 Act on the result within inner pipe.
         tapResponse(

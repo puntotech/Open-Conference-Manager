@@ -10,6 +10,7 @@ import { NextFunction, Request, Response } from 'express';
 import { Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Talk } from '@modules/talk/talk.entity';
 
 export interface AuthMiddlewareRequest extends Request {
   user: any;
@@ -52,15 +53,23 @@ export class AuthMiddleware implements NestMiddleware {
           id: decoded.id,
           email: decoded.email,
         },
-        relations: ['talks'],
       });
+
+      if (!speaker) {
+        throw new UnauthorizedException();
+      }
+
+      speaker.talks = await this.connection
+        .getRepository(Talk)
+        .createQueryBuilder('talk')
+        .leftJoinAndSelect('talk.speakers', 'speaker')
+        .where('speaker.id=:id', { id: speaker.id })
+        .andWhere('talk.status=1')
+        .getMany();
     } catch (e) {
       e;
     }
 
-    if (!speaker) {
-      throw new UnauthorizedException();
-    }
     req.user = speaker;
     next();
   }

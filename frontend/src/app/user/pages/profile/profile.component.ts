@@ -7,6 +7,7 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
+import { AuthService } from "src/app/auth/services/auth.service";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { UserService } from "../../services/user.service";
 
@@ -22,10 +23,12 @@ export class ProfileComponent {
   faLinkedin = faLinkedin;
   faYoutube = faYoutube;
 
-  constructor(private userService: UserService, private readonly speakerStore: SpeakerStore) {}
-
+  constructor(
+    private authService: AuthService,
+    private readonly speakerStore: SpeakerStore
+  ) {}
 
   signOut() {
-    this.userService.logout();
+    this.authService.logout();
   }
 }

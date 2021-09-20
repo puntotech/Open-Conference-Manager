@@ -2,32 +2,44 @@
   <h4 class="section-title">My Talks > {{ talk.title }}</h4>
   <div class="button-container">
     <button
-      [disabled] = "talk.submitted"
+      [disabled]="talk.submitted"
       mat-raised-button
       routerLink="/dashboard/talks/update/{{ talk.id }}"
     >
       <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
     </button>
-    <button 
-    [disabled] = "talk.submitted"
-    mat-raised-button (click)="openWarningDialog()">
+    <button
+      [disabled]="talk.submitted"
+      mat-raised-button
+      (click)="openWarningDialog()"
+    >
       <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
     </button>
-    <button 
-    [disabled] = "talk.submitted"
-    mat-raised-button class="blue-btn"
-    (click)="submitTalk(talk)">
+    <button
+      *ngIf="!talk.submitted"
+      mat-raised-button
+      class="blue-btn"
+      (click)="submitTalk(talk)"
+    >
       <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
     </button>
   </div>
   <div class="talk-container">
     <div class="talk-content">
-      <h1>{{ talk.title }}</h1>
+      <div class="title-container">
+        <h1>{{ talk.title }}</h1>
+        <span class="track">{{ talk.track }}</span>
+      </div>
+
       <h4>Level: {{ talk.level }}</h4>
       <h3>Abstract</h3>
       <p>{{ talk.abstract }}</p>
       <h3>Comments</h3>
       <p>Comments: {{ talk.comments }}</p>
+      <h3>Submitted</h3>
+      <ng-container *ngIf="talk.submitted; else notSubmitted">
+        <p>{{ talk.submitted }}</p>
+      </ng-container>
     </div>
     <div class="talk-speakers">
       <div>
@@ -36,9 +48,17 @@
           {{ speaker.name }}
         </div>
       </div>
-      <button [disabled] = "talk.submitted" (click)="addSpeaker()" class="blue-btn" mat-raised-button>
+      <button
+        [disabled]="talk.submitted"
+        (click)="addSpeaker()"
+        class="blue-btn"
+        mat-raised-button
+      >
         Add a Co-Speaker
       </button>
     </div>
   </div>
 </div>
+<ng-template #notSubmitted>
+  <p>Not Submitted</p>
+</ng-template>

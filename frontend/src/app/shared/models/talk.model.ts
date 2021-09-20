@@ -4,6 +4,7 @@ export interface Talk {
   abstract: string;
   language: string;
   level: string;
+  track: string;
   comments: string;
   submitted?: Date;
   createdAt: Date;

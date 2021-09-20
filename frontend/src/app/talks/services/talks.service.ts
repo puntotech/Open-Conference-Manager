@@ -9,16 +9,12 @@ import { map } from "rxjs/operators";
   providedIn: "root",
 })
 export class TalksService {
-
   constructor(private httpClient: HttpClient) {}
 
-  
   getTalk(talkID: number) {
-    return this.httpClient.get<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`);
-  }
-
-  addCoSpeaker(talkID: number, email: string) {
-    return this.httpClient.put(`${AppSettings.API_ENDPOINT_TALKS}/${talkID}`, email);
+    return this.httpClient.get<Talk>(
+      `${AppSettings.API_ENDPOINT_TALKS}/${talkID}`
+    );
   }
 
   submit(talk: Talk) {

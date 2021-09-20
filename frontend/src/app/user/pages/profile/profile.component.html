@@ -19,9 +19,12 @@
           Edit Profile
         </button>
       </div>
+      <h3>Biography</h3>
       <p>
         {{ speaker.bio }}
       </p>
+      <h3>Company</h3>
+      <p>{{ speaker.company }}</p>
     </div>
     <div>
       <a class="social-icon" *ngIf="speaker.twitter" [href]="speaker.twitter">

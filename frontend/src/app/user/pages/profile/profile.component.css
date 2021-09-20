@@ -4,6 +4,14 @@ img {
   height: 200px;
 }
 
+p {
+  margin-bottom: 15px;
+}
+
+span {
+  color: #696969;
+}
+
 .profile {
   display: flex;
   margin: 50px;
@@ -21,8 +29,13 @@ img {
   border-radius: 0 10px 10px 0;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   justify-content: space-between;
   padding: 20px;
+}
+
+.social-icon--container {
+  margin: 20px 0;
 }
 
 .social-icon {
