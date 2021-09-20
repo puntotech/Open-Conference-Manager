@@ -20,7 +20,28 @@ export class SpeakerController {
 
   @Get('me')
   me(@User() user: Speaker): Speaker {
+    const convertArrayToObject = (array, key) =>
+      array.reduce(
+        (obj, item) => ({
+          ...obj,
+          [item[key]]: item,
+        }),
+        {},
+      );
+    user.talks = user.talks.filter((talk) => talk.status);
+    user.talks = convertArrayToObject(user.talks, 'id');
+
     return user;
+  }
+
+  @Put('me')
+  updateMe(@Body() user: Speaker, @User() me: Speaker): Promise<Speaker> {
+    const updateMe = {
+      ...me,
+      ...user,
+      id: me.id,
+    };
+    return this.speakerService.update(updateMe);
   }
 
   @Get(':id')

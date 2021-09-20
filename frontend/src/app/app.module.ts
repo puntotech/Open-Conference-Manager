@@ -1,5 +1,3 @@
-import { APP_INITIALIZER, NgModule } from "@angular/core";
-import { GOOGLE_KEY, environment } from "src/environments/environment";
 import {
   GoogleLoginProvider,
   SocialAuthServiceConfig,
@@ -7,21 +5,24 @@ import {
 } from "angularx-social-login";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
+import { APP_INITIALIZER } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { AppRoutesModule } from "./app-routes.module";
 import { AuthInterceptor } from "./shared/services/auth.interceptor";
+import { AuthService } from "./auth/services/auth.service";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from "@angular/platform-browser";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { GOOGLE_KEY } from "src/environments/environment";
 import { MatButtonModule } from "@angular/material/button";
-import { MatSidenavModule } from "@angular/material/sidenav";
+import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "./shared/shared.module";
 import { UserService } from "./user/services/user.service";
 
-export function initialize(userService: UserService) {
+export function initialize(authService: AuthService) {
   console.log("INITIALIZING");
-  return () => userService.loadUserData();
+  return () => authService.loadUserData();
 }
 
 @NgModule({
@@ -46,7 +47,7 @@ export function initialize(userService: UserService) {
     {
       provide: APP_INITIALIZER,
       useFactory: initialize,
-      deps: [UserService],
+      deps: [AuthService],
       multi: true,
     },
     {

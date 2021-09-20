@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
-import { User } from "../../../shared/models/user";
-import { UserService } from "../../services/user.service";
-import { tap } from "rxjs/operators";
 import { Router } from "@angular/router";
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
+import { User } from "../../../shared/models/user";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-user-form",
@@ -14,24 +14,22 @@ import { Router } from "@angular/router";
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   message: string;
-  user: User;
+  speaker$ = this.speakerStore.speaker$;
 
   private urlRegex: RegExp = /^(http[s]?:\/\/){0,1}(www.){0,1}[a-zA-Z0-9.-]+.[a-zA-Z]{2,5}[.]{0,1}/;
 
   constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private router: Router
-  ) {}
+    private readonly fb: FormBuilder,
+    private readonly speakerStore: SpeakerStore,
+  ) { }
 
   ngOnInit(): void {
     this.createForm();
 
-    this.userService.user$
+    this.speaker$
       .pipe(
-        tap((user) => {
-          this.user = user;
-          this.userForm.patchValue(user);
+        tap((speaker) => {
+          this.userForm.patchValue(speaker);
         })
       )
       .subscribe();
@@ -39,6 +37,7 @@ export class UserFormComponent implements OnInit {
 
   createForm() {
     this.userForm = this.fb.group({
+      id: -1,
       name: ["", [Validators.required]],
       bio: [""],
       city: [""],
@@ -55,11 +54,8 @@ export class UserFormComponent implements OnInit {
     if (this.userForm.invalid) {
       this.message = "Please correct all errors and resubmit the form";
     } else {
-      const user: User = this.userForm.value;
-      this.userService
-        .update({ ...this.user, ...user })
-        .pipe(tap(() => this.router.navigate(["/dashboard/profile"])))
-        .subscribe();
+      const speaker: User = this.userForm.value;
+      this.speakerStore.updateSpeakerEffect(speaker);
     }
   }
 

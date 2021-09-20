@@ -11,7 +11,7 @@ import { map } from "rxjs/operators";
 export class TalksService {
   constructor(private httpClient: HttpClient) {}
 
-  getTalk(talkID: string) {
+  getTalk(talkID: number) {
     return this.httpClient.get<Talk>(
       `${AppSettings.API_ENDPOINT_TALKS}/${talkID}`
     );
@@ -26,10 +26,8 @@ export class TalksService {
     return this.httpClient.post<Talk>(AppSettings.API_ENDPOINT_TALKS, talk);
   }
 
-  delete(talkId: string) {
-    return this.httpClient.delete<Talk>(
-      `${AppSettings.API_ENDPOINT_TALKS}/${talkId}`
-    );
+  delete(talkId: number) {
+    return this.httpClient.delete<Talk>(`${AppSettings.API_ENDPOINT_TALKS}/${talkId}`);
   }
 
   update(talk: Talk) {

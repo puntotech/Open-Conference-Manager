@@ -6,12 +6,12 @@ import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
+import { MatChipsModule } from "@angular/material/chips";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatRadioModule } from "@angular/material/radio";
-import { MatTableModule } from "@angular/material/table";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { SharedModule } from "../shared/shared.module";
@@ -46,7 +46,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
     MatRadioModule,
     FontAwesomeModule,
     MatDialogModule,
-    MatTableModule,
+    MatChipsModule,
     MatPaginatorModule,
     ChartsModule,
     SharedModule,

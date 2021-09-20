@@ -1,4 +1,4 @@
-<ng-container *ngIf="talk; else newTalk">
+<ng-container *ngIf="(talk$ | async) as talk; else newTalk">
   <h4 class="section-title">My Talks > {{ talk.title }} > {{ action }} Talk</h4>
 </ng-container>
 <div class="container">

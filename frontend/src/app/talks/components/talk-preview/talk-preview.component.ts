@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
 import { MatDialog } from "@angular/material/dialog";
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { Talk } from "src/app/shared/models/talk.model";
 import { TalksService } from "../../services/talks.service";
 
@@ -12,11 +13,14 @@ import { TalksService } from "../../services/talks.service";
 export class TalkPreviewComponent implements OnInit {
   @Input() talk: Talk;
 
-  constructor(private talksService: TalksService, private dialog: MatDialog) {}
+  constructor(private speakerStore: SpeakerStore) {}
 
   ngOnInit(): void {}
 
   submitTalk() {
-    this.talksService.submit(this.talk).subscribe();
+    this.speakerStore.updateTalk({
+      ...this.talk,
+      submitted: new Date(),
+    });
   }
 }

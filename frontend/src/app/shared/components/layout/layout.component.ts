@@ -1,7 +1,5 @@
-import { SocialAuthService, SocialUser } from "angularx-social-login";
-
 import { Component } from "@angular/core";
-import { UserService } from "src/app/user/services/user.service";
+import { SpeakerStore } from "../../state/speaker.store";
 
 @Component({
   selector: "app-layout",
@@ -9,5 +7,6 @@ import { UserService } from "src/app/user/services/user.service";
   styleUrls: ["./layout.component.scss"],
 })
 export class LayoutComponent {
-  constructor(public userService: UserService) {}
+  speaker$ = this.speakerStore.speaker$;
+  constructor(private readonly speakerStore: SpeakerStore) {}
 }

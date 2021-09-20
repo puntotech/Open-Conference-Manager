@@ -5,14 +5,16 @@ import {
   faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { filter, switchMap, tap } from "rxjs/operators";
+import { filter, map, switchMap, tap } from "rxjs/operators";
 
 import { CoSpeakerFormComponent } from "../../components/co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
+import { Observable } from "rxjs";
+import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { Talk } from "../../../shared/models/talk.model";
-import { TalksService } from "../../services/talks.service";
-import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
 import { User } from "src/app/shared/models/user";
+import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
+import { routes } from "src/app/shared/consts/routes";
 
 @Component({
   selector: "app-talk-detail",
@@ -20,26 +22,23 @@ import { User } from "src/app/shared/models/user";
   styleUrls: ["./talk-detail.component.css"],
 })
 export class TalkDetailComponent implements OnInit {
-  talk: Talk;
-  averageGrade: number;
+  talk$: Observable<Talk>;
+  talkId: number;
 
   faTrash = faTrash;
   faPen = faPen;
   faPaperPlane = faPaperPlane;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private talksService: TalksService,
-    private dialog: MatDialog
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+    private readonly dialog: MatDialog,
+    private readonly speakerStore: SpeakerStore,
   ) {}
 
   ngOnInit() {
-    const talkId = this.route.snapshot.paramMap.get("id");
-    this.talksService
-      .getTalk(talkId)
-      .pipe(tap((talk) => (this.talk = talk)))
-      .subscribe();
+    this.talkId = +this.route.snapshot.paramMap.get("id");
+    this.talk$ = this.speakerStore.selectTalk(this.talkId);
   }
 
   openWarningDialog() {
@@ -49,7 +48,7 @@ export class TalkDetailComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap(() => this.talksService.delete(this.talk.id)),
+        tap(() => this.speakerStore.deleteTalk(this.talkId)),
         tap(() => this.navigateToTalkList())
       )
       .subscribe();
@@ -62,17 +61,27 @@ export class TalkDetailComponent implements OnInit {
       .pipe(
         filter(Boolean),
         switchMap((speaker: User) =>
-          this.talksService.update({
-            ...this.talk,
-            speakers: [...this.talk.speakers, speaker],
-          })
+          this.addCoSpeaker(speaker)
         ),
+        tap((talk: Talk) => this.speakerStore.addCoSpeaker(talk)),
         tap(() => this.navigateToTalkList())
       )
       .subscribe();
   }
 
+  submitTalk(talk) {
+    this.speakerStore.updateTalk({
+      ...talk,
+      submitted: new Date(),
+    });
+    this.navigateToTalkList();
+  }
+
   private navigateToTalkList() {
-    this.router.navigate(["/dashboard/talks"]);
+    this.router.navigate([routes.TALKS]);
+  }
+
+  private addCoSpeaker(speaker: User) {
+    return this.talk$.pipe(map(talk => ({...talk, speakers: [...talk.speakers, speaker]})))
   }
 }

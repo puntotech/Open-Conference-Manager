@@ -1,12 +1,12 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav mode="side" opened>
     <h1 class="sidenav-title">C4P Manager</h1>
-    <h3 *ngIf="userService.user$ | async as user">
+    <h3 *ngIf="speaker$ | async as user">
       {{ user.name }}
     </h3>
     <div class="link-container">
       <a
-        *ngIf="userService.user$ | async as user"
+        *ngIf="speaker$ | async as user"
         routerLink="profile"
         routerLinkActive="active"
         >My Profile</a
@@ -25,7 +25,7 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <app-toolbar></app-toolbar>
-    <h1 class="name-title" *ngIf="userService.user$ | async as user">
+    <h1 class="name-title" *ngIf="speaker$ | async as user">
       {{ user.name }}
     </h1>
     <router-outlet> </router-outlet>
