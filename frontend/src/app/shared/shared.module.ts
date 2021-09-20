@@ -10,8 +10,6 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { ToolbarComponent } from "./components/toolbar/toolbar.component";
-import more from "highcharts/highcharts-more";
-import solidGauge from "highcharts/modules/solid-gauge";
 
 @NgModule({
   imports: [
@@ -26,8 +24,5 @@ import solidGauge from "highcharts/modules/solid-gauge";
   ],
   declarations: [ToolbarComponent, LayoutComponent],
   exports: [ToolbarComponent],
-  providers: [
-    { provide: HIGHCHARTS_MODULES, useFactory: () => [more, solidGauge] },
-  ],
 })
 export class SharedModule {}

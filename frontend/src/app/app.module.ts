@@ -5,9 +5,11 @@ import {
 } from "angularx-social-login";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
+import { APP_INITIALIZER } from "@angular/core";
 import { AppComponent } from "./app.component";
 import { AppRoutesModule } from "./app-routes.module";
 import { AuthInterceptor } from "./shared/services/auth.interceptor";
+import { AuthService } from "./auth/services/auth.service";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from "@angular/platform-browser";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
@@ -16,6 +18,12 @@ import { MatButtonModule } from "@angular/material/button";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "./shared/shared.module";
+import { UserService } from "./user/services/user.service";
+
+export function initialize(authService: AuthService) {
+  console.log("INITIALIZING");
+  return () => authService.loadUserData();
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +42,12 @@ import { SharedModule } from "./shared/shared.module";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initialize,
+      deps: [AuthService],
       multi: true,
     },
     {

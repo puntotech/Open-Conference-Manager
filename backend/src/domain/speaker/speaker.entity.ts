@@ -46,7 +46,37 @@ export class Speaker extends BaseEntity {
     type: 'varchar',
     default: '',
   })
+  bio: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
   twitter: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  github: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  linkedin: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  youtube: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  company: string;
 
   @Column({
     type: 'varchar',

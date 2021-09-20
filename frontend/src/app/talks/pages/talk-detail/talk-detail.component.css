@@ -25,9 +25,15 @@ fa-icon {
   padding-top: 0;
 }
 
+.title-container {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
 .button-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin: 20px;
   margin-bottom: 0;
 }

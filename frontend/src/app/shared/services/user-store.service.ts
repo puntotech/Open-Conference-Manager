@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
 import { AppSettings } from "src/app/app.settings";
+import { Injectable } from "@angular/core";
 
 @Injectable({
   providedIn: "root",
@@ -19,13 +19,5 @@ export class UserStoreService {
   set token(token: string) {
     this._token = token;
     localStorage.setItem(AppSettings.APP_LOCALSTORAGE_TOKEN, token);
-  }
-
-  get token() {
-    return this._token;
-  }
-
-  isLoggedIn() {
-    return this.token !== null;
   }
 }
