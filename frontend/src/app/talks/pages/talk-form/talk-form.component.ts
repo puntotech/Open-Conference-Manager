@@ -1,14 +1,12 @@
 import { ActivatedRoute, Router } from "@angular/router";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { filter, switchMap, tap } from "rxjs/operators";
 
 import { Observable } from "rxjs";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { Talk } from "src/app/shared/models/talk.model";
-import { TalksService } from "../../services/talks.service";
-import { UserService } from "src/app/user/services/user.service";
 import { routes } from "src/app/shared/consts/routes";
+import { tap } from "rxjs/operators";
 
 @Component({
   selector: "app-talk-form",
@@ -38,8 +36,9 @@ export class TalkFormComponent implements OnInit {
 
     if (this.talkId) {
       this.speakerStore.getTalk(this.talkId);
-      this.talk$ = this.speakerStore.selectTalk(this.talkId).pipe(
-        tap(talk => this.update(talk)));
+      this.talk$ = this.speakerStore
+        .selectTalk(this.talkId)
+        .pipe(tap((talk) => this.update(talk)));
     } else {
       this.create();
     }
@@ -49,7 +48,7 @@ export class TalkFormComponent implements OnInit {
     this.action = "Create";
   }
 
-  private update(talk) {
+  private update(talk: Talk) {
     this.action = "Update";
     this.talkForm.patchValue(talk);
   }
@@ -75,7 +74,7 @@ export class TalkFormComponent implements OnInit {
     } else {
       const talk: Talk = { ...this.talkForm.value, id: this.talkId };
       this.speakerStore.updateTalk(talk);
-      this.navigateToTalkList()
+      this.router.navigate([`dashboard/talks/${this.talkId}`]);
     }
   }
 
@@ -90,8 +89,8 @@ export class TalkFormComponent implements OnInit {
   }
 
   deleteTalk() {
-      this.speakerStore.deleteTalk(this.talkId);
-      this.navigateToTalkList();    
+    this.speakerStore.deleteTalk(this.talkId);
+    this.navigateToTalkList();
   }
 
   private navigateToTalkList() {
