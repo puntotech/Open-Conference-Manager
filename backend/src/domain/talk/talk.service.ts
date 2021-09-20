@@ -26,8 +26,8 @@ export class TalkService {
   public async getBySpeakerId(id: number): Promise<Talk[]> {
     return this.talkRepository
       .createQueryBuilder('talk')
-      .leftJoinAndSelect('talk.speakers', 'speaker')
-      .where('speaker.id=:id', { id })
+      .leftJoin('talk.speakers', 'speaker')
+      .where('talk.id=:id', { id })
       .andWhere('talk.status=1')
       .getMany();
   }
@@ -43,7 +43,16 @@ export class TalkService {
     return this.talkRepository.save({ ...talk, speakers: [speaker] });
   }
 
-  public update(talk: Partial<Talk>): Promise<Talk> {
-    return this.talkRepository.save(talk);
+  public update(talk: Partial<Talk> & { id: number }): Promise<Talk> {
+    const oldtalk = this.talkRepository.findOne(talk.id);
+    if (!oldtalk) {
+      throw new NotFoundException(`There is no talk with id:${talk.id}`);
+    }
+    const updatedTalk = {
+      ...oldtalk,
+      ...talk,
+      id: talk.id,
+    };
+    return this.talkRepository.save(updatedTalk);
   }
 }

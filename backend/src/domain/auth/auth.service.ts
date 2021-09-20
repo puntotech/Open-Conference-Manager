@@ -9,6 +9,8 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { SpeakerService } from '@modules/speaker/speaker.service';
 import { environment } from 'src/environment';
 import { ConfigService } from '@nestjs/config';
+import { verify } from 'jsonwebtoken';
+import { TalkService } from '@modules/talk/talk.service';
 
 export interface TokenResponse {
   accessToken: string;
@@ -28,9 +30,10 @@ export type GetSocialUserHandler = () => Promise<Partial<SocialUser>>;
 @Injectable()
 export class AuthService {
   constructor(
-    private speakerService: SpeakerService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
+    private readonly speakerService: SpeakerService,
+    private readonly talkService: TalkService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async login(user): Promise<TokenResponse> {
@@ -59,7 +62,7 @@ export class AuthService {
       refreshToken,
     };
   }
-  /* 
+
   async checkToken(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const [type, token] = request.headers.authorization
@@ -78,9 +81,12 @@ export class AuthService {
     if (!speaker) {
       throw new UnauthorizedException();
     }
+
+    speaker.talks = await this.talkService.getBySpeakerId(speaker.id);
+
     request.user = speaker;
     return true;
-  } */
+  }
 
   async loginWithThirdParty(
     getSocialUser: GetSocialUserHandler,
@@ -125,11 +131,11 @@ export class AuthService {
     return options;
   }
 
-  /*   protected verifyJWTToken(token: string): { id: string; email: string } {
+  protected verifyJWTToken(token: string): { id: string; email: string } {
     try {
-      return verify(token, jwtConstants.secret) as any;
+      return verify(token, this.configService.get<string>('JWT_SECRET')) as any;
     } catch (e) {
       throw new UnauthorizedException();
     }
-  } */
+  }
 }

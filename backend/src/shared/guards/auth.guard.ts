@@ -6,7 +6,6 @@ import { AuthService } from '@modules/auth/auth.service';
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService) {}
   canActivate(context: ExecutionContext) {
-    return true;
-    /* return this.authService.checkToken(context); */
+    return this.authService.checkToken(context);
   }
 }

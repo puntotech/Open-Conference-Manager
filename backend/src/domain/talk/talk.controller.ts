@@ -46,7 +46,7 @@ export class TalkController {
 
   //TODO: add validation dto
   @Put()
-  updateTalk(@Body() talk: Partial<Talk>): Promise<Talk> {
+  updateTalk(@Body() talk: Partial<Talk> & { id: number }): Promise<Talk> {
     return this.talkService.update(talk);
   }
 
