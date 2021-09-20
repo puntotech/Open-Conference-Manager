@@ -1,4 +1,4 @@
-<ng-container *ngIf="(talk$ | async) as talk; else newTalk">
+<ng-container *ngIf="talk$ | async as talk; else newTalk">
   <h4 class="section-title">My Talks > {{ talk.title }} > {{ action }} Talk</h4>
 </ng-container>
 <div class="container">
@@ -26,7 +26,11 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Language</mat-label>
-      <input matInput type="text" formControlName="language" required />
+      <mat-select required formControlName="language">
+        <mat-option *ngFor="let language of languages" [value]="language">
+          {{ language }}
+        </mat-option>
+      </mat-select>
       <mat-error *ngIf="language.hasError('required')">
         Language is required
       </mat-error>

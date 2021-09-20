@@ -22,6 +22,7 @@ export class TalkFormComponent implements OnInit {
   action: string;
   levels: string[] = ["Advanced", "Intermediate", "Beginner"];
   tracks: string[] = ["Web", "Mobile", "Cloud", "CyberSecurity"];
+  languages: string[] = ["Spanish", "English"];
 
   constructor(
     private fb: FormBuilder,
