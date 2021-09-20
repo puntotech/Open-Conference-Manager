@@ -1,20 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  switchMap,
+} from "rxjs/operators";
 
 import { MatDialogRef } from "@angular/material/dialog";
-import { TalksService } from "../../services/talks.service";
 import { Observable } from "rxjs";
-import { Speaker } from "src/app/shared/models/talk.model";
 import { User } from "src/app/shared/models/user";
 import { UserService } from "src/app/user/services/user.service";
-import {
-  distinctUntilChanged,
-  debounceTime,
-  filter,
-  switchMap,
-  tap,
-  map,
-} from "rxjs/operators";
 
 @Component({
   selector: "app-co-speaker-form",
