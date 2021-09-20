@@ -12,7 +12,8 @@
 
 <ng-template #submitted>
   <div class="submitted-container">
-    <mat-chip color="accent" selected>Submitted</mat-chip>
-    <span>{{ talk.submitted | date: "yyyy-MM-dd HH:mm" }}</span>
+    <mat-chip-list>
+      <mat-chip color="accent" selected>Submitted</mat-chip>
+    </mat-chip-list>
   </div>
 </ng-template>
