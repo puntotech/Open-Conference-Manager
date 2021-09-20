@@ -8,8 +8,7 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
 import { SpeakerService } from '@modules/speaker/speaker.service';
 import { environment } from 'src/environment';
-import { jwtConstants } from 'jwt-constants';
-import { verify } from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 export interface TokenResponse {
   accessToken: string;
@@ -31,6 +30,7 @@ export class AuthService {
   constructor(
     private speakerService: SpeakerService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
   async login(user): Promise<TokenResponse> {
@@ -51,7 +51,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(
       payload,
       /* this.getAccessTokenOptions(user), */
-      { secret: jwtConstants.secret },
+      { secret: this.configService.get<string>('JWT_SECRET') },
     );
 
     return {
