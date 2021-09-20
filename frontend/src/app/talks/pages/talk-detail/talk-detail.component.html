@@ -2,18 +2,25 @@
   <h4 class="section-title">My Talks > {{ talk.title }}</h4>
   <div class="button-container">
     <button
-      [disabled] = "talk.submitted"
+      [disabled]="talk.submitted"
       mat-raised-button
       routerLink="/dashboard/talks/update/{{ talk.id }}"
     >
       <fa-icon size="lg" [icon]="faPen"></fa-icon>Update
     </button>
-    <button 
-    [disabled] = "talk.submitted"
-    mat-raised-button (click)="openWarningDialog()">
+    <button
+      [disabled]="talk.submitted"
+      mat-raised-button
+      (click)="openWarningDialog()"
+    >
       <fa-icon size="lg" [icon]="faTrash"></fa-icon>Delete
     </button>
-    <button *ngIf="!talk.submitted" mat-raised-button class="blue-btn">
+    <button
+      *ngIf="!talk.submitted"
+      mat-raised-button
+      class="blue-btn"
+      (click)="submitTalk(talk)"
+    >
       <fa-icon size="lg" [icon]="faPaperPlane"></fa-icon>Submit
     </button>
   </div>
@@ -41,7 +48,12 @@
           {{ speaker.name }}
         </div>
       </div>
-      <button [disabled] = "talk.submitted" (click)="addSpeaker()" class="blue-btn" mat-raised-button>
+      <button
+        [disabled]="talk.submitted"
+        (click)="addSpeaker()"
+        class="blue-btn"
+        mat-raised-button
+      >
         Add a Co-Speaker
       </button>
     </div>

@@ -33,7 +33,7 @@ export class TalkDetailComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly dialog: MatDialog,
-    private readonly speakerStore: SpeakerStore,
+    private readonly speakerStore: SpeakerStore
   ) {}
 
   ngOnInit() {
@@ -60,21 +60,18 @@ export class TalkDetailComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        switchMap((speaker: User) =>
-          this.addCoSpeaker(speaker)
-        ),
+        switchMap((speaker: User) => this.addCoSpeaker(speaker)),
         tap((talk: Talk) => this.speakerStore.addCoSpeaker(talk)),
         tap(() => this.navigateToTalkList())
       )
       .subscribe();
   }
 
-  submitTalk(talk) {
+  submitTalk(talk: Talk) {
     this.speakerStore.updateTalk({
       ...talk,
       submitted: new Date(),
     });
-    this.navigateToTalkList();
   }
 
   private navigateToTalkList() {
@@ -82,6 +79,8 @@ export class TalkDetailComponent implements OnInit {
   }
 
   private addCoSpeaker(speaker: User) {
-    return this.talk$.pipe(map(talk => ({...talk, speakers: [...talk.speakers, speaker]})))
+    return this.talk$.pipe(
+      map((talk) => ({ ...talk, speakers: [...talk.speakers, speaker] }))
+    );
   }
 }
