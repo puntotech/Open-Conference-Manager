@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 
-import { MatDialog } from "@angular/material/dialog";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { Talk } from "src/app/shared/models/talk.model";
-import { TalksService } from "../../services/talks.service";
 
 @Component({
   selector: "app-talk-preview",

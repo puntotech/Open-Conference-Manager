@@ -1,5 +1,6 @@
 import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
+import { Talk, TalkWithStatus } from "../../../shared/models/talk.model";
 import {
   faPaperPlane,
   faPen,
@@ -11,11 +12,10 @@ import { CoSpeakerFormComponent } from "../../components/co-speaker-form/co-spea
 import { MatDialog } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
-import { Talk } from "../../../shared/models/talk.model";
+import { TalksService } from "../../services/talks.service";
 import { User } from "src/app/shared/models/user";
 import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
 import { routes } from "src/app/shared/consts/routes";
-import { TalksService } from "../../services/talks.service";
 
 @Component({
   selector: "app-talk-detail",
@@ -56,7 +56,7 @@ export class TalkDetailComponent implements OnInit {
       .subscribe();
   }
 
-  addSpeaker(talk: Talk) {
+  addSpeaker(talk: TalkWithStatus) {
     const dialogRef = this.dialog.open(CoSpeakerFormComponent);
     dialogRef
       .afterClosed()
@@ -65,7 +65,7 @@ export class TalkDetailComponent implements OnInit {
         tap((speaker: User) =>
           this.speakerStore.addCoSpeaker({
             ...talk,
-            speakers: [...talk.speakers, speaker],
+            speakerId: +speaker.id,
           })
         ),
         tap(() => this.navigateToTalkList())
@@ -74,6 +74,7 @@ export class TalkDetailComponent implements OnInit {
   }
 
   submitTalk(talk: Talk) {
+    console.log(talk);
     this.speakerStore.updateTalk({
       ...talk,
       submitted: new Date(),

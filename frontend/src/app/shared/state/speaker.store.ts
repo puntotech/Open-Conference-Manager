@@ -1,9 +1,9 @@
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
+import { Talk, TalkWithStatus } from "../models/talk.model";
 
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Talk } from "../models/talk.model";
 import { TalksService } from "src/app/talks/services/talks.service";
 import { User } from "../models/user";
 import { UserService } from "src/app/user/services/user.service";
@@ -133,11 +133,11 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly addCoSpeaker = this.effect((talk$: Observable<Talk>) => {
+  readonly addCoSpeaker = this.effect((talk$: Observable<TalkWithStatus>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
-      switchMap((talk: Talk) =>
-        this.talkService.update(talk).pipe(
+      switchMap((talk: TalkWithStatus) =>
+        this.talkService.addCospeaker(talk).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
             (talk) => console.log("todo"),

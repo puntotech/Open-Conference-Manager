@@ -4,10 +4,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
+import { SpeakerTalkStatus } from './speaker-talk-status.entity';
 import { Talk } from '@modules/talk/talk.entity';
 
 @Entity()
@@ -105,9 +107,9 @@ export class Speaker extends BaseEntity {
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Talk, (talk) => talk.speakers)
-  @JoinTable({
-    name: 'speakers_talks',
-  })
-  talks: Talk[];
+  @OneToMany(
+    () => SpeakerTalkStatus,
+    (speakerTalkStatus) => speakerTalkStatus.speaker,
+  )
+  speakerTalkStatus: SpeakerTalkStatus[];
 }

@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Speaker } from '@modules/speaker/speaker.entity';
+import { SpeakerTalkStatus } from '@modules/speaker/speaker-talk-status.entity';
 
 @Entity()
 export class Talk extends BaseEntity {
@@ -55,9 +57,6 @@ export class Talk extends BaseEntity {
   })
   submitted?: Date;
 
-  @ManyToMany(() => Speaker, (speaker) => speaker.talks)
-  speakers: Speaker[];
-
   @Column({
     type: 'boolean',
     default: true,
@@ -78,4 +77,11 @@ export class Talk extends BaseEntity {
     nullable: false,
   })
   updatedAt: Date;
+
+  @OneToMany(
+    () => SpeakerTalkStatus,
+    (speakerTalkStatus) => speakerTalkStatus.talk,
+    { cascade: true },
+  )
+  speakerTalkStatus: SpeakerTalkStatus[];
 }

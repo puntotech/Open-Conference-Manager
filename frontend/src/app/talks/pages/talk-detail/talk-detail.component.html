@@ -38,14 +38,14 @@
       <p>Comments: {{ talk.comments }}</p>
       <h3>Submitted</h3>
       <ng-container *ngIf="talk.submitted; else notSubmitted">
-        <p>{{ talk.submitted }}</p>
+        <p>{{ talk.submitted | date: "yyyy-MM-dd HH:mm" }}</p>
       </ng-container>
     </div>
     <div class="talk-speakers">
       <div>
         <h3>Speakers</h3>
-        <div *ngFor="let speaker of talk.speakers">
-          {{ speaker.name }}
+        <div *ngFor="let status of talk.speakerTalkStatus">
+          {{ status.speaker.name }}
         </div>
       </div>
       <button

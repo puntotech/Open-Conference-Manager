@@ -54,4 +54,18 @@ export class TalkController {
   deleteTalk(@Param('id', ParseIntPipe) id: number): Promise<Talk> {
     return this.talkService.update({ id, status: false });
   }
+
+  @Post('/cospeaker')
+  addCospeakers(
+    @Body() talk: Partial<Talk> & { id: number; speakerId: number },
+  ): Promise<Talk> {
+    return this.talkService.addCospeaker(talk);
+  }
+
+  @Delete('/cospeaker')
+  removeCospeakers(
+    @Body() talk: Partial<Talk> & { id: number; speakerId: number },
+  ): Promise<Talk> {
+    return this.talkService.removeCospeaker(talk);
+  }
 }

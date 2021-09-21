@@ -20,17 +20,6 @@ export class SpeakerController {
 
   @Get('me')
   me(@User() user: Speaker): Speaker {
-    const convertArrayToObject = (array, key) =>
-      array.reduce(
-        (obj, item) => ({
-          ...obj,
-          [item[key]]: item,
-        }),
-        {},
-      );
-    user.talks = user.talks.filter((talk) => talk.status);
-    user.talks = convertArrayToObject(user.talks, 'id');
-
     return user;
   }
 
