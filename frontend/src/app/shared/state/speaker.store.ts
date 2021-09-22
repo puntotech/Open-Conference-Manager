@@ -1,10 +1,10 @@
 import { CoSpeakerDto, User } from "../models/user";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
-import { Talk, TalkWithStatus } from "../models/talk.model";
 
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { Talk } from "../models/talk.model";
 import { TalksService } from "src/app/talks/services/talks.service";
 import { UserService } from "src/app/user/services/user.service";
 import { switchMap } from "rxjs/operators";
