@@ -84,7 +84,7 @@ export class TalkService {
     const talk = await this.getTalkByIdWithoutSpeaker(talkDetail.id);
 
     talk.speakerTalkStatus = talk.speakerTalkStatus.filter(
-      (status) => status.speakerId === talkDetail.speakerId,
+      (status) => status.speakerId !== talkDetail.speakerId,
     );
     return this.talkRepository.save(talk);
   }

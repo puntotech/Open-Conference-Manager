@@ -73,6 +73,13 @@ export class TalkDetailComponent implements OnInit {
       .subscribe();
   }
 
+  removeSpeaker(talk: TalkWithStatus, speaker: User) {
+    this.speakerStore.removeCoSpeaker({
+      ...talk,
+      speakerId: +speaker.id,
+    });
+  }
+
   submitTalk(talk: Talk) {
     console.log(talk);
     this.speakerStore.updateTalk({

@@ -148,6 +148,23 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
+  readonly removeCoSpeaker = this.effect(
+    (talk$: Observable<TalkWithStatus>) => {
+      return talk$.pipe(
+        // 👇 Handle race condition with the proper choice of the flattening operator.
+        switchMap((talk: TalkWithStatus) =>
+          this.talkService.removeCospeaker(talk).pipe(
+            //👇 Act on the result within inner pipe.
+            tapResponse(
+              (talk) => console.log("todo"),
+              (error: HttpErrorResponse) => console.log(error)
+            )
+          )
+        )
+      );
+    }
+  );
+
   readonly getTalk = this.effect((talkId: Observable<number>) => {
     return talkId.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.

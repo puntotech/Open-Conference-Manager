@@ -30,6 +30,13 @@ export class TalksService {
     );
   }
 
+  removeCospeaker(talk: TalkWithStatus) {
+    return this.httpClient.delete<TalkWithStatus>(
+      `${AppSettings.API_ENDPOINT_TALKS}/cospeaker`,
+      { body: talk }
+    );
+  }
+
   create(talk: Talk) {
     return this.httpClient.post<Talk>(AppSettings.API_ENDPOINT_TALKS, talk);
   }
