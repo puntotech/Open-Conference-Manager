@@ -39,8 +39,8 @@ export class SpeakerController {
   }
 
   @Get()
-  getSpeakers(): Promise<Speaker[]> {
-    return this.speakerService.findAll();
+  getSpeakers(@User() speaker: Speaker): Promise<Speaker[]> {
+    return this.speakerService.findAll(speaker);
   }
 
   @Post()

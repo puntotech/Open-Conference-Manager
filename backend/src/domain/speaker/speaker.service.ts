@@ -1,4 +1,4 @@
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, FindOneOptions, Not, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
@@ -28,8 +28,10 @@ export class SpeakerService {
     return this.speakerRepository.findOne(options);
   }
 
-  public findAll(): Promise<Speaker[]> {
-    return this.speakerRepository.find();
+  public findAll(speaker: Speaker): Promise<Speaker[]> {
+    return this.speakerRepository.find({
+      where: { id: Not(speaker.id) },
+    });
   }
 
   public create(speaker: Partial<Speaker>): Promise<Speaker> {

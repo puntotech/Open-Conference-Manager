@@ -64,7 +64,7 @@ export class TalkDetailComponent implements OnInit {
         filter(Boolean),
         tap((speaker: User) =>
           this.speakerStore.addCoSpeaker({
-            ...talk,
+            talkId: talk.id,
             speakerId: +speaker.id,
           })
         ),
@@ -74,10 +74,14 @@ export class TalkDetailComponent implements OnInit {
   }
 
   removeSpeaker(talk: TalkWithStatus, speaker: User) {
-    this.speakerStore.removeCoSpeaker({
-      ...talk,
+    console.log({
+      talkId: talk.id,
       speakerId: +speaker.id,
     });
+    /* this.speakerStore.removeCoSpeaker({
+      ...talk.speakerTalkStatus,
+      speakerId: +speaker.id,
+    }); */
   }
 
   submitTalk(talk: Talk) {

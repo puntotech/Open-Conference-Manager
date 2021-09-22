@@ -79,6 +79,7 @@ export class Talk extends BaseEntity {
   @OneToMany(
     () => SpeakerTalkStatus,
     (speakerTalkStatus) => speakerTalkStatus.talk,
+    { cascade: true },
   )
   speakerTalkStatus: SpeakerTalkStatus[];
 }

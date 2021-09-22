@@ -1,3 +1,4 @@
+import { CoSpeakerDto, User } from "../models/user";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
 import { Talk, TalkWithStatus } from "../models/talk.model";
 
@@ -5,7 +6,6 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { TalksService } from "src/app/talks/services/talks.service";
-import { User } from "../models/user";
 import { UserService } from "src/app/user/services/user.service";
 import { switchMap } from "rxjs/operators";
 
@@ -133,10 +133,10 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly addCoSpeaker = this.effect((talk$: Observable<TalkWithStatus>) => {
+  readonly addCoSpeaker = this.effect((talk$: Observable<CoSpeakerDto>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
-      switchMap((talk: TalkWithStatus) =>
+      switchMap((talk: CoSpeakerDto) =>
         this.talkService.addCospeaker(talk).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
@@ -148,22 +148,20 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly removeCoSpeaker = this.effect(
-    (talk$: Observable<TalkWithStatus>) => {
-      return talk$.pipe(
-        // 👇 Handle race condition with the proper choice of the flattening operator.
-        switchMap((talk: TalkWithStatus) =>
-          this.talkService.removeCospeaker(talk).pipe(
-            //👇 Act on the result within inner pipe.
-            tapResponse(
-              (talk) => console.log("todo"),
-              (error: HttpErrorResponse) => console.log(error)
-            )
+  readonly removeCoSpeaker = this.effect((talk$: Observable<CoSpeakerDto>) => {
+    return talk$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+      switchMap((talk: CoSpeakerDto) =>
+        this.talkService.removeCospeaker(talk).pipe(
+          //👇 Act on the result within inner pipe.
+          tapResponse(
+            (talk) => console.log("todo"),
+            (error: HttpErrorResponse) => console.log(error)
           )
         )
-      );
-    }
-  );
+      )
+    );
+  });
 
   readonly getTalk = this.effect((talkId: Observable<number>) => {
     return talkId.pipe(

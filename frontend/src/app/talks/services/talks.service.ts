@@ -1,6 +1,7 @@
 import { Talk, TalkWithStatus } from "../../shared/models/talk.model";
 
 import { AppSettings } from "src/app/app.settings";
+import { CoSpeakerDto } from "src/app/shared/models/user";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
@@ -23,16 +24,16 @@ export class TalksService {
     return this.update(submittedTalk);
   }
 
-  addCospeaker(talk: TalkWithStatus) {
-    return this.httpClient.post<TalkWithStatus>(
-      `${AppSettings.API_ENDPOINT_TALKS}/cospeaker`,
+  addCospeaker(talk: CoSpeakerDto) {
+    return this.httpClient.post<CoSpeakerDto>(
+      `${AppSettings.API_ENDPOINT_COSPEAKERS}`,
       talk
     );
   }
 
-  removeCospeaker(talk: TalkWithStatus) {
-    return this.httpClient.delete<TalkWithStatus>(
-      `${AppSettings.API_ENDPOINT_TALKS}/cospeaker`,
+  removeCospeaker(talk: CoSpeakerDto) {
+    return this.httpClient.delete<CoSpeakerDto>(
+      `${AppSettings.API_ENDPOINT_COSPEAKERS}`,
       { body: talk }
     );
   }
