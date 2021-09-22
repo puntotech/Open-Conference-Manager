@@ -45,6 +45,12 @@ export class Speaker extends BaseEntity {
     type: 'varchar',
     default: '',
   })
+  city: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
   bio: string;
 
   @Column({
