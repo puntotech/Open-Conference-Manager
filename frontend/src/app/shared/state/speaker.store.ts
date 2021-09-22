@@ -1,3 +1,4 @@
+import { CoSpeakerDto, User } from "../models/user";
 import { ComponentStore, tapResponse } from "@ngrx/component-store";
 
 import { HttpErrorResponse } from "@angular/common/http";
@@ -5,7 +6,6 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Talk } from "../models/talk.model";
 import { TalksService } from "src/app/talks/services/talks.service";
-import { User } from "../models/user";
 import { UserService } from "src/app/user/services/user.service";
 import { switchMap } from "rxjs/operators";
 
@@ -72,6 +72,20 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     },
   }));
 
+  readonly updateTalk = this.updater((state, talk: Talk) => {
+    const talks = { ...state.speaker.talks };
+    talks[talk.id] = talk;
+
+    return {
+      speaker: {
+        ...state.speaker,
+        talks: {
+          ...talks,
+        },
+      },
+    };
+  });
+
   readonly removeTalk = this.updater((state, talk: Talk) => {
     const talks = { ...state.speaker.talks };
     delete talks[talk.id];
@@ -98,7 +112,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly updateTalk = this.effect((talk$: Observable<Talk>) => {
+  readonly updateTalkEffect = this.effect((talk$: Observable<Talk>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
       switchMap((talk) =>
@@ -110,7 +124,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
           .pipe(
             //👇 Act on the result within inner pipe.
             tapResponse(
-              (talk) => this.addTalk(talk),
+              (talk) => this.updateTalk(talk),
               (error: HttpErrorResponse) => console.log(error)
             )
           )
@@ -133,11 +147,26 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly addCoSpeaker = this.effect((talk$: Observable<Talk>) => {
+  readonly addCoSpeaker = this.effect((talk$: Observable<CoSpeakerDto>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
-      switchMap((talk: Talk) =>
-        this.talkService.update(talk).pipe(
+      switchMap((talk: CoSpeakerDto) =>
+        this.talkService.addCospeaker(talk).pipe(
+          //👇 Act on the result within inner pipe.
+          tapResponse(
+            (talk) => console.log("todo"),
+            (error: HttpErrorResponse) => console.log(error)
+          )
+        )
+      )
+    );
+  });
+
+  readonly removeCoSpeaker = this.effect((talk$: Observable<CoSpeakerDto>) => {
+    return talk$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+      switchMap((talk: CoSpeakerDto) =>
+        this.talkService.removeCospeaker(talk).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
             (talk) => console.log("todo"),

@@ -6,11 +6,13 @@ import {
 } from '@nestjs/common';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 
-import { SpeakerService } from '@modules/speaker/speaker.service';
-import { environment } from 'src/environment';
 import { ConfigService } from '@nestjs/config';
-import { verify } from 'jsonwebtoken';
+import { Speaker } from '@modules/speaker/speaker.entity';
+import { SpeakerService } from '@modules/speaker/speaker.service';
+import { Talk } from '@modules/talk/talk.entity';
 import { TalkService } from '@modules/talk/talk.service';
+import { environment } from 'src/environment';
+import { verify } from 'jsonwebtoken';
 
 export interface TokenResponse {
   accessToken: string;
@@ -74,9 +76,10 @@ export class AuthService {
     }
 
     const decoded = this.verifyJWTToken(token);
-    const speaker = await this.speakerService.findOne({
-      where: { id: decoded.id, email: decoded.email },
-    });
+    const speaker: Speaker & { talks?: Talk[] } =
+      await this.speakerService.findOne({
+        where: { id: decoded.id, email: decoded.email },
+      });
 
     if (!speaker) {
       throw new UnauthorizedException();

@@ -2,13 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
-import { Talk } from '@modules/talk/talk.entity';
+import { SpeakerTalkStatus } from '@modules/speaker-talk-status/speaker-talk-status.entity';
 
 @Entity()
 @Unique(['email'])
@@ -41,6 +40,12 @@ export class Speaker extends BaseEntity {
     default: '',
   })
   photoUrl: string;
+
+  @Column({
+    type: 'varchar',
+    default: '',
+  })
+  city: string;
 
   @Column({
     type: 'varchar',
@@ -105,9 +110,9 @@ export class Speaker extends BaseEntity {
   })
   updatedAt: Date;
 
-  @ManyToMany(() => Talk, (talk) => talk.speakers)
-  @JoinTable({
-    name: 'speakers_talks',
-  })
-  talks: Talk[];
+  @OneToMany(
+    () => SpeakerTalkStatus,
+    (speakerTalkStatus) => speakerTalkStatus.speaker,
+  )
+  speakerTalkStatus: SpeakerTalkStatus[];
 }

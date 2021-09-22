@@ -10,5 +10,17 @@ export interface Talk {
   comments: string;
   submitted?: Date;
   createdAt: Date;
-  speakers: User[];
+  speakerId: number;
+}
+
+export interface TalkWithStatus extends Talk {
+  speakerTalkStatus: SpeakerTalkStatus[];
+}
+
+export interface SpeakerTalkStatus {
+  speakerId: number;
+  admin: boolean;
+  createdAt: Date;
+  talkId: number;
+  speaker: User;
 }

@@ -1,10 +1,12 @@
 import { Global, Module } from '@nestjs/common';
+
+import { ConfigService } from '@nestjs/config';
+import { LoggerOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Speaker } from '../speaker/speaker.entity';
 import { Talk } from '@modules/talk/talk.entity';
-import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LoggerOptions } from 'typeorm';
+import { SpeakerTalkStatus } from '@modules/speaker-talk-status/speaker-talk-status.entity';
 
 const databaseConnection = [
   TypeOrmModule.forRootAsync({
@@ -19,7 +21,7 @@ const databaseConnection = [
       logging: configService.get<LoggerOptions>('DB_LOGGING'),
       dropSchema: false,
       synchronize: true,
-      entities: [Speaker, Talk],
+      entities: [Speaker, Talk, SpeakerTalkStatus],
       extra: {
         multipleStatements: true,
         connectionLimit: 100,

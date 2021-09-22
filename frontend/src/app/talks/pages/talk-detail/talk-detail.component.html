@@ -38,14 +38,24 @@
       <p>Comments: {{ talk.comments }}</p>
       <h3>Submitted</h3>
       <ng-container *ngIf="talk.submitted; else notSubmitted">
-        <p>{{ talk.submitted }}</p>
+        <p>{{ talk.submitted | date: "yyyy-MM-dd HH:mm" }}</p>
       </ng-container>
     </div>
     <div class="talk-speakers">
       <div>
         <h3>Speakers</h3>
-        <div *ngFor="let speaker of talk.speakers">
-          {{ speaker.name }}
+        <div class="speaker" *ngFor="let status of talk.speakerTalkStatus">
+          <div class="speaker-info">
+            <img class="speaker-img" [src]="status.speaker.photoUrl" />
+            <span>{{ status.speaker.name }}</span>
+          </div>
+          <fa-icon
+            class="delete-speaker--btn"
+            (click)="removeSpeaker(talk, status.speaker)"
+            *ngIf="!status.admin"
+            size="lg"
+            [icon]="faTrash"
+          ></fa-icon>
         </div>
       </div>
       <button

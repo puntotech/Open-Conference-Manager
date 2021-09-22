@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { Talk } from './talk.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-/* private talkRepository: TalkRepository */
+
 @Injectable()
 export class TalkService {
   constructor(
@@ -14,7 +14,7 @@ export class TalkService {
 
   public async getByID(id: number): Promise<Talk> {
     const talk = await this.talkRepository.findOne({
-      relations: ['speakers'],
+      relations: ['speakerTalkStatus', 'speakerTalkStatus.speaker'],
       where: { status: true, id },
     });
     if (!talk) {
@@ -26,8 +26,8 @@ export class TalkService {
   public async getBySpeakerId(id: number): Promise<Talk[]> {
     return this.talkRepository
       .createQueryBuilder('talk')
-      .leftJoin('talk.speakers', 'speaker')
-      .where('talk.id=:id', { id })
+      .leftJoinAndSelect('talk.speakerTalkStatus', 'status')
+      .where('status.speakerId=:id', { id })
       .andWhere('talk.status=1')
       .getMany();
   }
@@ -40,14 +40,20 @@ export class TalkService {
   }
 
   public create(talk: Partial<Talk>, speaker: Speaker): Promise<Talk> {
-    return this.talkRepository.save({ ...talk, speakers: [speaker] });
+    return this.talkRepository.save({
+      ...talk,
+      speakerTalkStatus: [{ admin: true, speakerId: speaker.id }],
+    });
   }
 
-  public update(talk: Partial<Talk> & { id: number }): Promise<Talk> {
-    const oldtalk = this.talkRepository.findOne(talk.id);
+  public async update(talk: Partial<Talk> & { id: number }): Promise<Talk> {
+    const oldtalk = await this.talkRepository.findOne(talk.id);
+
     if (!oldtalk) {
       throw new NotFoundException(`There is no talk with id:${talk.id}`);
     }
+
+    delete talk.speakerTalkStatus;
     const updatedTalk = {
       ...oldtalk,
       ...talk,

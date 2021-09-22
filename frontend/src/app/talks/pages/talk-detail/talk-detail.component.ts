@@ -1,21 +1,21 @@
 import { ActivatedRoute, Router } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
+import { Talk, TalkWithStatus } from "../../../shared/models/talk.model";
 import {
   faPaperPlane,
   faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { filter, map, switchMap, tap } from "rxjs/operators";
+import { filter, tap } from "rxjs/operators";
 
 import { CoSpeakerFormComponent } from "../../components/co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
-import { Talk } from "../../../shared/models/talk.model";
+import { TalksService } from "../../services/talks.service";
 import { User } from "src/app/shared/models/user";
 import { WarningDialogComponent } from "../../components/warning-dialog/warning-dialog.component";
 import { routes } from "src/app/shared/consts/routes";
-import { TalksService } from "../../services/talks.service";
 
 @Component({
   selector: "app-talk-detail",
@@ -44,7 +44,15 @@ export class TalkDetailComponent implements OnInit {
   }
 
   openWarningDialog() {
-    const dialogRef = this.dialog.open(WarningDialogComponent);
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title:
+          "You are about to delete your talk. This action is irreversible.",
+        subtitle: "Are you sure you want to delete?",
+        btnMessage: "I'm sure, Delete this talk",
+        warn: true,
+      },
+    });
 
     dialogRef
       .afterClosed()
@@ -56,7 +64,7 @@ export class TalkDetailComponent implements OnInit {
       .subscribe();
   }
 
-  addSpeaker(talk: Talk) {
+  addSpeaker(talk: TalkWithStatus) {
     const dialogRef = this.dialog.open(CoSpeakerFormComponent);
     dialogRef
       .afterClosed()
@@ -64,23 +72,83 @@ export class TalkDetailComponent implements OnInit {
         filter(Boolean),
         tap((speaker: User) =>
           this.speakerStore.addCoSpeaker({
-            ...talk,
-            speakers: [...talk.speakers, speaker],
+            talkId: talk.id,
+            speakerId: +speaker.id,
           })
         ),
-        tap(() => this.navigateToTalkList())
+        tap((speaker: User) => this.addCoSpeaker(talk, speaker))
+      )
+      .subscribe();
+  }
+
+  removeSpeaker(talk: TalkWithStatus, speaker: User) {
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: "Are you sure you want to delete this co-speaker?",
+        btnMessage: "I'm sure, Delete this co-speaker",
+        warn: true,
+      },
+    });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        tap(() =>
+          this.speakerStore.removeCoSpeaker({
+            talkId: talk.id,
+            speakerId: +speaker.id,
+          })
+        ),
+        tap(() => this.removeCoSpeaker(talk, speaker))
       )
       .subscribe();
   }
 
   submitTalk(talk: Talk) {
-    this.speakerStore.updateTalk({
-      ...talk,
-      submitted: new Date(),
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title:
+          "Are you sure you want to submit this talk? You won't be able to edit or delete it once it's submitted.",
+        btnMessage: "I'm sure, Submit my talk",
+        warn: false,
+      },
     });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        tap(() =>
+          this.speakerStore.updateTalkEffect({
+            ...talk,
+            submitted: new Date(),
+          })
+        )
+      )
+      .subscribe();
   }
 
   private navigateToTalkList() {
     this.router.navigate([routes.TALKS]);
+  }
+
+  private addCoSpeaker(talk: TalkWithStatus, speaker: User) {
+    talk.speakerTalkStatus = [
+      ...talk.speakerTalkStatus,
+      {
+        speaker,
+        speakerId: +speaker.id,
+        talkId: talk.id,
+        createdAt: new Date(),
+        admin: false,
+      },
+    ];
+  }
+
+  private removeCoSpeaker(talk: TalkWithStatus, speaker: User) {
+    talk.speakerTalkStatus = talk.speakerTalkStatus.filter(
+      ({ speakerId }) => speakerId !== +speaker.id
+    );
   }
 }
