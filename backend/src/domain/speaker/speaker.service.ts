@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
-/* private speakerRepository: SpeakerRepository */
 @Injectable()
 export class SpeakerService {
   constructor(

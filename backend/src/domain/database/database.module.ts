@@ -4,9 +4,9 @@ import { ConfigService } from '@nestjs/config';
 import { LoggerOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Speaker } from '../speaker/speaker.entity';
-import { SpeakerTalkStatus } from '@modules/speaker/speaker-talk-status.entity';
 import { Talk } from '@modules/talk/talk.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SpeakerTalkStatus } from '@modules/speaker-talk-status/speaker-talk-status.entity';
 
 const databaseConnection = [
   TypeOrmModule.forRootAsync({

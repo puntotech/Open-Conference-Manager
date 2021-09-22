@@ -35,20 +35,6 @@ export class TalkController {
     return this.talkService.getAll();
   }
 
-  @Post('/cospeaker')
-  addCospeakers(
-    @Body() talk: Partial<Talk> & { id: number; speakerId: number },
-  ): Promise<Talk> {
-    return this.talkService.addCospeaker(talk);
-  }
-
-  @Delete('/cospeaker')
-  removeCospeakers(
-    @Body() talk: Partial<Talk> & { id: number; speakerId: number },
-  ): Promise<Talk> {
-    return this.talkService.removeCospeaker(talk);
-  }
-
   //TODO: add validation dto
   @Post()
   createTalk(

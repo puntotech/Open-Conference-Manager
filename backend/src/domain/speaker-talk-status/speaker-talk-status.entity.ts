@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, ManyToOne } from 'typeorm';
 
-import { Speaker } from './speaker.entity';
 import { Talk } from '@modules/talk/talk.entity';
+import { Speaker } from '@modules/speaker/speaker.entity';
 
 @Entity()
 export class SpeakerTalkStatus extends BaseEntity {

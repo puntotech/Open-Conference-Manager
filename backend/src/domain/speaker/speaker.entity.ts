@@ -2,15 +2,12 @@ import {
   BaseEntity,
   Column,
   Entity,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 
-import { SpeakerTalkStatus } from './speaker-talk-status.entity';
-import { Talk } from '@modules/talk/talk.entity';
+import { SpeakerTalkStatus } from '@modules/speaker-talk-status/speaker-talk-status.entity';
 
 @Entity()
 @Unique(['email'])
