@@ -6,7 +6,7 @@ import {
   faPen,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { filter, map, switchMap, tap } from "rxjs/operators";
+import { filter, tap } from "rxjs/operators";
 
 import { CoSpeakerFormComponent } from "../../components/co-speaker-form/co-speaker-form.component";
 import { MatDialog } from "@angular/material/dialog";
@@ -50,6 +50,7 @@ export class TalkDetailComponent implements OnInit {
           "You are about to delete your talk. This action is irreversible.",
         subtitle: "Are you sure you want to delete?",
         btnMessage: "I'm sure, Delete this talk",
+        warn: true,
       },
     });
 
@@ -85,6 +86,7 @@ export class TalkDetailComponent implements OnInit {
       data: {
         title: "Are you sure you want to delete this co-speaker?",
         btnMessage: "I'm sure, Delete this co-speaker",
+        warn: true,
       },
     });
 
@@ -104,11 +106,27 @@ export class TalkDetailComponent implements OnInit {
   }
 
   submitTalk(talk: Talk) {
-    console.log(talk);
-    this.speakerStore.updateTalk({
-      ...talk,
-      submitted: new Date(),
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title:
+          "Are you sure you want to submit this talk? You won't be able to edit or delete it once it's submitted.",
+        btnMessage: "I'm sure, Submit my talk",
+        warn: false,
+      },
     });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        tap(() =>
+          this.speakerStore.updateTalkEffect({
+            ...talk,
+            submitted: new Date(),
+          })
+        )
+      )
+      .subscribe();
   }
 
   private navigateToTalkList() {

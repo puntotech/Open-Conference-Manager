@@ -72,6 +72,20 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     },
   }));
 
+  readonly updateTalk = this.updater((state, talk: Talk) => {
+    const talks = { ...state.speaker.talks };
+    talks[talk.id] = talk;
+
+    return {
+      speaker: {
+        ...state.speaker,
+        talks: {
+          ...talks,
+        },
+      },
+    };
+  });
+
   readonly removeTalk = this.updater((state, talk: Talk) => {
     const talks = { ...state.speaker.talks };
     delete talks[talk.id];
@@ -98,7 +112,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly updateTalk = this.effect((talk$: Observable<Talk>) => {
+  readonly updateTalkEffect = this.effect((talk$: Observable<Talk>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
       switchMap((talk) =>
@@ -110,7 +124,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
           .pipe(
             //👇 Act on the result within inner pipe.
             tapResponse(
-              (talk) => this.addTalk(talk),
+              (talk) => this.updateTalk(talk),
               (error: HttpErrorResponse) => console.log(error)
             )
           )
