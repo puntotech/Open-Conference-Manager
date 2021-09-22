@@ -74,14 +74,10 @@ export class TalkDetailComponent implements OnInit {
   }
 
   removeSpeaker(talk: TalkWithStatus, speaker: User) {
-    console.log({
+    this.speakerStore.removeCoSpeaker({
       talkId: talk.id,
       speakerId: +speaker.id,
     });
-    /* this.speakerStore.removeCoSpeaker({
-      ...talk.speakerTalkStatus,
-      speakerId: +speaker.id,
-    }); */
   }
 
   submitTalk(talk: Talk) {
