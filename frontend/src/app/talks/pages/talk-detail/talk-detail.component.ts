@@ -44,7 +44,14 @@ export class TalkDetailComponent implements OnInit {
   }
 
   openWarningDialog() {
-    const dialogRef = this.dialog.open(WarningDialogComponent);
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title:
+          "You are about to delete your talk. This action is irreversible.",
+        subtitle: "Are you sure you want to delete?",
+        btnMessage: "I'm sure, Delete this talk",
+      },
+    });
 
     dialogRef
       .afterClosed()
@@ -68,16 +75,32 @@ export class TalkDetailComponent implements OnInit {
             speakerId: +speaker.id,
           })
         ),
-        tap(() => this.navigateToTalkList())
+        tap((speaker: User) => this.addCoSpeaker(talk, speaker))
       )
       .subscribe();
   }
 
   removeSpeaker(talk: TalkWithStatus, speaker: User) {
-    this.speakerStore.removeCoSpeaker({
-      talkId: talk.id,
-      speakerId: +speaker.id,
+    const dialogRef = this.dialog.open(WarningDialogComponent, {
+      data: {
+        title: "Are you sure you want to delete this co-speaker?",
+        btnMessage: "I'm sure, Delete this co-speaker",
+      },
     });
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(Boolean),
+        tap(() =>
+          this.speakerStore.removeCoSpeaker({
+            talkId: talk.id,
+            speakerId: +speaker.id,
+          })
+        ),
+        tap(() => this.removeCoSpeaker(talk, speaker))
+      )
+      .subscribe();
   }
 
   submitTalk(talk: Talk) {
@@ -90,5 +113,24 @@ export class TalkDetailComponent implements OnInit {
 
   private navigateToTalkList() {
     this.router.navigate([routes.TALKS]);
+  }
+
+  private addCoSpeaker(talk: TalkWithStatus, speaker: User) {
+    talk.speakerTalkStatus = [
+      ...talk.speakerTalkStatus,
+      {
+        speaker,
+        speakerId: +speaker.id,
+        talkId: talk.id,
+        createdAt: new Date(),
+        admin: false,
+      },
+    ];
+  }
+
+  private removeCoSpeaker(talk: TalkWithStatus, speaker: User) {
+    talk.speakerTalkStatus = talk.speakerTalkStatus.filter(
+      ({ speakerId }) => speakerId !== +speaker.id
+    );
   }
 }
