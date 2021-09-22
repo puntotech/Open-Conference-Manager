@@ -19,9 +19,11 @@ export class TalksService {
     );
   }
 
-  submit(talk: Talk) {
-    const submittedTalk = { ...talk, submitted: new Date() };
-    return this.update(submittedTalk);
+  submit(id: number) {
+    return this.httpClient.put<Talk>(
+      `${AppSettings.API_ENDPOINT_TALKS}/submit/${id}`,
+      {}
+    );
   }
 
   addCospeaker(talk: CoSpeakerDto) {

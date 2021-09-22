@@ -8,13 +8,17 @@ export class SpeakerTalkStatus extends BaseEntity {
   @Column({ nullable: false, primary: true })
   speakerId: number;
 
-  @ManyToOne(() => Speaker, (speaker) => speaker.speakerTalkStatus)
+  @ManyToOne(() => Speaker, (speaker) => speaker.speakerTalkStatus, {
+    onDelete: 'CASCADE',
+  })
   speaker: Speaker;
 
   @Column({ nullable: false, primary: true })
   talkId: number;
 
-  @ManyToOne(() => Talk, (talk) => talk.speakerTalkStatus)
+  @ManyToOne(() => Talk, (talk) => talk.speakerTalkStatus, {
+    onDelete: 'CASCADE',
+  })
   talk: Talk;
 
   @Column({

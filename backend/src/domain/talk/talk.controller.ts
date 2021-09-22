@@ -14,11 +14,15 @@ import { Talk } from './talk.entity';
 import { AuthGuard } from '@guards/auth.guard';
 import { User } from 'src/shared/decorators/user.decorator';
 import { Speaker } from '@modules/speaker/speaker.entity';
+import { MailService } from '@modules/mail/mail.service';
 
 @Controller('talks')
 @UseGuards(AuthGuard)
 export class TalkController {
-  constructor(private readonly talkService: TalkService) {}
+  constructor(
+    private readonly talkService: TalkService,
+    private mailService: MailService,
+  ) {}
 
   @Get('/me')
   getBySpeakerId(@User() speaker: Speaker): Promise<Talk[]> {
@@ -48,6 +52,20 @@ export class TalkController {
   @Put()
   updateTalk(@Body() talk: Partial<Talk> & { id: number }): Promise<Talk> {
     return this.talkService.update(talk);
+  }
+
+  @Put('/submit/:id')
+  async submitTalk(
+    @Param('id', ParseIntPipe) id: number,
+    @User() speaker: Speaker,
+  ): Promise<Talk> {
+    const submittedTalk = await this.talkService.submit(id);
+
+    // TODO: Add co-speakers
+    this.mailService.sendSubmittedTalkConfirmation(submittedTalk, speaker);
+    this.mailService.sendSubmissionNotification(submittedTalk, speaker);
+
+    return submittedTalk;
   }
 
   @Delete('/:id')

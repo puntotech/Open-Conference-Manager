@@ -20,7 +20,7 @@ export class Talk extends BaseEntity {
   title: string;
 
   @Column({
-    type: 'varchar',
+    type: 'longtext',
     nullable: false,
   })
   abstract: string;
@@ -44,7 +44,7 @@ export class Talk extends BaseEntity {
   level: string;
 
   @Column({
-    type: 'varchar',
+    type: 'longtext',
     nullable: false,
   })
   comments: string;
@@ -79,7 +79,7 @@ export class Talk extends BaseEntity {
   @OneToMany(
     () => SpeakerTalkStatus,
     (speakerTalkStatus) => speakerTalkStatus.talk,
-    { cascade: true },
+    { cascade: ['insert'] },
   )
   speakerTalkStatus: SpeakerTalkStatus[];
 }

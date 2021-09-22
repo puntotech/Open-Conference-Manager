@@ -147,6 +147,21 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
+  readonly submitTalk = this.effect((talkId$: Observable<number>) => {
+    return talkId$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+      switchMap((id) =>
+        this.talkService.submit(id).pipe(
+          //👇 Act on the result within inner pipe.
+          tapResponse(
+            (talk) => talk,
+            (error: HttpErrorResponse) => console.log(error)
+          )
+        )
+      )
+    );
+  });
+
   readonly addCoSpeaker = this.effect((talk$: Observable<CoSpeakerDto>) => {
     return talk$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
