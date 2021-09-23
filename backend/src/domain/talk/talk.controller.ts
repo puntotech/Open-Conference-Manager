@@ -61,7 +61,6 @@ export class TalkController {
   ): Promise<Talk> {
     const submittedTalk = await this.talkService.submit(id);
 
-    // TODO: Add co-speakers
     this.mailService.sendSubmittedTalkConfirmation(submittedTalk, speaker);
     this.mailService.sendSubmissionNotification(submittedTalk, speaker);
 
