@@ -47,21 +47,6 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     },
   }));
 
-  readonly updateSpeakerEffect = this.effect((speaker$: Observable<User>) => {
-    return speaker$.pipe(
-      // 👇 Handle race condition with the proper choice of the flattening operator.
-      switchMap((speaker) =>
-        this.userService.updateMe(speaker).pipe(
-          //👇 Act on the result within inner pipe.
-          tapResponse(
-            (speaker) => this.updateSpeaker(speaker),
-            (error: HttpErrorResponse) => console.log(error)
-          )
-        )
-      )
-    );
-  });
-
   readonly addTalk = this.updater((state, talk: Talk) => ({
     speaker: {
       ...state.speaker,
@@ -75,7 +60,6 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
   readonly updateTalk = this.updater((state, talk: Talk) => {
     const talks = { ...state.speaker.talks };
     talks[talk.id] = talk;
-
     return {
       speaker: {
         ...state.speaker,
@@ -132,6 +116,21 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
+  readonly updateSpeakerEffect = this.effect((speaker$: Observable<User>) => {
+    return speaker$.pipe(
+      // 👇 Handle race condition with the proper choice of the flattening operator.
+      switchMap((speaker) =>
+        this.userService.updateMe(speaker).pipe(
+          //👇 Act on the result within inner pipe.
+          tapResponse(
+            (speaker) => this.updateSpeaker(speaker),
+            (error: HttpErrorResponse) => console.log(error)
+          )
+        )
+      )
+    );
+  });
+
   readonly deleteTalk = this.effect((talkId$: Observable<number>) => {
     return talkId$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
@@ -147,14 +146,14 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
     );
   });
 
-  readonly submitTalk = this.effect((talkId$: Observable<number>) => {
+  readonly submitTalkEffect = this.effect((talkId$: Observable<number>) => {
     return talkId$.pipe(
       // 👇 Handle race condition with the proper choice of the flattening operator.
       switchMap((id) =>
         this.talkService.submit(id).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
-            (talk) => talk,
+            (talk) => this.updateTalk(talk),
             (error: HttpErrorResponse) => console.log(error)
           )
         )
@@ -169,7 +168,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
         this.talkService.addCospeaker(talk).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
-            (talk) => console.log("todo"),
+            (talk) => talk,
             (error: HttpErrorResponse) => console.log(error)
           )
         )
@@ -184,7 +183,7 @@ export class SpeakerStore extends ComponentStore<SpeakerState> {
         this.talkService.removeCospeaker(talk).pipe(
           //👇 Act on the result within inner pipe.
           tapResponse(
-            (talk) => console.log("todo"),
+            (talk) => talk,
             (error: HttpErrorResponse) => console.log(error)
           )
         )
