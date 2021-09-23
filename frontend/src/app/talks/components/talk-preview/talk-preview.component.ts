@@ -5,8 +5,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { Talk } from "src/app/shared/models/talk.model";
 import { WarningDialogComponent } from "../warning-dialog/warning-dialog.component";
-import { Router } from "@angular/router";
-import { routes } from "src/app/shared/consts/routes";
 
 @Component({
   selector: "app-talk-preview",
@@ -18,8 +16,7 @@ export class TalkPreviewComponent implements OnInit {
 
   constructor(
     private speakerStore: SpeakerStore,
-    private readonly dialog: MatDialog,
-    private router: Router
+    private readonly dialog: MatDialog
   ) {}
 
   ngOnInit(): void {}
@@ -38,8 +35,7 @@ export class TalkPreviewComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        tap(() => this.speakerStore.submitTalk(this.talk.id)),
-        tap(() => (this.talk.submitted = new Date()))
+        tap(() => this.speakerStore.submitTalkEffect(this.talk.id))
       )
       .subscribe();
   }
