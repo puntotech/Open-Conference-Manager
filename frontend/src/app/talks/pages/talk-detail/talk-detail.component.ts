@@ -119,7 +119,7 @@ export class TalkDetailComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        tap(() => this.speakerStore.submitTalk(talk.id)),
+        tap(() => this.speakerStore.submitTalkEffect(talk.id)),
         tap(() => this.navigateToTalkList())
       )
       .subscribe();
