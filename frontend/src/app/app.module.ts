@@ -18,10 +18,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "./shared/shared.module";
-import { UserService } from "./user/services/user.service";
 
 export function initialize(authService: AuthService) {
-  console.log("INITIALIZING");
   return () => authService.loadUserData();
 }
 
