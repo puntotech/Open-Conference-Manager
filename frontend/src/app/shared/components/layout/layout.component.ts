@@ -1,3 +1,9 @@
+import {
+  faBook,
+  faPaperPlane,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
+
 import { Component } from "@angular/core";
 import { SpeakerStore } from "../../state/speaker.store";
 
@@ -8,5 +14,8 @@ import { SpeakerStore } from "../../state/speaker.store";
 })
 export class LayoutComponent {
   speaker$ = this.speakerStore.speaker$;
+  faUser = faUser;
+  fa = faPaperPlane;
+
   constructor(private readonly speakerStore: SpeakerStore) {}
 }
