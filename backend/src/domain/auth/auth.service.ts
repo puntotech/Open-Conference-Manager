@@ -85,7 +85,8 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    speaker.talks = await this.talkService.getBySpeakerId(speaker.id);
+    const talks = await this.talkService.getBySpeakerId(speaker.id);
+    speaker.talks = this.transformTalksToObject(talks);
 
     request.user = speaker;
     return true;
@@ -140,5 +141,17 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException();
     }
+  }
+
+  private transformTalksToObject(talks: Talk[]) {
+    const convertArrayToObject = (array, key) =>
+      array.reduce(
+        (obj, item) => ({
+          ...obj,
+          [item[key]]: item,
+        }),
+        {},
+      );
+    return convertArrayToObject(talks, 'id');
   }
 }

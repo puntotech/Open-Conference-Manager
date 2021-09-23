@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 
 import { Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
@@ -60,5 +64,21 @@ export class TalkService {
       id: talk.id,
     };
     return this.talkRepository.save(updatedTalk);
+  }
+
+  public async submit(id: number): Promise<Talk> {
+    const talk = await this.getByID(id);
+
+    if (talk.submitted) {
+      throw new BadRequestException(`Talk with id: ${id} is already submitted`);
+    }
+
+    talk.submitted = new Date();
+    await this.talkRepository.save({
+      ...talk,
+      speakerTalkStatus: undefined,
+    });
+
+    return talk;
   }
 }

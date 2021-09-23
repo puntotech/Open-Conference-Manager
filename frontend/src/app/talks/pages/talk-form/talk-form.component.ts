@@ -74,7 +74,7 @@ export class TalkFormComponent implements OnInit {
       this.message = "Please correct all errors and resubmit the form";
     } else {
       const talk: Talk = { ...this.talkForm.value, id: this.talkId };
-      this.speakerStore.updateTalk(talk);
+      this.speakerStore.updateTalkEffect(talk);
       this.router.navigate([`dashboard/talks/${this.talkId}`]);
     }
   }

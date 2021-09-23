@@ -35,12 +35,7 @@ export class TalkPreviewComponent implements OnInit {
       .afterClosed()
       .pipe(
         filter(Boolean),
-        tap(() =>
-          this.speakerStore.updateTalkEffect({
-            ...this.talk,
-            submitted: new Date(),
-          })
-        )
+        tap(() => this.speakerStore.submitTalkEffect(this.talk.id))
       )
       .subscribe();
   }

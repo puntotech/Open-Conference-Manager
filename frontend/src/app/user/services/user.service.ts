@@ -15,7 +15,6 @@ export class UserService {
   }
 
   updateMe(user: User) {
-    console.log(AppSettings.API_ENDPOINT_SPEAKERS);
     return this.http.put<User>(`${AppSettings.API_ENDPOINT_SPEAKERS}/me`, user);
   }
 
