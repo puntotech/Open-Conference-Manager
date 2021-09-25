@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { GoogleAuthService } from './google-auth-service';
+import { FacebookAuthGuard } from './facebook/facebook-auth.guard';
+import { GoogleAuthService } from './google/google-auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -14,5 +15,12 @@ export class AuthController {
     return this.authService.loginWithThirdParty(() =>
       this.googleAuthService.getUser(accessToken),
     );
+  }
+
+  //TODO: need a access_token post variable
+  @UseGuards(FacebookAuthGuard)
+  @Post('facebook-login')
+  facebooklogin(@Request() req) {
+    return this.authService.loginWithThirdParty(() => req.user);
   }
 }

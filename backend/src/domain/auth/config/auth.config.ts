@@ -7,4 +7,8 @@ export const authConfig = {
     appId: process.env.GOOGLE_CLIENT_ID,
     appSecret: process.env.GOOGLE_SECRET,
   },
+  facebook: {
+    clientID: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+  },
 };
