@@ -35,13 +35,17 @@ export class AuthService {
 
   login(options /*:  Login */): Observable<any> {
     return this.http
-      .post(options.endpoint, { accessToken: options.accessToken })
+      .post(options.endpoint, { access_token: options.access_token })
       .pipe(
-        tap((res: any) => (this.userStore.token = res.accessToken)),
+        tap((res: any) => (this.userStore.token = res.access_token)),
         concatMap(() => this.userService.me()),
         tap((speaker) => this.speakerStore.loadSpeaker(speaker)),
         tap(() => this.router.navigate([routes.DASHBOARD]))
       );
+  }
+
+  requestTwitterRedirectUri() {
+    return this.http.get("http://localhost:3000/auth/twitter/uri");
   }
 
   logout() {

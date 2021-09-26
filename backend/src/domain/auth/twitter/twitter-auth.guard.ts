@@ -2,7 +2,7 @@ import { ExecutionContext, HttpException, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class FacebookAuthGuard extends AuthGuard('facebook-token') {
+export class TwitterAuthGuard extends AuthGuard('twitter') {
   canActivate(context: ExecutionContext) {
     return super.canActivate(context);
   }

@@ -4,12 +4,15 @@
 
 export const environment = {
   production: false,
-  APIENDPOINT_BACKEND: 'http://localhost:3000',
+  APIENDPOINT_BACKEND: "http://localhost:3000",
 };
 
 export const GOOGLE_KEY =
   "527493599469-f16jl5v1crcotl2pacojqp7s7lfk1dr6.apps.googleusercontent.com";
 
+export const FACEBOOK_KEY = "253249423378119";
+//App ID: 1047083652726486
+//App Secret: cecee4229a02cb88fd77506bfe0cbad
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.

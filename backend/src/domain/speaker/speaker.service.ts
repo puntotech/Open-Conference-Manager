@@ -1,4 +1,4 @@
-import { FindManyOptions, FindOneOptions, Not, Repository } from 'typeorm';
+import { FindOneOptions, Not, Repository } from 'typeorm';
 
 import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
@@ -20,10 +20,6 @@ export class SpeakerService {
       .getOne();
   }
 
-  public find(options?: FindManyOptions<Speaker>): Promise<Speaker[]> {
-    return this.speakerRepository.find(options);
-  }
-
   public findOne(options?: FindOneOptions<Speaker>): Promise<Speaker> {
     return this.speakerRepository.findOne(options);
   }
@@ -40,15 +36,5 @@ export class SpeakerService {
 
   public update(speaker: Partial<Speaker>): Promise<Speaker> {
     return this.speakerRepository.save(speaker);
-  }
-
-  public async upsert(speaker: Partial<Speaker>) {
-    const oldSpeaker = await this.speakerRepository.findOne({
-      email: speaker.email,
-    });
-    if (oldSpeaker) {
-      return Object.assign(oldSpeaker, speaker).save();
-    }
-    return this.create(speaker);
   }
 }

@@ -7,6 +7,9 @@ import { SpeakerModule } from '@modules/speaker/speaker.module';
 import { TalkModule } from '@modules/talk/talk.module';
 import { FacebookStrategy } from './facebook/facebookStrategy';
 import { HttpModule } from '@nestjs/axios';
+import { TwitterStrategy } from './twitter/twitter.strategy';
+import { TwitterAuthService } from './twitter/twitter.service';
+import { PassportModule } from '@nestjs/passport';
 
 @Global()
 @Module({
@@ -14,13 +17,20 @@ import { HttpModule } from '@nestjs/axios';
     HttpModule,
     SpeakerModule,
     TalkModule,
+    PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '24h' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleAuthService, FacebookStrategy],
+  providers: [
+    AuthService,
+    TwitterAuthService,
+    GoogleAuthService,
+    FacebookStrategy,
+    TwitterStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

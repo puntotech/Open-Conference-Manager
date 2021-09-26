@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { PassportStrategy } from '@nestjs/passport';
 import { Profile } from 'passport';
-import * as FacebookTokenStrategy from 'passport-facebook-token';
+import * as TwitterPassportStrategy from 'passport-twitter';
+//import * as TwitterTokenStrategy from 'passport-twitter-token';
+
+import { PassportStrategy } from '@nestjs/passport';
 import { User } from 'src/shared/dto/user.dto';
 
 @Injectable()
-export class FacebookStrategy extends PassportStrategy(
-  FacebookTokenStrategy,
-  'facebook-token',
+export class TwitterStrategy extends PassportStrategy(
+  TwitterPassportStrategy,
+  'twitter',
 ) {
   constructor() {
     super({
-      clientID: process.env.FACEBOOK_APP_ID,
-      clientSecret: process.env.FACEBOOK_APP_SECRET,
-      fbGraphVersion: 'v3.0',
+      consumerKey: process.env.TWITTER_APP_ID,
+      consumerSecret: process.env.TWITTER_APP_SECRET,
+      callback: 'http://127.0.0.1:3000/auth/twitter/signin',
     });
   }
 
