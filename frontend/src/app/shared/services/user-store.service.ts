@@ -16,6 +16,10 @@ export class UserStoreService {
     localStorage.removeItem(AppSettings.APP_LOCALSTORAGE_TOKEN);
   }
 
+  get token() {
+    return this._token;
+  }
+
   set token(token: string) {
     this._token = token;
     localStorage.setItem(AppSettings.APP_LOCALSTORAGE_TOKEN, token);

@@ -1,0 +1,75 @@
+img {
+  border: 5px solid #fff;
+  border-radius: 50%;
+  height: 200px;
+  margin-bottom: 10px;
+}
+
+span {
+  color: #696969;
+}
+
+mat-panel-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+fa-icon {
+  margin-right: 10px;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.subtitle {
+  font-weight: bold;
+}
+
+.container {
+  background-color: #f3f3f3;
+  display: flex;
+  margin: 25px;
+}
+
+.profile {
+  background-color: #5479fa;
+  border-radius: 10px;
+  margin-right: 30px;
+  max-width: 30%;
+  padding: 30px;
+  text-align: center;
+}
+
+.short-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.talks-container {
+  background-color: #fff;
+  flex-grow: 1;
+  height: auto;
+  padding: 20px;
+}
+
+.speaker {
+  display: flex;
+  justify-content: space-between;
+}
+
+.talk-detail--container {
+  align-items: center;
+  display: flex;
+}
+
+.bubble,
+.transparent-bubble {
+  margin: 5px;
+}
+
+.text-container * {
+  color: #fff;
+  text-align: center;
+}

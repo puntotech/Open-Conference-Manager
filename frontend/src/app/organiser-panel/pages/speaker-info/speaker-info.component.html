@@ -1,0 +1,90 @@
+<h4 class="section-title">Organiser Panel > {{ speaker.name }}</h4>
+
+<div *ngIf="speaker" class="container">
+  <div class="profile">
+    <img *ngIf="speaker.photoUrl" src="{{ speaker.photoUrl }}" />
+    <div class="text-container">
+      <h1 class="title">{{ speaker.name }}</h1>
+      <h5 class="email">{{ speaker.email }}</h5>
+      <div class="short-info">
+        <span *ngIf="speaker.company">Company: {{ speaker.company }}</span>
+        <span *ngIf="speaker.city">City: {{ speaker.city }}</span>
+      </div>
+      <p>{{ speaker.bio }}</p>
+      <div>
+        <fa-icon
+          *ngIf="speaker.twitter"
+          size="lg"
+          [styles]="{ color: 'white' }"
+          [icon]="faTwitter"
+        ></fa-icon>
+        <span>{{ speaker.twitter }}</span>
+      </div>
+
+      <div>
+        <fa-icon
+          *ngIf="speaker.github"
+          size="lg"
+          [styles]="{ color: 'white' }"
+          [icon]="faGithub"
+        ></fa-icon>
+        <span>{{ speaker.github }}</span>
+      </div>
+
+      <div>
+        <fa-icon
+          *ngIf="speaker.linkedin"
+          size="lg"
+          [styles]="{ color: 'white' }"
+          [icon]="faLinkedin"
+        ></fa-icon>
+        <span>{{ speaker.linkedin }}</span>
+      </div>
+
+      <div>
+        <fa-icon
+          *ngIf="speaker.youtube"
+          size="lg"
+          [styles]="{ color: 'white' }"
+          [icon]="faYoutube"
+        ></fa-icon>
+        <span>{{ speaker.youtube }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="talks-container">
+    <h3>Submitted Talks</h3>
+    <mat-accordion>
+      <mat-expansion-panel
+        *ngFor="let talk of talks"
+        (opened)="panelOpenState = true"
+        (closed)="panelOpenState = false"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4 class="subtitle">{{ talk.title }}</h4>
+            <div class="talk-detail--container">
+              <p class="transparent-bubble">{{ talk.language }}</p>
+              <p class="transparent-bubble">{{ talk.level }}</p>
+              <p class="bubble" [ngClass]="talk.track | lowercase">
+                {{ talk.track }}
+              </p>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <h4 class="subtitle">Abstract</h4>
+        <p>{{ talk.abstract }}</p>
+        <h4 class="subtitle">Comments</h4>
+        <p>{{ talk.comments }}</p>
+
+        <div *ngIf="talk.speakerTalkStatus.length > 1">
+          <h4 class="subtitle">Co-Speakers</h4>
+          <div *ngFor="let status of talk.speakerTalkStatus" class="speaker">
+            <h4>{{ status.speaker.name }}</h4>
+            <h4 *ngIf="status.admin">Owner</h4>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

@@ -14,12 +14,14 @@ span {
 
 .profile {
   display: flex;
-  margin: 50px;
+  margin: 25px;
 }
 
 .container {
   background-color: #5479fa;
   border-radius: 10px 0 0 10px;
+  max-width: 30%;
+  margin-bottom: 20px;
   padding: 30px;
   text-align: center;
 }

@@ -108,8 +108,8 @@ export class TalkDetailComponent implements OnInit {
   submitTalk(talk: Talk) {
     const dialogRef = this.dialog.open(WarningDialogComponent, {
       data: {
-        title:
-          "Are you sure you want to submit this talk? You won't be able to edit or delete it once it's submitted.",
+        title: "Are you sure you want to submit this talk?",
+        subtitle: "You won't be able to edit or delete it once it's submitted.",
         btnMessage: "I'm sure, Submit my talk",
         warn: false,
       },

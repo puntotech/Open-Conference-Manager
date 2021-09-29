@@ -1,0 +1,31 @@
+img {
+  border: 5px solid #6788ff;
+  border-radius: 50%;
+  height: 50px;
+}
+
+h3 {
+  margin: 0;
+}
+
+.speaker-container {
+  background-color: #fff;
+  border-bottom: 1px solid rgb(211, 211, 211);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  padding-left: 5px;
+  transition: all 0.5s;
+}
+
+.text-container {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  margin-right: 30px;
+}
+
+.speaker-container:hover {
+  background-color: #ecf0ff;
+}
