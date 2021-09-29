@@ -35,7 +35,7 @@ jobs:
           KEY: ${{ secrets.KEY }}
         with:
           source: "./dist/ocm/*"
-          target: "./open conference manager/client"
+          target: "./open\ conference\ manager/client"
           strip_components: 2  
    
   deploy-backend:
@@ -51,7 +51,7 @@ jobs:
          KEY: ${{ secrets.KEY }}
         with:
          source: "./backend/*"
-         target: "./open conference manager/server"
+         target: "./open\ conference\ manager/server"
 
       - name: Build and deploy server
         uses: appleboy/ssh-action@v0.1.2
