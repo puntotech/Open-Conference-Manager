@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Prepare files
         uses: actions/checkout@v1
+        with:
+          path: 'frontend'
       - uses: actions/setup-node@v1 #this installs node and npm for us
         with:
           node-version: "14.x"
