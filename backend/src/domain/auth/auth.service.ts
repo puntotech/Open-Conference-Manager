@@ -11,9 +11,10 @@ import { Speaker } from '@modules/speaker/speaker.entity';
 import { SpeakerService } from '@modules/speaker/speaker.service';
 import { Talk } from '@modules/talk/talk.entity';
 import { TalkService } from '@modules/talk/talk.service';
-import { environment } from 'src/environment';
-import { verify } from 'jsonwebtoken';
 import { User } from 'src/shared/dto/user.dto';
+import { environment } from 'src/environment';
+import { transformTalksToObject } from 'src/shared/utils/utils';
+import { verify } from 'jsonwebtoken';
 
 export interface TokenResponse {
   access_token: string;
@@ -79,7 +80,7 @@ export class AuthService {
     }
 
     const talks = await this.talkService.getBySpeakerId(speaker.id);
-    speaker.talks = this.transformTalksToObject(talks);
+    speaker.talks = transformTalksToObject(talks);
 
     request.user = speaker;
     return true;
@@ -136,17 +137,5 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException();
     }
-  }
-
-  private transformTalksToObject(talks: Talk[]) {
-    const convertArrayToObject = (array, key) =>
-      array.reduce(
-        (obj, item) => ({
-          ...obj,
-          [item[key]]: item,
-        }),
-        {},
-      );
-    return convertArrayToObject(talks, 'id');
   }
 }

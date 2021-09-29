@@ -1,9 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { HttpService } from '@nestjs/axios';
 import { OAuth } from 'oauth';
+import { User } from 'src/shared/dto/user.dto';
 import { promisify } from 'util';
-import { Request } from 'express';
 
 @Injectable()
 export class TwitterAuthService {
@@ -15,17 +14,16 @@ export class TwitterAuthService {
     request_token_uri: 'https://api.twitter.com/oauth/request_token',
     login_dialog_uri: 'https://api.twitter.com/oauth/authenticate',
     access_token_uri: 'https://api.twitter.com/oauth/access_token',
-    oauth_redirect_uri: 'http://localhost:4200/recipes',
+    oauth_redirect_uri: 'http://localhost:4200/auth/loading',
   };
-  constructor(private readonly httpService: HttpService) {
+  constructor() {
     this.oauthConsumer = new OAuth(
-      'https://twitter.com/oauth/request_token',
-      'https://twitter.com/oauth/access_token',
+      this.twitterConfig.request_token_uri,
+      this.twitterConfig.access_token_uri,
       process.env.TWITTER_APP_ID,
       process.env.TWITTER_APP_SECRET,
       '1.0A',
-      'http://127.0.0.1:4200/auth',
-      //'http://127.0.0.1:3000/auth/twitter/signin',
+      this.twitterConfig.oauth_redirect_uri,
       'HMAC-SHA1',
     );
   }
@@ -34,19 +32,15 @@ export class TwitterAuthService {
     try {
       const { oauthRequestToken, oauthRequestTokenSecret } = await new Promise(
         (resolve, reject) => {
-          this.oauthConsumer.getOAuthRequestToken(function (
-            error,
-            oauthRequestToken,
-            oauthRequestTokenSecret,
-            results,
-          ) {
-            return error
-              ? reject(new Error('Error getting OAuth request token'))
-              : resolve({
-                  oauthRequestToken,
-                  oauthRequestTokenSecret,
-                });
-          });
+          this.oauthConsumer.getOAuthRequestToken(
+            (error, oauthRequestToken, oauthRequestTokenSecret) =>
+              error
+                ? reject(new Error('Error getting OAuth request token'))
+                : resolve({
+                    oauthRequestToken,
+                    oauthRequestTokenSecret,
+                  }),
+          );
         },
       );
       this.oauthRequestToken = oauthRequestToken;
@@ -60,48 +54,50 @@ export class TwitterAuthService {
     }
   }
 
-  async twitterSignIn(oauthVerifier: string, request: Request): Promise<any> {
-    const { oauthAccessToken, oauthAccessTokenSecret, results } =
-      await new Promise((resolve, reject) => {
-        this.oauthConsumer.getOAuthAccessToken(
-          this.oauthRequestToken,
-          this.oauthRequestTokenSecret,
-          oauthVerifier,
-          function (error, oauthAccessToken, oauthAccessTokenSecret, results) {
-            return error
-              ? reject(new Error('Error getting OAuth access token'))
-              : resolve({ oauthAccessToken, oauthAccessTokenSecret, results });
-          },
-        );
-      });
+  async twitterSignIn(userParams: {
+    oauth_token: string;
+    oauth_verifier: string;
+  }): Promise<User> {
+    try {
+      const { oauthAccessToken, oauthAccessTokenSecret, results } =
+        await new Promise((resolve, reject) => {
+          this.oauthConsumer.getOAuthAccessToken(
+            this.oauthRequestToken,
+            this.oauthRequestTokenSecret,
+            userParams.oauth_verifier,
+            (error, oauthAccessToken, oauthAccessTokenSecret, results) =>
+              error
+                ? reject(new Error('Error getting OAuth access token'))
+                : resolve({
+                    oauthAccessToken,
+                    oauthAccessTokenSecret,
+                    results,
+                  }),
+          );
+        });
 
-    const { user_id: userId } = results;
-    const user = await promisify(
-      this.oauthConsumer.get.bind(this.oauthConsumer),
-    )(
-      `https://api.twitter.com/1.1/users/show.json?user_id=${userId}`,
-      oauthAccessToken,
-      oauthAccessTokenSecret,
-    ).then((body) => JSON.parse(body));
-    return user;
-  }
+      const {
+        id,
+        email,
+        name,
+        profile_image_url,
+        profile_image_url_https,
+        location,
+      } = await promisify(this.oauthConsumer.get.bind(this.oauthConsumer))(
+        `https://api.twitter.com/1.1/account/verify_credentials.json?user_id=${results.user_id}&include_email=true`,
+        oauthAccessToken,
+        oauthAccessTokenSecret,
+      ).then((body) => JSON.parse(body));
 
-  private parseTwitterResponse(response: string): {
-    [key: string]: string | boolean;
-  } {
-    const regex = /([a-z_]+?)=([a-zA-Z0-9_-]+)/g;
-    const parsedResponse: { [key: string]: string } = {};
-
-    let match: RegExpMatchArray = regex.exec(response);
-
-    while (match) {
-      match.shift();
-
-      parsedResponse[match.shift()] = match.shift();
-
-      match = regex.exec(response);
+      return {
+        id,
+        email,
+        name,
+        photoUrl: profile_image_url || profile_image_url_https,
+        locale: location,
+      };
+    } catch (e) {
+      throw new BadRequestException(e.message);
     }
-
-    return parsedResponse;
   }
 }
