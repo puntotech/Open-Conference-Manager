@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Prepare files
-      - uses: actions/checkout@v1
+        uses: actions/checkout@v1
       - uses: actions/setup-node@v1 #this installs node and npm for us
         with:
           node-version: "14.x"
-
       - uses: actions/cache@v1 # this allows for re-using node_modules caching, making builds a bit faster.
         with:
           path: ~/.npm
@@ -23,7 +22,7 @@ jobs:
       - run: npm cache clean --force
       - run: npm install
       - run: npm run build
-
+      
       - name: Deploy files to server
         uses: appleboy/scp-action@master
         env:
@@ -40,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Copy files to server
-      - uses: actions/checkout@v1
+        uses: actions/checkout@v1
       - uses: appleboy/scp-action@master
         env:
          HOST:  ${{ secrets.HOST }}
