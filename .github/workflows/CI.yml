@@ -34,9 +34,8 @@ jobs:
           PORT:  ${{ secrets.PORT }}
           KEY: ${{ secrets.KEY }}
         with:
-          source: "./dist/ocm/*"
-          target: "./open\ conference\ manager/client"
-          strip_components: 2  
+          source: "dist/ocm/*"
+          target: "'open conference manager/client'"
    
   deploy-backend:
     runs-on: ubuntu-latest
@@ -51,7 +50,7 @@ jobs:
          KEY: ${{ secrets.KEY }}
         with:
          source: "./backend/*"
-         target: "./open\ conference\ manager/server"
+         target: "'open conference manager/server'"
 
       - name: Build and deploy server
         uses: appleboy/ssh-action@v0.1.2
@@ -60,7 +59,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            cd "./open conference manager/server"
+            cd "'open conference manager/server'"
             echo "Installing..."
             npm i
             echo "Building..."
