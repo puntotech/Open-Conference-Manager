@@ -36,6 +36,7 @@ jobs:
         with:
           source: "dist/ocm/*"
           target: "'open conference manager/client'"
+          strip_components: 2
    
   deploy-backend:
     runs-on: ubuntu-latest
@@ -50,7 +51,9 @@ jobs:
          KEY: ${{ secrets.KEY }}
         with:
          source: "./backend/*"
-         target: "'open conference manager/server'"
+         target: "'open conference manager/server/'"
+         overwrite: true
+         strip_components: 1
 
       - name: Build and deploy server
         uses: appleboy/ssh-action@v0.1.2
@@ -66,4 +69,4 @@ jobs:
             NODE_OPTIONS="--max-old-space-size=4096" npm run build
             cp .env ./dist/.env
             echo "Deploying..."
-            pm2 restart "open conference manager"
+            pm2 restart "'open conference manager'"
