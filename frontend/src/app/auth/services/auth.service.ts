@@ -24,6 +24,9 @@ export class AuthService {
   ) {}
 
   loadUserData() {
+    if (!this.userStore.token) {
+      return;
+    }
     return this.userService
       .me()
       .pipe(
@@ -33,15 +36,13 @@ export class AuthService {
       .toPromise();
   }
 
-  login(options /*:  Login */): Observable<any> {
-    return this.http
-      .post(options.endpoint, { access_token: options.access_token })
-      .pipe(
-        tap((res: any) => (this.userStore.token = res.access_token)),
-        concatMap(() => this.userService.me()),
-        tap((speaker) => this.speakerStore.loadSpeaker(speaker)),
-        tap(() => this.router.navigate([routes.DASHBOARD]))
-      );
+  login(options: { endpoint: string; data: any }): Observable<any> {
+    return this.http.post(options.endpoint, options.data).pipe(
+      tap((res: any) => (this.userStore.token = res.access_token)),
+      concatMap(() => this.userService.me()),
+      tap((speaker) => this.speakerStore.loadSpeaker(speaker)),
+      tap(() => this.router.navigate([routes.DASHBOARD]))
+    );
   }
 
   requestTwitterRedirectUri() {

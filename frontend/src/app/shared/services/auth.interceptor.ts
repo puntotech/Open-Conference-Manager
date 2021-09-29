@@ -13,6 +13,7 @@ import { routes } from "src/app/shared/consts/routes";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  //TODO: add UserStore
   constructor(private authService: AuthService, private router: Router) {}
 
   intercept(
@@ -30,6 +31,10 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     return next.handle(req).pipe(
       catchError((err) => {
+        if (err.status === 403) {
+          this.router.navigate([routes.DASHBOARD]);
+        }
+
         if (err.status === 401) {
           this.authService.logout();
           this.router.navigate([routes.LOGIN]);

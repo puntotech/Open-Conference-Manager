@@ -23,14 +23,14 @@ a {
   color: #696969;
   text-decoration: none;
 }
-button {
-  background-color: #6788ff;
-  color: #fff;
-}
 
 .blue-btn {
   background-color: #6788ff;
   color: #fff;
+}
+
+.error {
+  color: red;
 }
 
 .section-title {
@@ -40,10 +40,41 @@ button {
   padding: 0 20px 10px;
 }
 
-.track {
-  background-color: purple;
-  border-radius: 2px;
+.section-container {
+  background-color: #fff;
+  margin: 25px;
+  padding: 30px;
+}
+
+.bubble,
+.transparent-bubble {
+  align-items: center;
+  border-radius: 30px;
   color: #fff;
+  display: flex;
+  font-size: 13px;
   font-weight: bold;
-  padding: 5px 20px;
+  padding: 2px 12px;
+}
+
+.transparent-bubble {
+  border: 2px solid #a0a0a0;
+  color: #a0a0a0;
+  margin-bottom: 0;
+}
+
+.web {
+  background-color: rgb(90, 194, 90);
+}
+
+.cyber-security {
+  background-color: lightcoral;
+}
+
+.mobile {
+  background-color: lightsteelblue;
+}
+
+.cloud {
+  background-color: rgb(90, 188, 248);
 }

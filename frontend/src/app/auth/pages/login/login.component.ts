@@ -1,15 +1,16 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import {
+  FacebookLoginProvider,
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
-  FacebookLoginProvider,
 } from "angularx-social-login";
+import { filter, switchMap, tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
 import { routes } from "src/app/shared/consts/routes";
 
 @Component({
@@ -31,16 +32,17 @@ export class LoginComponent {
     this.ifIsLoggedRedirectToDashboard();
   }
 
+  ngOnInit() {}
+
   signInWithGoogle(): void {
     this.socialAuthService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
       .then((userSocial) =>
         this.authService
           .login({
-            access_token: userSocial.authToken,
+            data: { access_token: userSocial.authToken },
             endpoint: "http://localhost:3000/auth/google-login",
           })
-          .pipe()
           .subscribe()
       );
   }
@@ -51,32 +53,21 @@ export class LoginComponent {
       .then((userSocial) =>
         this.authService
           .login({
-            access_token: userSocial.authToken,
+            data: { access_token: userSocial.authToken },
             endpoint: "http://localhost:3000/auth/facebook-login",
           })
-          .pipe()
           .subscribe()
       );
   }
   signInWithTwitter(): void {
     this.authService
       .requestTwitterRedirectUri()
-      .subscribe((response: { redirect_uri: string }) => {
-        window.open(
-          response.redirect_uri,
-          "DescriptiveWindowName",
-          "width=600,height=700,resizable,scrollbars=yes,status=1"
-        );
-      }); /* then((userSocial) =>
-      this.authService
-        .login({
-          oauth_token: userSocial.oauth_token,
-          oauth_verifier: userSocial.oauth_verifier,
-          endpoint: "http://localhost:3000/auth/twitter-sigint",
+      .pipe(
+        tap((response: { redirect_uri: string }) => {
+          window.location.replace(response.redirect_uri);
         })
-        .pipe()
-        .subscribe() 
-    );*/
+      )
+      .subscribe();
   }
 
   refreshGoogleToken(): void {
