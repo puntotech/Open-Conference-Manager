@@ -3,6 +3,9 @@ import { FindOneOptions, Not, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { Speaker } from './speaker.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { TalkService } from '@modules/talk/talk.service';
+import { Talk } from '@modules/talk/talk.entity';
+import { transformTalksToObject } from 'src/shared/utils/utils';
 
 @Injectable()
 export class SpeakerService {
@@ -11,13 +14,18 @@ export class SpeakerService {
     private speakerRepository: Repository<Speaker>,
   ) {}
 
-  public findByID(id: number): Promise<Speaker> {
-    return this.speakerRepository
-      .createQueryBuilder('speaker')
-      .leftJoinAndSelect('speaker.talks', 'talk')
-      .where({ id })
-      .andWhere('talk.status=1')
-      .getOne();
+  public async findByID(id: number): Promise<Speaker & { talks?: Talk }> {
+    const speaker: Speaker & { talks?: Talk } =
+      await this.speakerRepository.findOne({
+        where: { id },
+        relations: ['speakerTalkStatus', 'speakerTalkStatus.talk'],
+      });
+
+    speaker.talks = transformTalksToObject(
+      speaker.speakerTalkStatus.map((status) => status.talk),
+    );
+
+    return speaker;
   }
 
   public findOne(options?: FindOneOptions<Speaker>): Promise<Speaker> {

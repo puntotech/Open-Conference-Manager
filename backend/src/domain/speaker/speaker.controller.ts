@@ -12,9 +12,12 @@ import { SpeakerService } from './speaker.service';
 import { Speaker } from './speaker.entity';
 import { AuthGuard } from '@guards/auth.guard';
 import { User } from 'src/shared/decorators/user.decorator';
+import { Roles } from 'src/shared/decorators/roles.decorator';
+import { RolesGuard } from '@guards/roles.guard';
+import { ROLES } from '@config/database.types';
 
 @Controller('speakers')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class SpeakerController {
   constructor(private readonly speakerService: SpeakerService) {}
 
@@ -34,6 +37,7 @@ export class SpeakerController {
   }
 
   @Get(':id')
+  @Roles(ROLES.ADMIN)
   getByID(@Param('id', ParseIntPipe) id: number): Promise<Speaker> {
     return this.speakerService.findByID(id);
   }

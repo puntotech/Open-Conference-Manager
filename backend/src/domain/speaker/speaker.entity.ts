@@ -7,6 +7,7 @@ import {
   Unique,
 } from 'typeorm';
 
+import { ROLES } from '@config/database.types';
 import { SpeakerTalkStatus } from '@modules/speaker-talk-status/speaker-talk-status.entity';
 
 @Entity()
@@ -48,7 +49,7 @@ export class Speaker extends BaseEntity {
   city: string;
 
   @Column({
-    type: 'varchar',
+    type: 'longtext',
     default: '',
   })
   bio: string;
@@ -88,6 +89,13 @@ export class Speaker extends BaseEntity {
     default: '',
   })
   locale: string;
+
+  @Column({
+    type: 'enum',
+    enum: ROLES,
+    default: ROLES.USER,
+  })
+  role: string;
 
   @Column({
     type: 'boolean',
