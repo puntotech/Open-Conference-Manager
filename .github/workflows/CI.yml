@@ -1,0 +1,68 @@
+name: Deploy Open Conference Manager
+
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare files
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 #this installs node and npm for us
+        with:
+          node-version: "14.x"
+
+      - uses: actions/cache@v1 # this allows for re-using node_modules caching, making builds a bit faster.
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm cache clean --force
+      - run: npm install
+      - run: npm run build
+
+      - name: Deploy files to server
+        uses: appleboy/scp-action@master
+        env:
+          HOST:  ${{ secrets.HOST }}
+          USERNAME:  ${{ secrets.USERNAME }}
+          PORT:  ${{ secrets.PORT }}
+          KEY: ${{ secrets.KEY }}
+        with:
+          source: "./dist/ocm/*"
+          target: "./open conference manager/client"
+          strip_components: 2  
+   
+  deploy-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Copy files to server
+      - uses: actions/checkout@v1
+      - uses: appleboy/scp-action@master
+        env:
+         HOST:  ${{ secrets.HOST }}
+         USERNAME:  ${{ secrets.USERNAME }}
+         PORT:  ${{ secrets.PORT }}
+         KEY: ${{ secrets.KEY }}
+        with:
+         source: "./backend/*"
+         target: "./open conference manager/server"
+
+      - name: Build and deploy server
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd "./open conference manager/server"
+            echo "Installing..."
+            npm i
+            echo "Building..."
+            NODE_OPTIONS="--max-old-space-size=4096" npm run build
+            cp .env ./dist/.env
+            echo "Deploying..."
+            pm2 restart "open conference manager"
