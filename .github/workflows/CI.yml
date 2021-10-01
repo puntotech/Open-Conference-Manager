@@ -85,7 +85,7 @@ jobs:
          strip_components: 1
 
       - name: Reload service
-        uses: appleboy/ssh-action@v0.1.2
+      - uses: appleboy/ssh-action@v0.1.2
         with:
           host: ${{secrets.HOST}}
           username: ${{ secrets.USERNAME }}
