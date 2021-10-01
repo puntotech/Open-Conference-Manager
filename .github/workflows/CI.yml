@@ -94,4 +94,4 @@ jobs:
             cd ocm/server/
             npm i
             cp .env ./dist/.env
-            pm2 restart "ocm"
+            PM2_HOME=/etc/pm2daemon pm2 restart ocm
