@@ -1,14 +1,16 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import {
+  FacebookLoginProvider,
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
 } from "angularx-social-login";
+import { filter, switchMap, tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
 import { routes } from "src/app/shared/consts/routes";
 
 @Component({
@@ -30,21 +32,42 @@ export class LoginComponent {
     this.ifIsLoggedRedirectToDashboard();
   }
 
+  ngOnInit() {}
+
   signInWithGoogle(): void {
     this.socialAuthService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
       .then((userSocial) =>
         this.authService
           .login({
-            accessToken: userSocial.authToken,
+            data: { access_token: userSocial.authToken },
             endpoint: "http://localhost:3000/auth/google-login",
           })
-          .pipe
-          /* tap((speaker) => this.speakerStore.loadSpeaker(speaker)),
-            tap(() => this.router.navigate([routes.DASHBOARD])) */
-          ()
           .subscribe()
       );
+  }
+
+  signInWithFacebook(): void {
+    this.socialAuthService
+      .signIn(FacebookLoginProvider.PROVIDER_ID)
+      .then((userSocial) =>
+        this.authService
+          .login({
+            data: { access_token: userSocial.authToken },
+            endpoint: "http://localhost:3000/auth/facebook-login",
+          })
+          .subscribe()
+      );
+  }
+  signInWithTwitter(): void {
+    this.authService
+      .requestTwitterRedirectUri()
+      .pipe(
+        tap((response: { redirect_uri: string }) => {
+          window.location.replace(response.redirect_uri);
+        })
+      )
+      .subscribe();
   }
 
   refreshGoogleToken(): void {

@@ -2,6 +2,7 @@ import {
   GoogleLoginProvider,
   SocialAuthServiceConfig,
   SocialLoginModule,
+  FacebookLoginProvider,
 } from "angularx-social-login";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 
@@ -13,7 +14,7 @@ import { AuthService } from "./auth/services/auth.service";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { BrowserModule } from "@angular/platform-browser";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
-import { GOOGLE_KEY } from "src/environments/environment";
+import { GOOGLE_KEY, FACEBOOK_KEY } from "src/environments/environment";
 import { MatButtonModule } from "@angular/material/button";
 import { NgModule } from "@angular/core";
 import { ReactiveFormsModule } from "@angular/forms";
@@ -56,6 +57,10 @@ export function initialize(authService: AuthService) {
           {
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider(GOOGLE_KEY),
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider(FACEBOOK_KEY),
           },
         ],
       } as SocialAuthServiceConfig,

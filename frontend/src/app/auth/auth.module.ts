@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { AuthRoutingModule } from "./pages/auth-routing.module";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { LoadingComponent } from "./pages/loading/loading.component";
 import { LoginComponent } from "./pages/login/login.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -20,6 +21,6 @@ import { NgModule } from "@angular/core";
     MatButtonModule,
     FontAwesomeModule,
   ],
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, LoadingComponent],
 })
 export class AuthModule {}

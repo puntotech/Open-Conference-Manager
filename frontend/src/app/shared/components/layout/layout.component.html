@@ -1,6 +1,6 @@
 <mat-sidenav-container class="example-container">
   <mat-sidenav mode="side" opened>
-    <h1 class="sidenav-title">C4P Manager</h1>
+    <h1 class="sidenav-title">Open Conference Manager</h1>
     <h3 *ngIf="speaker$ | async as user">
       {{ user.name }}
     </h3>
@@ -12,9 +12,16 @@
         ><fa-icon [icon]="faUser"></fa-icon>My Profile</a
       >
       <a routerLink="talks" routerLinkActive="active"
-        ><fa-icon [icon]="fa"></fa-icon>My Talks</a
+        ><fa-icon [icon]="faPaperPlane"></fa-icon>My Talks</a
+      >
+      <a
+        *ngIf="isAdmin(speaker$ | async)"
+        routerLink="organiser"
+        routerLinkActive="active"
+        ><fa-icon [icon]="faCog"></fa-icon>Organiser Panel</a
       >
     </div>
+
     <div class="flex-center">
       <button
         routerLink="/dashboard/talks/create"

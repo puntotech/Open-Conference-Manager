@@ -11,23 +11,17 @@ import { Speaker } from '@modules/speaker/speaker.entity';
 import { SpeakerService } from '@modules/speaker/speaker.service';
 import { Talk } from '@modules/talk/talk.entity';
 import { TalkService } from '@modules/talk/talk.service';
+import { User } from 'src/shared/dto/user.dto';
 import { environment } from 'src/environment';
+import { transformTalksToObject } from 'src/shared/utils/utils';
 import { verify } from 'jsonwebtoken';
 
 export interface TokenResponse {
-  accessToken: string;
+  access_token: string;
   refreshToken: string;
 }
 
-export interface SocialUser {
-  id: number | string;
-  name: string;
-  email: string;
-  picture: string;
-  locale: string;
-}
-
-export type GetSocialUserHandler = () => Promise<Partial<SocialUser>>;
+export type GetSocialUserHandler = () => Promise<Partial<User>>;
 
 @Injectable()
 export class AuthService {
@@ -53,14 +47,14 @@ export class AuthService {
       );
     }
 
-    const accessToken = await this.jwtService.signAsync(
+    const access_token = await this.jwtService.signAsync(
       payload,
       /* this.getAccessTokenOptions(user), */
       { secret: this.configService.get<string>('JWT_SECRET') },
     );
 
     return {
-      accessToken,
+      access_token,
       refreshToken,
     };
   }
@@ -86,25 +80,27 @@ export class AuthService {
     }
 
     const talks = await this.talkService.getBySpeakerId(speaker.id);
-    speaker.talks = this.transformTalksToObject(talks);
+    speaker.talks = transformTalksToObject(talks);
 
     request.user = speaker;
     return true;
   }
 
-  async loginWithThirdParty(
-    getSocialUser: GetSocialUserHandler,
-    fieldId = 'email',
-  ) {
+  async loginWithThirdParty(getSocialUser: GetSocialUserHandler) {
     try {
       const data = await getSocialUser();
-
-      const internalUser = await this.speakerService.upsert({
-        name: data.name,
-        photoUrl: data.picture,
-        locale: data.locale,
-        email: data.email,
+      let internalUser = await this.speakerService.findOne({
+        where: { email: data.email },
       });
+
+      if (!internalUser) {
+        internalUser = await this.speakerService.create({
+          name: data.name,
+          photoUrl: data.photoUrl,
+          locale: data.locale,
+          email: data.email,
+        });
+      }
 
       return this.login(internalUser);
     } catch (e) {
@@ -141,17 +137,5 @@ export class AuthService {
     } catch (e) {
       throw new UnauthorizedException();
     }
-  }
-
-  private transformTalksToObject(talks: Talk[]) {
-    const convertArrayToObject = (array, key) =>
-      array.reduce(
-        (obj, item) => ({
-          ...obj,
-          [item[key]]: item,
-        }),
-        {},
-      );
-    return convertArrayToObject(talks, 'id');
   }
 }

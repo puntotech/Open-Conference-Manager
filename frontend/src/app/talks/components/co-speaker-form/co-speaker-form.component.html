@@ -21,6 +21,9 @@
         {{ speaker.email }}
       </mat-option>
     </mat-autocomplete>
+    <mat-error *ngIf="speaker.hasError('incorrect')">
+      Speaker email is incorrect
+    </mat-error>
   </mat-form-field>
   <button mat-raised-button class="blue-btn" type="submit">Submit</button>
 </form>

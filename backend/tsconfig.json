@@ -15,7 +15,7 @@
     "paths": {
       "@modules/*": ["src/domain/*"],
       "@guards/*": ["src/shared/guards/*"],
-      "@constants": ["src/shared/config/database.tokens.constants.ts"]
+      "@config/*": ["src/shared/config/*"]
     }
   },
   "exclude": ["node_modules", "tmp", "dist"],

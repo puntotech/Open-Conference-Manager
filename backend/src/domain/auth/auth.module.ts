@@ -1,10 +1,13 @@
+import { Global, Module } from '@nestjs/common';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { GoogleAuthService } from './google-auth-service';
+import { FacebookStrategy } from './facebook/facebookStrategy';
+import { GoogleAuthService } from './google/google-auth.service';
 import { JwtModule } from '@nestjs/jwt';
-import { Module, Global } from '@nestjs/common';
 import { SpeakerModule } from '@modules/speaker/speaker.module';
 import { TalkModule } from '@modules/talk/talk.module';
+import { TwitterAuthService } from './twitter/twitter.service';
 
 @Global()
 @Module({
@@ -17,7 +20,12 @@ import { TalkModule } from '@modules/talk/talk.module';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, GoogleAuthService],
+  providers: [
+    AuthService,
+    TwitterAuthService,
+    GoogleAuthService,
+    FacebookStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}

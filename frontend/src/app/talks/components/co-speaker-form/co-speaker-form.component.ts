@@ -9,6 +9,7 @@ import {
 
 import { MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
+import { RequireMatch } from "src/app/shared/validators/require-match.validator";
 import { User } from "src/app/shared/models/user";
 import { UserService } from "src/app/user/services/user.service";
 
@@ -39,7 +40,7 @@ export class CoSpeakerFormComponent implements OnInit {
 
   createForm() {
     this.speakerForm = this.fb.group({
-      speaker: ["", [Validators.required]],
+      speaker: ["", [Validators.required, RequireMatch]],
     });
   }
 
