@@ -1,0 +1,65 @@
+name: Deploy BACKEND of Open Conference Manager
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "backend/**"
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Build
+        uses: actions/checkout@v1
+      - uses: actions/setup-node@v1 #this installs node and npm for us
+        with:
+          node-version: "14.x"
+      - uses: actions/cache@v1 # this allows for re-using node_modules caching, making builds a bit faster.
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm cache clean --force
+      - run: npm install
+      - run: npm run build
+
+      - name: Copy files to server
+        uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.KEY }}
+        with:
+          source: "./backend/dist/*"
+          target: "ocm/server/dist"
+          overwrite: true
+          strip_components: 2
+      - uses: appleboy/scp-action@master
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PORT: ${{ secrets.PORT }}
+          KEY: ${{ secrets.KEY }}
+        with:
+          source: "backend/package.json,backend/package-lock.json"
+          target: "ocm/server/"
+          overwrite: true
+          strip_components: 1
+
+      - name: Reload service
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.HOST}}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ocm/server/
+            npm i
+            cp .env ./dist/.env
+            PM2_HOME=/etc/pm2daemon pm2 restart ocm
