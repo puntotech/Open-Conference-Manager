@@ -34,8 +34,8 @@ jobs:
           PORT:  ${{ secrets.PORT }}
           KEY: ${{ secrets.KEY }}
         with:
-          source: "dist/ocm/*"
-          target: "open\ conference\ manager/client"
+          source: "frontend/dist/ocm/*"
+          target: "ocm/client"
           strip_components: 2
    
   deploy-backend:
@@ -51,7 +51,7 @@ jobs:
          KEY: ${{ secrets.KEY }}
         with:
          source: "./backend/*"
-         target: "open\ conference\ manager/server/"
+         target: "ocm/server/"
          overwrite: true
          strip_components: 1
 
@@ -62,11 +62,11 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           script: |
-            cd "~/open\ conference\ manager/server"
+            cd "~/ocm/server"
             echo "Installing..."
             npm i
             echo "Building..."
             NODE_OPTIONS="--max-old-space-size=4096" npm run build
             cp .env ./dist/.env
             echo "Deploying..."
-            pm2 restart "open\ conference\ manager"
+            pm2 restart "ocm"
