@@ -4,6 +4,7 @@ import { filter, switchMap, tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
+import { environment } from "src/environments/environment";
 import { routes } from "src/app/shared/consts/routes";
 
 @Component({
@@ -30,7 +31,7 @@ export class LoadingComponent implements OnInit {
 
           return this.authService.login({
             data: { oauth_token, oauth_verifier },
-            endpoint: "http://localhost:3000/auth/twitter/signin",
+            endpoint: `${environment.APIENDPOINT_BACKEND}/auth/twitter/signin`,
           });
         })
       )

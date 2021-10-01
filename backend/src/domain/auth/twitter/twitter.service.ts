@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { OAuth } from 'oauth';
 import { User } from 'src/shared/dto/user.dto';
+import { environment } from 'src/environment';
 import { promisify } from 'util';
 
 @Injectable()
@@ -14,7 +15,7 @@ export class TwitterAuthService {
     request_token_uri: 'https://api.twitter.com/oauth/request_token',
     login_dialog_uri: 'https://api.twitter.com/oauth/authenticate',
     access_token_uri: 'https://api.twitter.com/oauth/access_token',
-    oauth_redirect_uri: 'http://localhost:4200/auth/loading',
+    oauth_redirect_uri: `${environment.frontEndUrl}/auth/loading`,
   };
   constructor() {
     this.oauthConsumer = new OAuth(
