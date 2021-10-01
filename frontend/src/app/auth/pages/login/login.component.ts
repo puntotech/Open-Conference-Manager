@@ -11,6 +11,7 @@ import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
 import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
+import { environment } from "src/environments/environment";
 import { routes } from "src/app/shared/consts/routes";
 
 @Component({
@@ -41,7 +42,7 @@ export class LoginComponent {
         this.authService
           .login({
             data: { access_token: userSocial.authToken },
-            endpoint: "http://localhost:3000/auth/google-login",
+            endpoint: `${environment.APIENDPOINT_BACKEND}/auth/google-login`,
           })
           .subscribe()
       );
@@ -54,7 +55,7 @@ export class LoginComponent {
         this.authService
           .login({
             data: { access_token: userSocial.authToken },
-            endpoint: "http://localhost:3000/auth/facebook-login",
+            endpoint: `${environment.APIENDPOINT_BACKEND}/auth/facebook-login`,
           })
           .subscribe()
       );

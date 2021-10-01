@@ -9,6 +9,7 @@ import { SpeakerStore } from "src/app/shared/state/speaker.store";
 import { User } from "src/app/shared/models/user";
 import { UserService } from "src/app/user/services/user.service";
 import { UserStoreService } from "src/app/shared/services/user-store.service";
+import { environment } from "src/environments/environment";
 import { routes } from "src/app/shared/consts/routes";
 
 @Injectable({
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   requestTwitterRedirectUri() {
-    return this.http.get("http://localhost:3000/auth/twitter/uri");
+    return this.http.get(`${environment.APIENDPOINT_BACKEND}/auth/twitter/uri`);
   }
 
   logout() {
