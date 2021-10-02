@@ -50,7 +50,7 @@ export class Speaker extends BaseEntity {
 
   @Column({
     type: 'longtext',
-    default: '',
+    nullable: true,
   })
   bio: string;
 
