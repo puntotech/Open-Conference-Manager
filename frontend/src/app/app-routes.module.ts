@@ -34,6 +34,11 @@ const appRoutes: Routes = [
             (m) => m.OrganiserPanelModule
           ),
       },
+      {
+        path: "about",
+        loadChildren: () =>
+          import("./about/about.module").then((m) => m.AboutModule),
+      },
     ],
   },
 
