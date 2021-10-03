@@ -1,4 +1,5 @@
 <mat-toolbar>
+  <fa-icon (click)="toggleSidenav()" [icon]="faMenu" class="menu"></fa-icon>
   <span class="spacer"></span>
   <ng-container *ngIf="speaker$ | async as speaker; else loggedOut">
     <button class="img-button" [matMenuTriggerFor]="menu">
