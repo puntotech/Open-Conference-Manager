@@ -25,9 +25,6 @@ export class AuthService {
   ) {}
 
   loadUserData() {
-    if (!this.userStore.token) {
-      return;
-    }
     return this.userService
       .me()
       .pipe(
