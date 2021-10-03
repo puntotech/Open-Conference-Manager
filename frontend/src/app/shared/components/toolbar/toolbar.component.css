@@ -39,6 +39,10 @@ mat-toolbar a {
   border: none;
 }
 
+.menu {
+  color: #fff;
+}
+
 mat-toolbar a.active {
   border-bottom: 2px solid #fff;
   color: #6c6f71;

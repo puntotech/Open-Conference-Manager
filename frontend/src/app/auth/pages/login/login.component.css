@@ -25,7 +25,7 @@ h4 {
 
 .left-container {
   align-items: stretch;
-  background-color: #e8ecf5;
+  background-color: #5479fa;
   display: flex;
   justify-content: flex-end;
   width: 50%;
@@ -33,20 +33,22 @@ h4 {
 
 .right-container {
   align-items: stretch;
-  background-color: #5479fa;
+  background-color: #e8ecf5;
   display: flex;
   width: 50%;
 }
 
-.left-subtitle {
+.right-subtitle {
   color: #5c5c5c;
   font-weight: bolder;
   margin-bottom: 30px;
 }
 
 .left-container--inner {
-  background-color: #f5f6fa;
+  align-items: center;
+  background-color: #6788ff;
   border-radius: 10px 0 0 10px;
+  display: flex;
   margin: 100px 60px;
   margin-right: 0;
   padding: 90px 0;
@@ -55,7 +57,7 @@ h4 {
 
 .right-container--inner {
   align-items: center;
-  background-color: #6788ff;
+  background-color: #f5f6fa;
   border-radius: 0 10px 10px 0;
   display: flex;
   margin: 100px 60px;
@@ -63,11 +65,12 @@ h4 {
   width: 85%;
 }
 
-.text-container--left {
+.text-container--right {
   text-align: center;
+  width: 100%;
 }
 
-.text-container--right {
+.text-container--left {
   margin-left: 70px;
   z-index: 1;
 }
@@ -82,7 +85,7 @@ h4 {
   flex-direction: column;
 }
 
-.right-title {
+.left-title {
   color: #fff;
   font-weight: bolder;
   font-size: 50px;
@@ -99,7 +102,7 @@ h4 {
 }
 
 .circle {
-  background-color: #6383f5;
+  background-color: #4268f0;
   border-radius: 50%;
   position: absolute;
 }
@@ -107,22 +110,22 @@ h4 {
 .triangle-1 {
   border-top: 80px solid transparent;
   border-bottom: 80px solid transparent;
-  border-right: 80px solid #6383f5;
-  bottom: 100px;
+  border-right: 80px solid #4268f0;
   height: 0;
   position: absolute;
-  right: 500px;
-  transform: rotate(60deg);
+  left: 35%;
+  top: 20%;
+  transform: rotate(125deg);
   width: 0;
 }
 .triangle-2 {
   border-top: 50px solid transparent;
   border-bottom: 50px solid transparent;
-  border-right: 50px solid #6383f5;
-  bottom: 450px;
+  border-right: 50px solid #4268f0;
   height: 0;
   position: absolute;
-  right: 500px;
+  left: 25%;
+  top: 50%;
   transform: rotate(110deg);
   width: 0;
 }
@@ -130,34 +133,50 @@ h4 {
 .triangle-3 {
   border-top: 40px solid transparent;
   border-bottom: 40px solid transparent;
-  border-right: 40px solid #6383f5;
+  border-right: 40px solid #4268f0;
   bottom: 250px;
   height: 0;
   position: absolute;
-  right: 200px;
+  left: 15%;
   transform: rotate(50deg);
   width: 0;
 }
 
 .type1 {
   height: 100px;
-  right: 200px;
-  top: 200px;
+  left: 10%;
+  top: 15%;
   width: 100px;
 }
 
 .type2 {
   height: 50px;
-  right: 150px;
-  top: 300px;
+  left: 20%;
+  top: 15%;
   width: 50px;
 }
-
 .type3 {
   height: 60px;
-  right: 100px;
-  bottom: 80px;
+  left: 40%;
+  top: 80%;
   width: 60px;
+}
+
+@media only screen and (max-width: 700px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .right-container,
+  .left-container {
+    width: 100%;
+  }
+
+  .left-container--inner,
+  .right-container--inner {
+    margin: 100px 5%;
+    width: 100%;
+  }
 }
 
 button:hover {

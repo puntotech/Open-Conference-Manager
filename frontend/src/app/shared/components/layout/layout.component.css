@@ -67,6 +67,26 @@ button:hover {
   background-color: #5479fa;
 }
 
+@media only screen and (max-width: 1000px) {
+  mat-sidenav {
+    width: 25%;
+  }
+
+  .sidenav-title {
+    padding-right: 5px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  mat-sidenav {
+    width: 45%;
+  }
+
+  button {
+    padding: 0 13px;
+  }
+}
+
 a:hover {
   background-color: #273a4a;
   cursor: pointer;
