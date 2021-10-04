@@ -6,4 +6,4 @@ export const environment = {
 export const GOOGLE_KEY =
   "703636158022-ck52l71r9bh3cttfn9fap9ec9pabj599.apps.googleusercontent.com";
 
-export const FACEBOOK_KEY = "1219706015189968";
+export const FACEBOOK_KEY = "1188245235006279";
