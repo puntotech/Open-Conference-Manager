@@ -63,7 +63,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title>
             <h4 class="subtitle">{{ talk.title }}</h4>
-            <div class="talk-detail--container">
+            <div *ngIf="!isMobileDisplay" class="talk-detail--container">
               <p class="transparent-bubble">{{ talk.language }}</p>
               <p class="transparent-bubble">{{ talk.level }}</p>
               <p class="bubble" [ngClass]="talk.track | lowercase">
@@ -76,6 +76,13 @@
         <p>{{ talk.abstract }}</p>
         <h4 class="subtitle">Comments</h4>
         <p>{{ talk.comments }}</p>
+        <div *ngIf="isMobileDisplay" class="talk-detail--container">
+          <p class="transparent-bubble">{{ talk.language }}</p>
+          <p class="transparent-bubble">{{ talk.level }}</p>
+          <p class="bubble" [ngClass]="talk.track | lowercase">
+            {{ talk.track }}
+          </p>
+        </div>
 
         <div *ngIf="talk.speakerTalkStatus.length > 1">
           <h4 class="subtitle">Co-Speakers</h4>

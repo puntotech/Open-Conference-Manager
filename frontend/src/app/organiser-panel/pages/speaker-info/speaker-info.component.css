@@ -73,3 +73,15 @@ fa-icon {
   color: #fff;
   text-align: center;
 }
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .profile {
+    border-radius: 10px 10px 0 0;
+    margin-right: 0;
+    max-width: none;
+  }
+}

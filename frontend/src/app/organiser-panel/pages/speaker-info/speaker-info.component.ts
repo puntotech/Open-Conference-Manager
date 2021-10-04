@@ -33,11 +33,13 @@ export class SpeakerInfoComponent implements OnInit {
   panelOpenState = false;
   talks: Talk[];
   subscription: Subscription;
+  maxMobileDisplayWidth = 1000;
 
   faTwitter = faTwitter;
   faGithub = faGithub;
   faLinkedin = faLinkedin;
   faYoutube = faYoutube;
+  isMobileDisplay: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +48,7 @@ export class SpeakerInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.onResize(window.innerWidth);
     const speakerId = this.route.snapshot.paramMap.get("id");
 
     // TODO: Refactor
@@ -61,6 +64,15 @@ export class SpeakerInfoComponent implements OnInit {
         tap((talks) => (this.talks = talks))
       )
       .subscribe();
+  }
+
+  @HostListener("window:resize", ["$event.target.innerWidth"])
+  onResize(width: number) {
+    this.isMobileDisplay = this.isMobileDisplayWidth(width);
+  }
+
+  private isMobileDisplayWidth(width: number) {
+    return width < this.maxMobileDisplayWidth;
   }
 
   ngOnDestroy() {
