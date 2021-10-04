@@ -234,3 +234,8 @@ button:hover {
   background-color: #6383f5;
   color: #fff;
 }
+
+button.disabled:hover {
+  background-color: #fff;
+  color: rgb(134, 134, 134);
+}
