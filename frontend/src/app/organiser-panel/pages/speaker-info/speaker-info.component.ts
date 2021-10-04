@@ -22,6 +22,7 @@ import { Talk } from "src/app/shared/models/talk.model";
 import { TalksService } from "src/app/talks/services/talks.service";
 import { User } from "src/app/shared/models/user";
 import { UserService } from "src/app/user/services/user.service";
+import { HostListener } from "@angular/core";
 
 @Component({
   selector: "app-speaker-info",
