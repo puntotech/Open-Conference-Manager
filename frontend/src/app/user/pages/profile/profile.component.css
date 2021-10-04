@@ -21,7 +21,6 @@ span {
   background-color: #5479fa;
   border-radius: 10px 0 0 10px;
   max-width: 30%;
-  margin-bottom: 20px;
   padding: 30px;
   text-align: center;
 }
@@ -77,4 +76,20 @@ fa-icon {
 
 .social-icon:hover {
   background-color: #305dfd;
+}
+
+@media only screen and (max-width: 1000px) {
+  .profile {
+    flex-direction: column;
+  }
+
+  .container {
+    background-color: #5479fa;
+    border-radius: 10px 10px 0 0;
+    max-width: none;
+  }
+
+  .description-container {
+    border-radius: 0 0 10px 10px;
+  }
 }
