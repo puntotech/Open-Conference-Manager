@@ -33,8 +33,6 @@ export class LoginComponent {
     this.ifIsLoggedRedirectToDashboard();
   }
 
-  ngOnInit() {}
-
   signInWithGoogle(): void {
     this.socialAuthService
       .signIn(GoogleLoginProvider.PROVIDER_ID)
