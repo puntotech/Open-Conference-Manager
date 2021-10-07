@@ -28,7 +28,11 @@
     <div class="talk-content">
       <div class="title-container">
         <h1>{{ talk.title }}</h1>
-        <span class="track">{{ talk.track }}</span>
+        <span
+          class="bubble"
+          [ngClass]="talk.track | lowercase | hyphenate: ' ':'-'"
+          >{{ talk.track }}</span
+        >
       </div>
 
       <h4>Level: {{ talk.level }}</h4>
