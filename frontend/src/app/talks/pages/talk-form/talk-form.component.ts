@@ -21,7 +21,16 @@ export class TalkFormComponent implements OnInit {
   talkForm: FormGroup;
   action: string;
   levels: string[] = ["Advanced", "Intermediate", "Beginner"];
-  tracks: string[] = ["Web", "Mobile", "Cloud", "CyberSecurity"];
+  tracks: string[] = [
+    "Web",
+    "Mobile",
+    "Cloud",
+    "CyberSecurity",
+    "AI",
+    "DevOps",
+    "Emerging tech",
+    "Other",
+  ];
   languages: string[] = ["Spanish", "English"];
 
   constructor(
