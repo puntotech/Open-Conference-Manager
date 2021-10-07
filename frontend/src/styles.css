@@ -78,3 +78,19 @@ a {
 .cloud {
   background-color: rgb(90, 188, 248);
 }
+
+.devops {
+  background-color: rgb(150, 0, 105);
+}
+
+.ai {
+  background-color: orangered;
+}
+
+.others {
+  background-color: grey;
+}
+
+.emerging-tech {
+  background-color: rgb(60, 0, 128);
+}
