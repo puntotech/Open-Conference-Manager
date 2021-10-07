@@ -1,6 +1,7 @@
 import { ChartModule } from "angular-highcharts";
 import { CommonModule } from "@angular/common";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { HyphenatePipe } from "./pipes/hyphenate.pipe";
 import { LayoutComponent } from "./components/layout/layout.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
@@ -23,7 +24,7 @@ import { ToolbarComponent } from "./components/toolbar/toolbar.component";
     MatSidenavModule,
     MatButtonModule,
   ],
-  declarations: [ToolbarComponent, LayoutComponent],
-  exports: [ToolbarComponent],
+  declarations: [ToolbarComponent, LayoutComponent, HyphenatePipe],
+  exports: [ToolbarComponent, HyphenatePipe],
 })
 export class SharedModule {}
