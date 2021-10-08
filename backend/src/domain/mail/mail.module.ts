@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
-import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { ConfigService } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
           },
         },
         defaults: {
-          from: `"Estefanía García" <${config.get('MAIL_FROM')}>`,
+          from: `"Estefanía García @ BiznagaFest" <${config.get('MAIL_FROM')}>`,
         },
         template: {
           dir: __dirname + '/templates',
