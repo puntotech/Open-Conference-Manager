@@ -11,7 +11,6 @@ export class MailService {
     await this.mailerService
       .sendMail({
         to: speaker.email,
-        // from: '"Support Team" <support@example.com>', // override default from
         subject: 'Submitted talk to BiznagaFest',
         template: './talk-confirmation',
         context: {
@@ -31,8 +30,7 @@ export class MailService {
 
     await this.mailerService
       .sendMail({
-        to: 'nyablk97@gmail.com',
-        // from: '"Support Team" <support@example.com>', // override default from
+        to: process.env.MAIL_USER,
         subject: 'Submitted talk to BiznagaFest',
         template: './new-submission',
         context: {
