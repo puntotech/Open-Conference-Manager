@@ -29,6 +29,7 @@ export class TalkFormComponent implements OnInit {
     "AI",
     "DevOps",
     "Emerging tech",
+    "Videogames",
     "Other",
   ];
   languages: string[] = ["Spanish", "English"];
