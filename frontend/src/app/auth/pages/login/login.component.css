@@ -109,67 +109,6 @@ h4 {
   height: 22px;
 }
 
-.circle {
-  background-color: #4268f0;
-  border-radius: 50%;
-  position: absolute;
-}
-
-.triangle-1 {
-  border-top: 80px solid transparent;
-  border-bottom: 80px solid transparent;
-  border-right: 80px solid #4268f0;
-  height: 0;
-  position: absolute;
-  left: 35%;
-  top: 20%;
-  transform: rotate(125deg);
-  width: 0;
-}
-.triangle-2 {
-  border-top: 50px solid transparent;
-  border-bottom: 50px solid transparent;
-  border-right: 50px solid #4268f0;
-  height: 0;
-  position: absolute;
-  left: 25%;
-  top: 50%;
-  transform: rotate(110deg);
-  width: 0;
-}
-
-.triangle-3 {
-  border-top: 40px solid transparent;
-  border-bottom: 40px solid transparent;
-  border-right: 40px solid #4268f0;
-  bottom: 250px;
-  height: 0;
-  position: absolute;
-  left: 15%;
-  transform: rotate(50deg);
-  width: 0;
-}
-
-.type1 {
-  height: 100px;
-  left: 10%;
-  top: 15%;
-  width: 100px;
-}
-
-.type2 {
-  height: 50px;
-  left: 20%;
-  top: 15%;
-  width: 50px;
-}
-.type3 {
-  height: 60px;
-  left: 40%;
-  top: 80%;
-  width: 60px;
-}
-
 @media only screen and (max-width: 1000px) {
   .container {
     flex-direction: column;
