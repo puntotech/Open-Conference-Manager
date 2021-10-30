@@ -181,25 +181,6 @@ h4 {
   .text-container--right {
     margin: 20px 0;
   }
-
-  .type1 {
-    left: 10%;
-  }
-
-  .type2 {
-    left: 50%;
-  }
-
-  .type3 {
-    left: 70%;
-    top: 50%;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .type3 {
-    top: 70%;
-  }
 }
 
 @media only screen and (max-width: 400px) {
