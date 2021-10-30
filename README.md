@@ -6,7 +6,6 @@
 
 **Documentation:** **Working In Progress**
 
-
 ## Table of Contents
 
 - [Features](#features)
@@ -22,26 +21,26 @@ Open Conference Manager is still in **beta** but already contains a large set of
 **You are a Speaker:**
 
 - [x] ✨ Write the abstract of your talk
-- [x] 🚀 Submit your talks to events (meetups and conferences) 
+- [x] 🚀 Submit your talks to events (meetups and conferences)
 - [x] 🤝 Invite co-speakers to your talk
 - [x] 🔒 Social login
 
 **You are an Organizer:**
 
-- [] Easy install
-- [x] Review speaker proposals 
-- [] ❤️ Create your conference or meetup
-- [] 📣 Call for papers opens and closes automatically
-- [] ⚡️ Make it public or private
-- [] 👥 Use organization to share an event between organizers
-- [] 💡 Custom formats and categories for the talks
-- [] 📥 Send survey to speakers
-- [] ⭐️ Rate proposals to speed deliberation process
-- [] 💬 Discussion between organizers about a proposal
-- [] ✅ Mark proposals as accepted, declined...
-- [] 💌 Automatically send accept or reject emails to speakers
-- [] 📃 Export proposals as JSON
-- [] 👌 Get speaker confirmations
+- [ ] Easy install
+- [x] Review speaker proposals
+- [ ] ❤️ Create your conference or meetup
+- [ ] 📣 Call for papers opens and closes automatically
+- [ ] ⚡️ Make it public or private
+- [ ] 👥 Use organization to share an event between organizers
+- [ ] 💡 Custom formats and categories for the talks
+- [ ] 📥 Send survey to speakers
+- [ ] ⭐️ Rate proposals to speed deliberation process
+- [ ] 💬 Discussion between organizers about a proposal
+- [ ] ✅ Mark proposals as accepted, declined...
+- [ ] 💌 Automatically send accept or reject emails to speakers
+- [ ] 📃 Export proposals as JSON
+- [ ] 👌 Get speaker confirmations
 
 <a name="contributing"></a>
 
