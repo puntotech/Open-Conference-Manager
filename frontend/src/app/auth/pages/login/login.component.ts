@@ -1,11 +1,11 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import {
   FacebookLoginProvider,
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
 } from "angularx-social-login";
-import { filter, switchMap, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
@@ -13,6 +13,7 @@ import { Component } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { environment } from "src/environments/environment";
 import { routes } from "src/app/shared/consts/routes";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
 @Component({
   selector: "app-login",
@@ -24,6 +25,7 @@ export class LoginComponent {
   public loginForm: FormGroup;
   public user: SocialUser;
   GoogleLoginProvider = GoogleLoginProvider;
+  faGithub = faGithub;
 
   constructor(
     private readonly authService: AuthService,
