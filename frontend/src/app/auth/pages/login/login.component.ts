@@ -1,11 +1,11 @@
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import {
   FacebookLoginProvider,
   GoogleLoginProvider,
   SocialAuthService,
   SocialUser,
 } from "angularx-social-login";
-import { filter, switchMap, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 
 import { AppSettings } from "src/app/app.settings";
 import { AuthService } from "../../services/auth.service";
