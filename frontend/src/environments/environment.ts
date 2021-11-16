@@ -8,7 +8,7 @@ export const environment = {
 };
 
 export const GOOGLE_KEY =
-  "703636158022-ck52l71r9bh3cttfn9fap9ec9pabj599.apps.googleusercontent.com";
+  "160652211001-1kocvvoaqk7kh6apghqglqo0t22n6u59.apps.googleusercontent.com";
 
 export const FACEBOOK_KEY = "1188245235006279";
 //App ID: 1047083652726486
