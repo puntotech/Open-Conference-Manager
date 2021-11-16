@@ -4,7 +4,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Speaker } from '@modules/speaker/speaker.entity';
 import { Talk } from './talk.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -38,8 +38,7 @@ export class TalkService {
 
   public getAll(): Promise<Talk[]> {
     return this.talkRepository.find({
-      relations: ['speakers'],
-      where: { status: true },
+      where: { status: true, submitted: Not(IsNull()) },
     });
   }
 
