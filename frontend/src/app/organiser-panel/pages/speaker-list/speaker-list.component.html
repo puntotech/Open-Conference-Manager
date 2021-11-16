@@ -1,0 +1,66 @@
+<!-- <div *ngFor="let speaker of speaker$ | async">
+  <a
+    class="speaker-container"
+    routerLink="/dashboard/organiser/speaker/{{ speaker.id }}"
+  >
+    <div class="text-container">
+      <h3>{{ speaker.name }}</h3>
+      <span>{{ speaker.email }} </span>
+      <img *ngIf="speaker.photoUrl" src="{{ speaker.photoUrl }}" />
+    </div>
+  </a> 
+</div>-->
+
+<div>
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="name">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by name"
+      >
+        Name
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by email"
+      >
+        Email
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Photo</th>
+      <td mat-cell *matCellDef="let element">
+        <img *ngIf="element.photoUrl" src="{{ element.photoUrl }}" />
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      (click)="navigateToDetail(row)"
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+    aria-label="Select page of submitted talks"
+  >
+  </mat-paginator>
+</div>

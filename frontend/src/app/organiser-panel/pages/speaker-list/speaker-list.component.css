@@ -1,0 +1,14 @@
+img {
+  border: 5px solid #6788ff;
+  border-radius: 50%;
+  height: 50px;
+}
+
+table {
+  width: 100%;
+}
+
+tr:hover {
+  background-color: #ecf0ff;
+  cursor: pointer;
+}

@@ -19,6 +19,10 @@ export class TalksService {
     );
   }
 
+  getTalks() {
+    return this.httpClient.get<Talk[]>(`${AppSettings.API_ENDPOINT_TALKS}`);
+  }
+
   submit(id: number) {
     return this.httpClient.put<Talk>(
       `${AppSettings.API_ENDPOINT_TALKS}/submit/${id}`,
