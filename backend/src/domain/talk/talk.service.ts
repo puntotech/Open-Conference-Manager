@@ -38,7 +38,7 @@ export class TalkService {
 
   public getAll(): Promise<Talk[]> {
     return this.talkRepository.find({
-      where: { status: true, submitted: Not(IsNull()) },
+      where: { status: true /* , submitted: Not(IsNull()) */ },
     });
   }
 
