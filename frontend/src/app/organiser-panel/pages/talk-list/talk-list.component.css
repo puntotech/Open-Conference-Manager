@@ -2,7 +2,7 @@ table {
   width: 100%;
 }
 
-tr:hover {
-  background-color: #ecf0ff;
+table > tbody > tr:hover {
+  background-color: #ecf0ff !important;
   cursor: pointer;
 }

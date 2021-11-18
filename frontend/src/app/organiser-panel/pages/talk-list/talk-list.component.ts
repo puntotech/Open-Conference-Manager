@@ -1,4 +1,4 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, ViewChild, ViewEncapsulation } from "@angular/core";
 import { MatSort, Sort } from "@angular/material/sort";
 
 import { LiveAnnouncer } from "@angular/cdk/a11y";
@@ -13,10 +13,11 @@ import { tap } from "rxjs/operators";
   selector: "app-talk-list",
   templateUrl: "./talk-list.component.html",
   styleUrls: ["./talk-list.component.css"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TalkListComponent {
   public dataSource = new MatTableDataSource<Talk>();
-  public displayedColumns: string[] = ["title", "status"];
+  public displayedColumns: string[] = ["title", "submitted"];
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -36,6 +37,15 @@ export class TalkListComponent {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case "submitted":
+          return new Date(item.submitted);
+        default:
+          return item[property];
+      }
+    };
   }
 
   navigateToDetail({ id }) {
